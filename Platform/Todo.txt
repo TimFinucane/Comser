@@ -1,0 +1,4 @@
+2: Complete Filesystem
+3: Complete FADDL
+2: Implement window settings (resolutions, windowed, e.g)
+1: Switch to DLL

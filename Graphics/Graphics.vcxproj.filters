@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="View.h" />
+    <ClInclude Include="Mesh.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Program.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteSheet.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h" />
+    <ClInclude Include="BufferArray.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic2DProgram.h">
+      <Filter>Shader\Some Programs</Filter>
+    </ClInclude>
+    <ClInclude Include="Library.h">
+      <Filter>Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Text</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="View.cpp" />
+    <ClCompile Include="Program.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteSheet.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp" />
+    <ClCompile Include="BufferArray.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Generic2DProgram.cpp">
+      <Filter>Shader\Some Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="Library.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="3D">
+      <UniqueIdentifier>{37f9ce13-88c5-409c-8228-c4089e5c2463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{d7fd6758-0d36-41c1-980a-450ed6f5a914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{b07e5ed8-01cb-4adb-a326-9a7459df7876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader\Some Programs">
+      <UniqueIdentifier>{e5882570-a05f-4390-afb9-2e746eb6fc02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{5d9bb66c-9e6d-4c91-8071-14eee44103f9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="2DVertex.sh">
+      <Filter>Shader\Some Programs</Filter>
+    </None>
+    <None Include="2DFragment.sh">
+      <Filter>Shader\Some Programs</Filter>
+    </None>
+  </ItemGroup>
+</Project>

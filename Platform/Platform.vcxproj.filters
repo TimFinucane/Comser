@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="GraphicsIncludes.h" />
+    <ClInclude Include="FileSystem.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Encoding.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Memory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Files">
+      <UniqueIdentifier>{8b80e4af-f502-4ed2-87f8-ef55a0502cda}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Comser">
+      <UniqueIdentifier>{78411eb7-f6d6-4ab3-b69b-1225cd7e4877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{660a3422-0985-45e4-a36d-082af85a9f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{4378c6fe-6a38-4696-9f89-31dc4cfb81f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comser\Scene">
+      <UniqueIdentifier>{7a62b847-4043-4338-b29b-030abb0dad38}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Component.h">
+      <Filter>Comser</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Comser</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceHandler.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Comser</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Signal.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Prefab.h">
+      <Filter>Comser</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityList.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentManager.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateCounter.h" />
+    <ClInclude Include="TupleHook.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ComponentManager.cpp">
+      <Filter>Comser\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityList.cpp">
+      <Filter>Comser\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Group.cpp">
+      <Filter>Comser\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Comser</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateCounter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TODO.txt" />
+  </ItemGroup>
+</Project>

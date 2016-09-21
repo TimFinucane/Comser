@@ -1,0 +1,14 @@
+Use templates for stronger types(?)
+
+Finish Differentiating between ComponentType, EntityId, etc. etc. (Stronger Types)
+Work on entity manager efficiency and memory saving
+
+ResourceHandler and Manager
+
+Memory class
+
+Use vectors instead of maps with EventSystem?
+
+Have seperate scenes/ groupings of entities
+
+ComponentSet

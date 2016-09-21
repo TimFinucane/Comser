@@ -1,0 +1,7 @@
+Implement the FreeType libs
+
+Get OpenGL working
+
+Spritesheet working
+
+Control window from here
