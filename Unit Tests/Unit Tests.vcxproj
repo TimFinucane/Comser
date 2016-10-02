@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="CommonTests.cpp" />
     <ClCompile Include="GraphicsTests.cpp" />
+    <ClCompile Include="PlatformTests.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5F8DA9C4-2F32-423F-B00C-3BBC41D00D6A}</ProjectGuid>
@@ -84,6 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\ProgLibs\SDL2\include;C:\ProgLibs\libsigc++;C:\Repos\Game Design\Comser\Common;C:\Repos\Game Design\Comser\Graphics;C:\Repos\Game Design\Comser\Platform;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>

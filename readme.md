@@ -1,1 +1,0 @@
-This is a framework through which you can create any game-like application

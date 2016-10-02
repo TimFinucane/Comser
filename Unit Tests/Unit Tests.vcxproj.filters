@@ -3,5 +3,6 @@
   <ItemGroup>
     <ClCompile Include="CommonTests.cpp" />
     <ClCompile Include="GraphicsTests.cpp" />
+    <ClCompile Include="PlatformTests.cpp" />
   </ItemGroup>
 </Project>

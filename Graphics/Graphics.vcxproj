@@ -40,8 +40,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;$(ProjectDir)..\GL\Include\;$(IncludePath);C:\ProgLibs\;$(ProjectDir)..\Common\</IncludePath>
-    <LibraryPath>C:\ProgLibs\png\lib\$(Configuration)\;C:\Repos\Game Design\Comser\Graphics\$(Configuration)\;C:\ProgLibs\png\libs\Debug\;$(ProjectDir)..\GL\Lib;$(LibraryPath);C:\ProgLibs\freetype-2.6\lib</LibraryPath>
+    <IncludePath>C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;C:\ProgLibs\GL\Include;$(IncludePath);C:\ProgLibs\;$(ProjectDir)..\Common\</IncludePath>
+    <LibraryPath>C:\ProgLibs\png\lib\$(Configuration)\;C:\Repos\Game Design\Comser\Graphics\$(Configuration)\;C:\ProgLibs\png\libs\Debug\;C:\ProgLibs\GL\Lib;$(LibraryPath);C:\ProgLibs\freetype-2.6\lib</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

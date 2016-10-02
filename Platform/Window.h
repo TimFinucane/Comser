@@ -21,7 +21,6 @@ public:
         WINDOWED_BORDERLESS,
         FULLSCREEN
     };
-
     struct WindowSettings
     {
         std::string     name;
@@ -47,21 +46,27 @@ public:
     Window();
     ~Window();
 
-    void                init( const WindowSettings& settings );
-    void                release();
+    void                    init( const WindowSettings& settings );
+    void                    release();
 
-    // Get info about the screen that the window is currently on
-    ScreenSettings              getScreenInfo() const;
-
-    void                        settings( const WindowSettings& settings );
-    const WindowSettings&       settings()
+    void                    settings( const WindowSettings& settings );
+    const WindowSettings&   settings() const
     {
         return _curSettings;
     }
 
-    sigc::connection    connectSettingsChange( SettingsSlot slot );
+    // Lets you get updated when screen settings are changed by the program
+    //  through the settings method
+    sigc::connection        connectSettingsChange( SettingsSlot slot );
 
-    void                loop( LoopFunction loop, EventFunction event );
+    void                    loop( LoopFunction loop, EventFunction event );
+
+    // Some static functions for getting info about the system
+    static unsigned int     defaultScreen();
+    static unsigned int     numScreens();
+    static ScreenSettings   getScreenInfo( unsigned int screen );
+    // Produces a rect of given width and height that's centred on the given screens centre
+    static Rect             getCentreRect( unsigned int screen, unsigned short width, unsigned short height );
 
     operator SDL_Window*()
     {
