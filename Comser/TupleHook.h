@@ -5,75 +5,106 @@
 #include <tuple>
 #include <map>
 #include <array>
+#include <sigc++/sigc++.h>
 
 #include "Component.h"
 #include "Entity.h"
 
-#include "Group.h"
-
-#include "Signal.h"
-
+#include "Game.h"
 
 namespace Comser
 {
-    namespace Scene
+    // Purpose: Used by a system to keep a reference to all
+    //  entities which contain the desired components (tuple).
+    // For sake of efficiency, put components in order of least->most used.
+    template<class... COMPONENTS>
+    class TupleHook
     {
-        template<class COMPONENT>
-        LocalComponentType _idHelper()
-        {
-            return COMPONENT::id();
-        }
+    public:
+        typedef std::tuple<COMPONENTS*...>                                  Tuple;
 
-        // Purpose: Used by a system to keep a reference to all
-        //  entities which contain the desired components (tuple).
-        // For sake of efficiency, put components in order of least->most used.
-        template<class... COMPONENTS>
-        class TupleHook //: public sigc::trackable
+        typedef std::map<EntityId,Tuple>                                        Map;
+        typedef typename Map::iterator                                          Iterator;
+        typedef typename Map::const_iterator                                    ConstIterator;
+
+        typedef sigc::signal<void, Scene::Group*, typename Map::value_type&>    Signal;
+
+    private:
+        static const unsigned __int32  COMPONENT_COUNT  = sizeof...(COMPONENTS);
+
+        typedef std::array<Scene::LocalComponentType, COMPONENT_COUNT>  LocalTypes;
+
+        class SceneTuples
         {
         public:
-            typedef std::tuple<COMPONENTS*...>                              Tuple;
-
-            typedef std::map<EntityId,Tuple>                                Map;
-            typedef typename Map::iterator                                  Iterator;
-            typedef typename Map::const_iterator                            ConstIterator;
-
-            //typedef std::pair<EntityId,Tuple>                               Pair;
-
-            typedef Event::Signal::Signal1<typename Map::value_type*>                Signal;
-
-        public:
-            // TODO: Find all entities already created with those props
-            TupleHook( Group* group )
-                : _localTypes{ (*group)[COMPONENTS::id()]... }, _group( group )
+            SceneTuples( Scene::Group* gr, Signal& added, Signal& removed )
+                : _group( gr ), _addedSig( added ), _removeSig( removed )
             {
+                _localTypes[i] = LocalTypes{ group->localTypes( COMPONENTS::id() )... };
+
                 for( int i = 0; i < _localTypes.size(); ++i )
                 {
-                    group->connectAdded( _localTypes[i], sigc::mem_fun1( *this, &TupleHook<COMPONENTS...>::_componentAdded )  );
-                    group->connectRemoved( _localTypes[i], sigc::mem_fun1( *this, &TupleHook<COMPONENTS...>::_componentRemoved )  );
+                    _group->connectAdded( _localTypes[i] ).connect( cinder::signals::slot( this, &TupleHook<COMPONENTS...>::_componentAdded ) );
+                    _group->connectRemoved( _localTypes[i] ).connect( cinder::signals::slot( this, &TupleHook<COMPONENTS...>::_componentRemoved ) );
                 }
+
+                _addCreatedComponents();
             }
 
             ConstIterator       begin() const
             {
-                return _tuples.begin();
+                return _map.begin();
             }
             ConstIterator       end() const
             {
-                return _tuples.end();
+                return _map.end();
             }
 
-            unsigned int        size()
+            /// <summary>
+            /// Gets called when a component is added to an entity in this sceneset's scene.
+            /// </summary>
+            void                componentAdded( Scene::ComponentVector::ComponentInfo* componentInfo )
             {
-                return _tuples.size();
+                EntityId ent = componentInfo->entity;
+                Tuple tuple;
+
+                // Check to see if all the types are there
+                if( _recurseCheck( ent, tuple ) )
+                {
+                    auto it = _map.emplace( ent, tuple );
+                    addedSig.emit( _group, *it );
+                }
+            }
+            /// <summary>
+            /// Gets called when a component is removed from an entity in this sceneset's scene.
+            /// </summary>
+            void                componentRemoved( Scene::ComponentVector::ComponentInfo* componentInfo )
+            {
+                auto it = _map.find( componentInfo->entity );
+                if( it != _map.end() && it->second )
+                {
+                    removeSig.emit( _group, *it );
+                    map.erase( it );
+                }
+            }
+        private:
+            // Returns whether or not all components are present
+            template <int STEPS = 0>
+            bool         _recurseCheck( EntityId id, Tuple& tuple ) const
+            {
+                std::get<STEPS>( tuple ) = reinterpret_cast<std::tuple_element<STEPS, Tuple>::type>(group->getComponent( id, localTypes[STEPS] ));
+                return (std::get<STEPS>( tuple ) != nullptr) && _recurseCheck<STEPS + 1>( group, id, tuple, localTypes );
+            }
+            template <>
+            bool         _recurseCheck<COMPONENT_COUNT>( EntityId id, Tuple& tuple ) const
+            {
+                (group);
+                (id);
+                (tuple);
+                (types);
+                return true;
             }
 
-            Signal              tupleAdded;
-            Signal              tupleRemoved;
-        private:
-            static const unsigned __int32  COMPONENT_COUNT  = sizeof...(COMPONENTS);
-
-            typedef std::array<LocalComponentType,COMPONENT_COUNT>  LocalTypes;
-        private:
             // Purpose: To add to the map components which were created before this TupleHook
             void                _addCreatedComponents()
             {
@@ -85,61 +116,43 @@ namespace Comser
                     if( _recurseCheck( _group, tuple, &types[1] ) )
                     {
                         // Put in that first component
-                        std::get<0>(tuple) = reinterpret_cast<COMPONENTS>( i->component );
+                        std::get<0>( tuple ) = reinterpret_cast<COMPONENTS>(i->component);
 
                         // Add it to our map
                         _tuples.emplace( i->entity, tuple );
-                        tupleAdded( _tuples.back() );
+                        tupleAdded.emit( _tuples.back() );
                     }
                 }
             }
 
-            void                _componentAdded( ComponentVector::ComponentInfo* componentInfo )
-            {
-                EntityId ent = componentInfo->entity;
-                Tuple tuple;
+            Scene::Group*   _group;
+            LocalTypes      _localTypes;
+            Map             _map;
 
-                // Check to see if all the types are there
-                if( _recurseCheck( _group, ent, tuple, _localTypes ) )
-                {
-                    _tuples.emplace( ent, tuple );
-                    tupleAdded( &(*_tuples.rbegin()) );
-                }
-            }
-            void                _componentRemoved( ComponentVector::ComponentInfo* componentInfo )
-            {
-                auto it = _tuples.find( componentInfo->entity );
-                if( it != _tuples.end() )
-                {
-                    tupleRemoved( &(*it) );
-                    _tuples.erase( it );
-                }
-            }
-
-            // If true, all components are present
-            template <int STEPS = 0>
-            bool         _recurseCheck( Group* group, EntityId id, Tuple& tuple, LocalTypes& types ) const
-            {
-                std::get<STEPS>(tuple) = 
-                    reinterpret_cast<std::tuple_element<STEPS,Tuple>::type>( group->getComponent( id, types[STEPS] ) );
-                
-                return (std::get<STEPS>(tuple) != nullptr) && _recurseCheck<STEPS+1>( group, id, tuple, types );
-            }
-            template <>
-            bool         _recurseCheck<COMPONENT_COUNT>( Group* group, EntityId id, Tuple& tuple, LocalTypes& types ) const
-            {
-                (group);
-                (id);
-                (tuple);
-                (types);
-                return true;
-            }
-
-            Group*              _group;
-            LocalTypes          _localTypes;
-
-            Map                 _tuples;
+            Signal&         _addedSig;
+            Signal&         _removeSig;
         };
-    }
+    public:
+        // TODO: Find all entities already created with those props
+        void        sceneAdded( Game::SceneIterator* group )
+        {
+            sceneSets.emplace_back( group, tupleAdded, tupleRemoved );
+        }
+        void        sceneRemoved( Game::SceneIterator* group )
+        {
+            sceneSets.erase( std::find( sceneSets.begin(), sceneSets.end(), []( const SceneTupleSet& set ){ return set.group == group; } ) );
+        }
+
+        Signal      tupleAdded;
+        Signal      tupleRemoved;
+    private:
+        TupleHook( Game& game )
+        {
+            for( auto i = game.scenesBegin(); i != game.scenesEnd(); ++i )
+                sceneSets.emplace_back( &*i, tupleAdded, tupleRemoved );
+        }
+
+        std::vector<SceneTuples>    sceneTupleSet;
+    };
 }
 #endif

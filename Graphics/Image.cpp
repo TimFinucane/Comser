@@ -2,7 +2,7 @@
 
 #include <GraphicsIncludes.h>
 
-#include <png/png.h>
+#include <png.h>
 
 using namespace Graphics::Image;
 
@@ -81,7 +81,7 @@ File    File::createPng( std::istream& png )
     File image( w, h, bitDepth, channels );
 
     // And now read it for file copying
-    unsigned int rowbytes = png_get_rowbytes( png_ptr, info_ptr );
+    size_t rowbytes = png_get_rowbytes( png_ptr, info_ptr );
 
     // And manipulate it so that it works
     // TODO: Currently don't know what to do with pixel packing

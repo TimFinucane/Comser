@@ -22,11 +22,11 @@ bool Shader::load( const char* file, int length, std::string& error )
     glGetShaderiv( _shader, GL_COMPILE_STATUS, &compiled );
     if( compiled == GL_FALSE )
     {
-        int length = 0;
-        glGetShaderiv( _shader, GL_INFO_LOG_LENGTH, &length );
+        int len = 0;
+        glGetShaderiv( _shader, GL_INFO_LOG_LENGTH, &len );
 
-        error.resize( length );
-        glGetShaderInfoLog( _shader, length, &length, &error[0] );
+        error.resize( len );
+        glGetShaderInfoLog( _shader, len, &len, &error[0] );
 
         glDeleteShader( _shader );
 

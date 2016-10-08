@@ -14,7 +14,7 @@ namespace Graphics
         struct FontFile
         {
             FontFile( void* file, unsigned int length, unsigned int face )
-                : _length( length )
+                : _length( length ), _face( face )
             {
                 _file = new char[_length];
                 memcpy_s( _file, _length, file, length );
@@ -49,7 +49,7 @@ namespace Graphics
             void    clear()
             {
                 if( _length > 0 )
-                    delete[_length] _file;
+                    delete[] _file;
 
                 _length = 0;
                 _file = nullptr;

@@ -5,7 +5,11 @@
 #include <string>
 
 #include <sigc++/sigc++.h>
+#pragma warning( push )
+#pragma warning( disable : 4634 )
+#pragma warning( disable : 4635 )
 #include <SDL.h>
+#pragma warning( pop )
 
 #include <Rect.h>
 
@@ -39,7 +43,7 @@ public:
     };
 
     typedef sigc::slot0<void>                           LoopFunction;
-    typedef sigc::slot1<void, SDL_Event>                EventFunction;
+    typedef sigc::slot1<bool, SDL_Event>                EventFunction;
     typedef sigc::slot1<void, const WindowSettings&>    SettingsSlot;
     typedef sigc::signal1<void, const WindowSettings&>  SettingsSignal;
 public:
@@ -55,13 +59,21 @@ public:
         return _curSettings;
     }
 
-    // Lets you get updated when screen settings are changed by the program
-    //  through the settings method
+    /// <summary>
+    /// Lets the user be updated when window settings change
+    /// </summary>
     sigc::connection        connectSettingsChange( SettingsSlot slot );
 
+    /// <summary>
+    /// Starts the main game loop. Function will send every event to the event function,
+    ///  and when not processing events will call the loop function. The loop will quit when
+    ///  the event function returns false.
+    /// </summary>
+    /// <param name="loop">The function containing your main game code</param>
+    /// <param name="event">The function that will process all your events</param>
     void                    loop( LoopFunction loop, EventFunction event );
 
-    // Some static functions for getting info about the system
+    // Some static functions for getting info about the system.
     static unsigned int     defaultScreen();
     static unsigned int     numScreens();
     static ScreenSettings   getScreenInfo( unsigned int screen );

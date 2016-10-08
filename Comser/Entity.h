@@ -8,9 +8,7 @@
 
 namespace Comser
 {
-    typedef unsigned __int16                EntityId;
+    typedef unsigned int                EntityId;
 }
-
-
 
 #endif

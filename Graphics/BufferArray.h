@@ -1,9 +1,5 @@
 #pragma once
 
-#include <tuple>
-#include <boost/fusion/include/adapt_struct.hpp>
-#include <boost/fusion/algorithm.hpp>
-
 namespace Graphics
 {
     namespace Shaders
@@ -39,7 +35,7 @@ namespace Graphics
         private:
             struct BufferItem
             {
-                unsigned int    offset;
+                size_t          offset;
                 unsigned int    type;
                 unsigned int    numItems;
             };

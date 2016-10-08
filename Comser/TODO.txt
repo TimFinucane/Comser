@@ -1,14 +1,31 @@
-Use templates for stronger types(?)
+Use templates for stronger types(?)							DONE (I THINK)!
 
-Finish Differentiating between ComponentType, EntityId, etc. etc. (Stronger Types)
-Work on entity manager efficiency and memory saving
+Finish Differentiating between ComponentType, 
+    EntityId, etc. etc. (Stronger Types)					X ?						LOW
 
-ResourceHandler and Manager
+Work on entity manager efficiency and memory saving			X						LOW
 
-Memory class
+ResourceHandler and Manager									X						MED
 
-Use vectors instead of maps with EventSystem?
+Memory class												X						LOW
 
-Have seperate scenes/ groupings of entities
+Use vectors instead of maps with EventSystem?				X						HIGH
 
-ComponentSet
+Have seperate scenes/ groupings of entities				    DONE!
+
+ComponentSet												DONE (I THINK)!
+
+World/Engine for holding multiple scenes					DONE!
+
+Functionality for multiple scenes							X						HIGH
+
+Get component tuples to work on multiple scenes				DONE!
+
+Do we have functionality for prefabs working properly?		X						MED
+
+Find better name than TupleHook?							X						MED
+
+Finish the docs and get a proper external doc out			X						MED
+
+Find a better solution for communication between 
+ game and system?											X						HIGH

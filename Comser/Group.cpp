@@ -5,27 +5,16 @@
 using namespace Comser;
 using namespace Comser::Scene;
 
-Group::Group( unsigned int count, ComponentType* types )
-    : _associator( count, types ), _components( count )
+Group::Group( const std::initializer_list<ComponentType>& types )
+    : _associator( types ), _components( types.size() ), _active( false )
 {
-    _addedSignals.reserve( count );
-    _removedSignals.reserve( count );
-
-    for( unsigned int i = 0; i < count; ++i )
-    {
-        _addedSignals.push_back( Signal() );
-        _removedSignals.push_back( Signal() );
-    }
+    _addedSignals.resize( types.size() );
+    _removedSignals.resize( types.size() );
 }
 Group::~Group()
 {
     clear();
 
-    for( unsigned int i = 0; i < _addedSignals.size(); ++i )
-    {
-        _addedSignals[i].clear();
-        _removedSignals[i].clear();
-    }
     _addedSignals.clear();
     _removedSignals.clear();
 }
@@ -33,9 +22,9 @@ Group::~Group()
 void        Group::clear()
 {
     // Destroying in reverse order without iterators for safety
-    for( int i = _entities.size(); i > 0; --i )
+    for( size_t i = _entities.size(); i > 0; --i )
     {
-        destroyEntity( i - 1 );
+        destroyEntity( (EntityId)(i - 1) );
     }
 }
 
@@ -45,37 +34,26 @@ EntityId    Group::createEntity()
 }
 void        Group::destroyEntity( EntityId id )
 {
-    for( int i = _entities[id]->size() - 1; i >= 0; --i )
-    {
-        // Destroy each component
-        _removeComponent( id, (_entities[id]->begin() + i) );
-    }
+    for( size_t i = _entities[id]->size(); i > 0; --i )
+        _removeComponent( id, (_entities[id]->begin() + i - 1) );
 
     // Destroy the entity
     _entities.destroyEntity( id );
 }
 
-sigc::connection    Group::connectAdded( LocalComponentType type, const Slot& slot )
+void        Group::_swap( EntityList::EntityIterator entityIt )
 {
-    return _addedSignals[type.get()].connect( slot );
-}
-sigc::connection    Group::connectRemoved( LocalComponentType type, const Slot& slot )
-{
-    return _removedSignals[type.get()].connect( slot );
-}
+    // TODO: CHECK THIS WORKS MY MIND IS FUCK
 
+    // Find the entities
+    EntityId back = _components[entityIt->type]->get( (ComponentVector::Index)(_components[entityIt->type]->size() - 1) )->entity;
 
-void        Group::_swap( LocalComponentType type, EntityId id, EntityList::EntityIterator entityIt )
-{
-    // Find the entity id of the back item
-    EntityId back = _components[type]->get( (_components[type]->size() - 1) )->entity;
-
-    // Now get the component associated with back
-    EntityList::EntityIterator backIt = _entities.findComponent( back, type );
+    // Now get the component definition for that given type
+    EntityList::EntityIterator backIt = _entities.findComponent( back, entityIt->type );
     
-    // Swap the two components
-    _components[type]->swap( backIt->index, entityIt->index );
+    // Swap the two components in the vector
+    _components[entityIt->type]->swap( backIt->index, entityIt->index );
 
-    // Now swap the EntityIterators
+    // Now swap the components in their entities componentDef
     std::iter_swap( backIt, entityIt );
 }

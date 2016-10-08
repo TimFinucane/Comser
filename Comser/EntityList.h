@@ -99,7 +99,7 @@ namespace Comser
              */
             EntityIterator              findComponent( EntityId id, LocalComponentType type );
 
-            unsigned int                size() const
+            size_t                size() const
             {
                 return _entities.size();
             }

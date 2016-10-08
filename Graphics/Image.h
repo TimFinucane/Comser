@@ -21,7 +21,7 @@ namespace Graphics
             File::~File()
             {
                 if( _file != nullptr )
-                    delete[size()] _file;
+                    delete[] _file;
             }
 
             static File createPng( std::istream& png );

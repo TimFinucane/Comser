@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="View.h" />
     <ClInclude Include="Mesh.h">
       <Filter>3D</Filter>
     </ClInclude>
@@ -35,7 +34,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="View.cpp" />
     <ClCompile Include="Program.cpp">
       <Filter>Shader</Filter>
     </ClCompile>

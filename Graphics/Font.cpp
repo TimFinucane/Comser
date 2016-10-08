@@ -30,7 +30,7 @@ void    Font::useSize( unsigned int pxHeight )
     // See if we already have it
     for( unsigned int i = 0; i < (unsigned int)_face->num_fixed_sizes; ++i )
     {
-        if( _face->available_sizes->height == pxHeight )
+        if( (unsigned int)_face->available_sizes->height == pxHeight )
         {
             FT_Select_Size( _face, i );
             _curSize = i;
@@ -103,7 +103,7 @@ Line    Font::genLine( UChar* text, unsigned int length, bool kern )
 
         // Check lowest and highest
         highest = highest > it->second.glyph->top ? highest : it->second.glyph->top;
-        int low = it->second.glyph->top - it->second.glyph->bitmap.rows;
+        low = it->second.glyph->top - it->second.glyph->bitmap.rows;
         lowest = lowest < low ? lowest : low;
     }
 
@@ -114,21 +114,21 @@ Line    Font::genLine( UChar* text, unsigned int length, bool kern )
     line.cntrHeight = highest;
     line.file = Image::File( width, highest - lowest, 8, 1 );
 
-    for( auto it = glyphPositions.begin(); it != glyphPositions.end(); ++it )
+    for( auto jt = glyphPositions.begin(); jt != glyphPositions.end(); ++jt )
     {
-        unsigned int topPos = highest - it->first->glyph->top;
-        unsigned int rows = it->first->glyph->bitmap.rows;
-        unsigned int width = it->first->glyph->bitmap.width;
+        unsigned int topPos = highest - jt->first->glyph->top;
+        unsigned int rows = jt->first->glyph->bitmap.rows;
+        unsigned int cols = jt->first->glyph->bitmap.width;
 
-        auto end = it->second.end();
-        for( auto pos = it->second.begin(); pos != end; ++pos )
+        auto end = jt->second.end();
+        for( auto pos = jt->second.begin(); pos != end; ++pos )
         {
             unsigned int middle = advances[*pos];
 
             // Write
             for( unsigned int y = 0; y < rows; ++y )
-                for( unsigned int x = 0; x < width; ++x )
-                    *line.file.file( x + middle, topPos + y ) = it->first->glyph->bitmap.buffer[y * rows + x];
+                for( unsigned int x = 0; x < cols; ++x )
+                    *line.file.file( x + middle, topPos + y ) = jt->first->glyph->bitmap.buffer[y * rows + x];
         }
 
     }

@@ -3,56 +3,76 @@
 #define ENGINE_H
 
 #include <vector>
-
-#include "System.h"
-#include "Signal.h"
+#include <sigc++/sigc++.h>
 
 namespace Comser
 {
     class List;
 
-    /*
-     * <summary>
-     * Will update connections of each UpdateType when
-     *  their desired number of 'ticks' have passed.
-     * </summary>
-     */
+    // The update count
+    typedef unsigned int    UpdateOrder;
+    typedef unsigned int    TicksPerUpdate;
+
+    /// <summary>
+    /// Will update connections of each UpdateType when
+    ///  their desired number of 'ticks' have passed.
+    /// </summary>
     class UpdateCounter
     {
     public:
-        typedef unsigned __int32    UpdateType;
-        typedef unsigned __int32    TicksPerUpdate;
+        typedef sigc::signal<void>      Signal;
 
-        typedef Event::Signal::Signal0  Signal;
-        typedef Event::Signal::Slot0    Slot;
-
-        /*
-         * <summary>
-         * A structure that defines the necessary components for using the UpdateCounter
-         * </summary>
-         */
+        /// <summary>
+        /// A structure that defines the necessary components for using the UpdateCounter
+        /// </summary>
         struct SignalInfo
         {
-            SignalInfo( Signal* sig, unsigned int ticksPerUpdate ) : signal(sig), frequency(ticksPerUpdate), ticks(0) {}
-            SignalInfo() : signal(nullptr), frequency(0), ticks(0) {}
-            Signal*       signal;
+            SignalInfo( unsigned int ticksPerUpdate ) : signal(), frequency(ticksPerUpdate), ticks(0) {}
+            SignalInfo() : signal(), frequency(1), ticks(0) {}
 
-            unsigned __int32    frequency; // Number of ticks before update (1 to 1 by default)
-            unsigned __int32    ticks; // Iterator of ticks. When passed == ticks will update
+            SignalInfo( SignalInfo&& sig ) noexcept
+                : signal( std::move( sig.signal ) ), frequency( sig.frequency ), ticks( sig.ticks )
+            {
+                sig.frequency = 0;
+                sig.ticks = 0;
+            }
+            SignalInfo& operator =( SignalInfo&& sig ) noexcept
+            {
+                signal = std::move( sig.signal );
+                frequency = std::move( sig.frequency );
+                ticks = std::move( sig.ticks );
+            }
+            SignalInfo( const SignalInfo& sig ) = delete;
+            SignalInfo& operator =( const SignalInfo& sig ) = delete;
+
+            Signal              signal;
+
+            unsigned int        frequency; // Number of ticks before update (1 to 1 by default)
+            unsigned int        ticks; // Iterator of ticks. When passed == ticks will update
         };
     public:
-        /*
-         * <summary>
-         * Defines each UpdateType, along with how many ticks must pass for it to update
-         * </summary>
-         * <param name="updates">A vector of each UpdateType with it's corresponding Ticks per Update</param>
-         */
-        void                        init( std::vector<TicksPerUpdate> updates );
+        /// <summary>
+        /// Sets up the number of update categories that the counter will have
+        /// </summary>
+        void                        init( unsigned int orders );
+        /// <summary>
+        /// Sets up the number of update categories that the counter will have, along with the frequencies of each
+        /// </summary>
+        void                        init( std::initializer_list<unsigned int> orders );
+
         void                        release();
+
+        /// <summary>
+        /// Sets the number of ticks that the given UpdateOrder will go through before updating
+        /// </summary>
+        void                        ticksPerUpdate( UpdateOrder order, unsigned int ticks )
+        {
+            _updates[order].frequency = ticks;
+        }
 
         void                        update( double ticksPassed );
 
-        sigc::connection            connect( UpdateType type, Slot slot );
+        sigc::connection            signal( UpdateOrder order, sigc::slot<void> slot );
     private:
         double                      _delta;
 

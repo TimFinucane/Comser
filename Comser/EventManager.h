@@ -3,45 +3,37 @@
 #define EVENT_MANAGER_H
 
 #include <map>
-
-#include "Signal.h"
+#include <sigc++/sigc++.h>
 
 namespace Comser
 {
-    /*
-     * <summary>
-     * A framework that allows you to use event-based design,
-     *  based on the use of Signals and Slots.
-     * </summary>
-     */
+    /// <summary>
+    /// A framework that allows you to use event-based design,
+    ///  based on the use of Signals and Slots.
+    /// </summary>
     namespace Event
     {
-        typedef unsigned __int32                            MessageId;
-        typedef std::map<MessageId, Signal::Default>        SignalMap; // TODO: Vector instead?
-
         class Manager
         {
+        private:
+            typedef unsigned __int32                    MessageId;
+            typedef sigc::signal<void>                  Signal;
+            typedef std::map<MessageId, Signal>         SignalMap;
         public:
-            /*
-             * <summary>
-             * Removes all signals.
-             * </summary>
-             */
+            /// <summary>
+            /// Removes all signals.
+            /// </summary>
             void                clear()
             {
-                for( auto i = _signals.begin(); i != _signals.end(); ++i )
-                    i->second.clear();
-            
                 _signals.clear();
             }
 
             void                declare( MessageId id )
             {
-                _signals[id] = Signal::Default();
+                _signals[id];
             }
             void                remove( MessageId id )
             {
-                _signals[id].clear();
                 _signals.erase( id );
             }
 
@@ -54,7 +46,7 @@ namespace Comser
              * <param name="slot">The slot being connected</param>
              */
             template <typename ARG>
-            sigc::connection    connect( MessageId message, Signal::Slot1<ARG*> slot )
+            sigc::connection    connect( MessageId message, Signal::slot_type slot )
             {
                 return _signals[message].connect( slot );
             }

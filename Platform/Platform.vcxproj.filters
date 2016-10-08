@@ -5,7 +5,6 @@
     <ClCompile Include="FileSystem.cpp">
       <Filter>Files</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h" />
@@ -14,8 +13,8 @@
       <Filter>Files</Filter>
     </ClInclude>
     <ClInclude Include="Encoding.h" />
-    <ClInclude Include="Timer.h" />
     <ClInclude Include="Memory.h" />
+    <ClInclude Include="SDLDev.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">

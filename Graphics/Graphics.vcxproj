@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -22,7 +30,20 @@
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
@@ -35,22 +56,37 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;C:\ProgLibs\GL\Include;$(IncludePath);C:\ProgLibs\;$(ProjectDir)..\Common\</IncludePath>
+    <IncludePath>C:\ProgLibs\glm;C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;C:\ProgLibs\GL\Include;$(IncludePath);C:\ProgLibs\;$(ProjectDir)..\Common\</IncludePath>
     <LibraryPath>C:\ProgLibs\png\lib\$(Configuration)\;C:\Repos\Game Design\Comser\Graphics\$(Configuration)\;C:\ProgLibs\png\libs\Debug\;C:\ProgLibs\GL\Lib;$(LibraryPath);C:\ProgLibs\freetype-2.6\lib</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\ProgLibs\png;C:\ProgLibs\glm;C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;C:\ProgLibs\SDL2;C:\ProgLibs\GL\Include;$(ProjectDir)..\Common\;C:\ProgLibs\libsigc++;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\ProgLibs\png\lib\Release\;C:\Repos\Game Design\Comser\Graphics\$(Configuration)\;C:\ProgLibs\libsigc++\lib;C:\ProgLibs\GL\Lib;$(LibraryPath);C:\ProgLibs\freetype-2.6\lib</LibraryPath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;$(ProjectDir)..\GL\Include\;$(IncludePath);C:\ProgLibs\;$(ProjectDir)..\Common\</IncludePath>
+    <IncludePath>C:\ProgLibs\glm;C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;$(ProjectDir)..\GL\Include\;$(IncludePath);C:\ProgLibs\;$(ProjectDir)..\Common\</IncludePath>
     <LibraryPath>C:\ProgLibs\png\lib\$(Configuration)\;C:\Repos\Game Design\Comser\Graphics\$(Configuration)\;$(SolutionDir)..\GL\Lib;C:\ProgLibs\png\libs\Release\;$(LibraryPath);C:\ProgLibs\freetype-2.6\lib</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\ProgLibs\libsigc++;C:\ProgLibs\glm;C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;C:\ProgLibs\GL\Include;$(ProjectDir)..\Common\;C:\ProgLibs\png;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\ProgLibs\png\lib\Release;$(SolutionDir)..\GL\Lib;C:\ProgLibs\libsigc++\lib;C:\ProgLibs\freetype-2.6\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -58,12 +94,34 @@
       <PreprocessorDefinitions>_HAS_EXCEPTIONS=0;OPENGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
       <AdditionalDependencies>libpng16.lib;zlib.lib;</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <PreprocessorDefinitions>_HAS_EXCEPTIONS=0;OPENGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>libpng16x64.lib;zlibx64.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,6 +132,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -88,6 +148,30 @@
       <AdditionalDependencies>libpng16.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>libpng16x64.lib;zlibx64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BufferArray.h" />
     <ClInclude Include="Device.h" />
@@ -100,7 +184,6 @@
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="View.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferArray.cpp" />
@@ -113,7 +196,6 @@
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="View.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />

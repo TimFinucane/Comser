@@ -1,7 +1,5 @@
 #include "Generic2DProgram.h"
 
-#include <exception>
-
 #include <GraphicsIncludes.h>
 
 Generic2DProgram::Generic2DProgram()

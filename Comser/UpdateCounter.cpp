@@ -3,38 +3,29 @@
 
 #include <vector>
 
-#include "System.h"
-
 // The maximum time to allow the engine to try to update through (in ticks),
 //  If higher than this, the engine will ignore the whole time.
 #define MAX_TIME 20.0f
 
 using namespace Comser;
 
-void UpdateCounter::init( std::vector<TicksPerUpdate> updates )
+void UpdateCounter::init( unsigned int size )
 {
     _delta = 0;
 
-    // Allocate signals TODO: Memory
-    // Create this many different updates
-    _updates.resize( updates.size() );
-
-    // Fill them with the ticks per update, ticks that have passed since last update, and a signal.
-    for( unsigned __int32 i = 0; i < updates.size(); ++i )
-    {
-        _updates[i].frequency = updates[i];
-        _updates[i].ticks = 0;
-        // Adding signals here to reduce runtime memory calls
-        // TODO: Allocate
-        _updates[i].signal = new Signal();
-    }
+    // Allocate signals TODO: Memory?
+    _updates.resize( size );
+}
+void UpdateCounter::init( std::initializer_list<unsigned int> orders )
+{
+    _updates.reserve( orders.size() );
+    unsigned int i = 0;
+    for( auto it = orders.begin(); it < orders.end(); ++i, ++it )
+        _updates.emplace_back( (unsigned int)*it );
+    
 }
 void UpdateCounter::release()
 {
-    for( auto i = _updates.begin(); i != _updates.end(); ++i )
-    {
-        delete i->signal;
-    }
 }
 
 void UpdateCounter::update( double ticks )
@@ -62,7 +53,7 @@ void UpdateCounter::update( double ticks )
             if( i->ticks == i->frequency )
             {
                 i->ticks = 0;
-                i->signal->emit();
+                i->signal.emit();
             }
 
         }
@@ -70,9 +61,10 @@ void UpdateCounter::update( double ticks )
     }
 }
 
-sigc::connection    UpdateCounter::connect( UpdateType type, Slot slot )
+sigc::connection UpdateCounter::signal( UpdateOrder order, sigc::slot<void> slot )
 {
-    _ASSERT( _updates.size() > type );
+    if( _updates.size() <= order )
+        throw std::runtime_error( "Oops, someone tried to access an update counter signal that was outside the initialised range" );
 
-    return _updates[type].signal->connect( slot );
+    return _updates[order].signal.connect( slot );
 }

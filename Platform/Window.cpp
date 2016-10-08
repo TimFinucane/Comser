@@ -1,32 +1,18 @@
 #include "Window.h"
 
-#include <SDL.h>
+#include "SDLDev.h"
 
 #include <sigc++/sigc++.h>
 #include <tchar.h>
 
-// The default method for dealing with SDL errors
-inline bool sdlError( int error )
-{
-    if( error < 0 )
-        throw std::runtime_error( SDL_GetError() );
-
-    return (error < 0);
-}
-inline bool sdlError( int error, const char* message )
-{
-    if( error < 0 )
-        throw std::runtime_error( message );
-}
-
 Window::Window()
 {
-    int error = SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO );
+    SDLDevice::create();
+    int error = SDL_VideoInit( nullptr );
     sdlError( error );
 }
 Window::~Window()
 {
-    SDL_Quit();
 }
 
 void                            Window::init( const WindowSettings& settings )
@@ -132,10 +118,7 @@ void                            Window::loop( LoopFunction loop, EventFunction e
         SDL_Event e;
         while( SDL_PollEvent( &e ) )
         {
-            if( e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE )
-                return;
-            else
-                event( e );
+            if( !event( e ) ) return;
         }
         loop();
     }
@@ -186,9 +169,9 @@ Window::Rect                    Window::getCentreRect( unsigned int screen, unsi
     int centrey = sdlrect.y + (sdlrect.h / 2);
 
     Rect rect;
-    rect.x = centrex - width / 2;
+    rect.x = (unsigned short)centrex - width / 2;
     rect.width = width;
-    rect.y = centrey - height / 2;
+    rect.y = (unsigned short)centrey - height / 2;
     rect.height = height;
 
     return rect;

@@ -8,6 +8,7 @@
 
 namespace Comser
 {
+    // A static type class used for easily sharing certain entity formats (made up of a bunch of components)
     template <class... COMPONENTS>
     class Prefab
     {

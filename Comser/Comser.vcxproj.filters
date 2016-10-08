@@ -30,9 +30,6 @@
     <ClInclude Include="EventManager.h">
       <Filter>Event</Filter>
     </ClInclude>
-    <ClInclude Include="Signal.h">
-      <Filter>Event</Filter>
-    </ClInclude>
     <ClInclude Include="Prefab.h">
       <Filter>Comser</Filter>
     </ClInclude>
@@ -43,11 +40,12 @@
       <Filter>Comser\Scene</Filter>
     </ClInclude>
     <ClInclude Include="UpdateCounter.h" />
-    <ClInclude Include="TupleHook.h">
-      <Filter>Comser\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Group.h">
       <Filter>Comser\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="TupleHook.h">
+      <Filter>Comser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +62,7 @@
       <Filter>Comser</Filter>
     </ClCompile>
     <ClCompile Include="UpdateCounter.cpp" />
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt" />
