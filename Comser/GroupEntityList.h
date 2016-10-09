@@ -5,38 +5,39 @@
  * author: nonanon
  */
 #pragma once
-#ifndef ENTITY_LIST_H
-#define ENTITY_LIST_H
-
 #include <vector>
 
-#include "ComponentManager.h"
+#include "GroupComponentManager.h"
 
 namespace Comser
 {
-    namespace Scene
+    namespace Group
     {
-        /* 
-         * <summary>
-         * Stores Entities as a vector of <c>ComponentLocalType</c> and
-         *  indices into their respective vectors.
-         * </summary> 
-         */
+        /// <summary>
+        /// Stores Entities as a vector of <c>ComponentLocalType</c> and
+        ///  indices into their respective vectors.
+        /// </summary> 
         class EntityList
         {
         public:
-            /*
-             * <summary>
-             * Holds info about a single component in an entity
-             * </summary>
-             */
+            /// <summary>
+            /// Holds info about a single component in an entity.
+            /// </summary>
             struct ComponentDef
             {
                 LocalComponentType      type;
                 ComponentVector::Index  index;
+
+                bool operator ==( const ComponentDef& def )
+                {
+                    return type == def.type && index == def.index;
+                }
             };
 
+            typedef unsigned int                EntityId;
+
             // TODO: Use Map instead? Or something easier to insert and erase from?
+            // In the group, an entity holds info about the location of all of it's components
             typedef std::vector<ComponentDef>   Entity;
 
             // Iterator for a component in a single entity
@@ -48,55 +49,46 @@ namespace Comser
             typedef Vector::iterator            Iterator;
             typedef Vector::const_iterator      ConstIterator;
         public:
-            /*
-             * <summary>
-             * Creates an entity with no component references in it.
-             * </summary>
-             * <returns>The entities' id</returns>
-             */
+            /// <summary>
+            /// Creates an entity with no component references in it.
+            /// </summary>
+            /// <returns>The entities' id</returns>
             EntityId                    createEntity();
-            /*
-             * <summary>
-             * Destroys the entity, but not it's components.
-             * </summary>
-             */
+
+            /// <summary>
+            /// Destroys the entity, but not it's components.
+            /// </summary>
             void                        destroyEntity( EntityId id );
 
-            /*
-             * <summary>
-             * Adds a component reference to the entity
-             * </summary>
-             * <param name="id">The entity</param>
-             * <param name="type">The components' type</param>
-             * <param name="index">The index to the component given by the <c>ComponentVector</c></param>
-             */
+            /// <summary>
+            /// Adds a component reference to the entity
+            /// </summary>
+            /// <param name="id">The entity</param>
+            /// <param name="type">The components' type</param>
+            /// <param name="index">The index to the component given by the <c>ComponentVector</c></param>
             void                        addComponent( EntityId id, LocalComponentType type, ComponentVector::Index index );
-            /*
-             * <summary>
-             * Removes a component reference from the entity, but doesn't
-             *  actually destroy that component.
-             * </summary>
-             * <param name="id">The entity</param>
-             * <param name="type">The components' type</param>
-             */
+
+            /// <summary>
+            /// Removes a component reference from the entity, but doesn't
+            ///  actually destroy that component.
+            /// </summary>
+            /// <param name="id">The entity</param>
+            /// <param name="type">The components' type</param>
             void                        removeComponent( EntityId id, LocalComponentType type );
-            /*
-             * <summary>
-             * Removes a component reference from the entity, but
-             *  doesn't actually destroy the component.
-             * </summary>
-             * <param name="id">The entity</param>
-             * <param name="iterator">The iterator to that specific component reference</param>
-             */
+
+            /// <summary>
+            /// Removes a component reference from the entity, but
+            ///  doesn't actually destroy the component.
+            /// </summary>
+            /// <param name="id">The entity</param>
+            /// <param name="iterator">The iterator to that specific component reference</param>
             void                        removeComponent( EntityId id, EntityIterator iterator );
 
-            /*
-             * <summary>
-             * Finds the component info (effectively the location) using
-             *  the type and entity id.
-             * </summary>
-             * <returns>The iterator to that component in the entity</returns>
-             */
+            /// <summary>
+            /// Finds the component info (effectively the location) using
+            ///  the type and entity id.
+            /// </summary>
+            /// <returns>The iterator to that component in the entity</returns>
             EntityIterator              findComponent( EntityId id, LocalComponentType type );
 
             size_t                size() const
@@ -148,5 +140,3 @@ namespace Comser
         };
     }
 }
-
-#endif

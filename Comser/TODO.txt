@@ -29,3 +29,16 @@ Finish the docs and get a proper external doc out			X						MED
 
 Find a better solution for communication between 
  game and system?											X						HIGH
+
+Different scene types
+
+Documentation for different scene types
+
+Make those static ids multi thread safe
+
+Replace Group Component Vectors' vector with a memory pool
+
+Incorporate event system and resource handler into game
+
+Improved entity handles? Imagine we could even
+  replace TupleHook if we did enough work

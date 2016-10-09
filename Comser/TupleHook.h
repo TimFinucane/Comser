@@ -10,7 +10,7 @@
 #include "Component.h"
 #include "Entity.h"
 
-#include "Game.h"
+#include "Scene.h"
 
 namespace Comser
 {
@@ -21,13 +21,15 @@ namespace Comser
     class TupleHook
     {
     public:
-        typedef std::tuple<COMPONENTS*...>                                  Tuple;
+        typedef std::tuple<COMPONENTS*...>                                      Tuple;
 
-        typedef std::map<EntityId,Tuple>                                        Map;
+        typedef std::map<EntityHandle,Tuple>                                    Map;
         typedef typename Map::iterator                                          Iterator;
         typedef typename Map::const_iterator                                    ConstIterator;
 
-        typedef sigc::signal<void, Scene::Group*, typename Map::value_type&>    Signal;
+        typedef std::vector<SceneTuples>                                        SceneTupleSet;
+
+        typedef sigc::signal<void, Scenes::Scene*, typename Map::value_type&>   Signal;
 
     private:
         static const unsigned __int32  COMPONENT_COUNT  = sizeof...(COMPONENTS);
@@ -37,8 +39,8 @@ namespace Comser
         class SceneTuples
         {
         public:
-            SceneTuples( Scene::Group* gr, Signal& added, Signal& removed )
-                : _group( gr ), _addedSig( added ), _removeSig( removed )
+            SceneTuples( Scene* scene, Signal& added, Signal& removed )
+                : _scene( scene ), _addedSig( added ), _removeSig( removed )
             {
                 _localTypes[i] = LocalTypes{ group->localTypes( COMPONENTS::id() )... };
 
@@ -61,24 +63,38 @@ namespace Comser
             }
 
             /// <summary>
+            /// Whether or not all components are present in the group
+            /// </summary>
+            static bool         componentsPresent()
+            {
+                for( unsigned int i = 0; i < _localTypes.size(); ++i )
+                {
+                    if( ComponentAssociator::NOT_FOUND( _localTypes[i] ) )
+                        return false;
+                }
+
+                return true;
+            }
+
+            /// <summary>
             /// Gets called when a component is added to an entity in this sceneset's scene.
             /// </summary>
-            void                componentAdded( Scene::ComponentVector::ComponentInfo* componentInfo )
+            void                componentAdded( EntityHandle id, Component* component )
             {
-                EntityId ent = componentInfo->entity;
+                (component);
                 Tuple tuple;
 
                 // Check to see if all the types are there
-                if( _recurseCheck( ent, tuple ) )
+                if( _recurseCheck( id, tuple ) )
                 {
-                    auto it = _map.emplace( ent, tuple );
+                    auto it = _map.emplace( id, tuple );
                     addedSig.emit( _group, *it );
                 }
             }
             /// <summary>
             /// Gets called when a component is removed from an entity in this sceneset's scene.
             /// </summary>
-            void                componentRemoved( Scene::ComponentVector::ComponentInfo* componentInfo )
+            void                componentRemoved( EntityHandle id, Component* component )
             {
                 auto it = _map.find( componentInfo->entity );
                 if( it != _map.end() && it->second )
@@ -87,16 +103,18 @@ namespace Comser
                     map.erase( it );
                 }
             }
+
+            Scene*              scene();
         private:
             // Returns whether or not all components are present
             template <int STEPS = 0>
-            bool         _recurseCheck( EntityId id, Tuple& tuple ) const
+            bool         _recurseCheck( EntityHandle id, Tuple& tuple ) const
             {
                 std::get<STEPS>( tuple ) = reinterpret_cast<std::tuple_element<STEPS, Tuple>::type>(group->getComponent( id, localTypes[STEPS] ));
                 return (std::get<STEPS>( tuple ) != nullptr) && _recurseCheck<STEPS + 1>( group, id, tuple, localTypes );
             }
             template <>
-            bool         _recurseCheck<COMPONENT_COUNT>( EntityId id, Tuple& tuple ) const
+            bool         _recurseCheck<COMPONENT_COUNT>( EntityHandle id, Tuple& tuple ) const
             {
                 (group);
                 (id);
@@ -125,7 +143,7 @@ namespace Comser
                 }
             }
 
-            Scene::Group*   _group;
+            Scene*          _scene;
             LocalTypes      _localTypes;
             Map             _map;
 
@@ -133,26 +151,79 @@ namespace Comser
             Signal&         _removeSig;
         };
     public:
-        // TODO: Find all entities already created with those props
-        void        sceneAdded( Game::SceneIterator* group )
+
+        /// <summary>
+        /// Gets the scene tuple containing all entities
+        ///  with the desired components in the given scene.
+        /// If this scene tuple is not present it will be made,
+        ///  unless not all component types are present, in which
+        ///  case it returns nullptr.
+        /// </summary>
+        SceneTuples*            getTuples( Scene* scene )
         {
-            sceneSets.emplace_back( group, tupleAdded, tupleRemoved );
-        }
-        void        sceneRemoved( Game::SceneIterator* group )
-        {
-            sceneSets.erase( std::find( sceneSets.begin(), sceneSets.end(), []( const SceneTupleSet& set ){ return set.group == group; } ) );
+            auto it = std::find( _sceneTupleSet.begin(), _sceneTupleSet.end(), [scene]( SceneTuples& it ){ return it.scene() == scene; } );
+            if( it != _sceneTupleSet.end() )
+                return it;
+
+            if( !SceneTuples::componentsPresent( scene ) )
+                return nullptr;
+
+            _sceneTupleSet.emplace_back( scene, _added, _removed );
         }
 
-        Signal      tupleAdded;
-        Signal      tupleRemoved;
+        /// <summary>
+        /// Destroys the given scene tuples.
+        /// Does not actually destroy the entities, just the recording the
+        ///  tuple hook has of them.
+        /// </summary>
+        SceneTupleSet::iterator destroyTuples( SceneTupleSet::iterator it )
+        {
+            return _sceneTupleSet.erase( it );
+        }
+        /// <summary>
+        /// Destroys the given scene tuples.
+        /// Does not actually destroy the entities, just the recording the
+        ///  tuple hook has of them.
+        /// </summary>
+        void                    destroyTuples( Scene* scene )
+        {
+            auto it = std::find( _sceneTupleSet.begin(), _sceneTupleSet.end(), [scene]( SceneTuples& it ) { return it.scene() == scene; } );
+            if( it == _sceneTupleSet.end() )
+                return;
+
+            destroyTuples( it );
+        }
+
+        /// <summary>
+        /// Calls the slot whenever an entity with all requested
+        ///  components is created.
+        /// </summary>
+        sigc::connection        connectAdded( Signal::slot_type slot )
+        {
+            return _added.connect( slot );
+        }
+        /// <summary>
+        /// Calls the slot whenever an entity with all requested
+        ///  components is destroyed.
+        /// </summary>
+        sigc::connection        connectRemoved( Signal::slot_type slot )
+        {
+            return _removed.connect( slot );
+        }
+
+        SceneTupleSet::iterator tuplesBegin()
+        {
+            return _sceneTupleSet.begin();
+        }
+        SceneTupleSet::iterator tuplesEnd()
+        {
+            return _sceneTupleSet.end();
+        }
     private:
-        TupleHook( Game& game )
-        {
-            for( auto i = game.scenesBegin(); i != game.scenesEnd(); ++i )
-                sceneSets.emplace_back( &*i, tupleAdded, tupleRemoved );
-        }
+        Signal          _added;
+        Signal          _removed;
 
-        std::vector<SceneTuples>    sceneTupleSet;
+        SceneTupleSet   _sceneTupleSet;
     };
 }
 #endif

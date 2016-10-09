@@ -13,6 +13,12 @@
     <Filter Include="Comser\Scene">
       <UniqueIdentifier>{7a62b847-4043-4338-b29b-030abb0dad38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Comser\Scene\Group">
+      <UniqueIdentifier>{969dbfac-2121-4157-94da-e55c8736d847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comser\Scene\Grid">
+      <UniqueIdentifier>{a18a2d23-9d88-4c01-9cd9-b6325cbf65a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -33,36 +39,51 @@
     <ClInclude Include="Prefab.h">
       <Filter>Comser</Filter>
     </ClInclude>
-    <ClInclude Include="EntityList.h">
-      <Filter>Comser\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentManager.h">
-      <Filter>Comser\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="UpdateCounter.h" />
-    <ClInclude Include="Group.h">
-      <Filter>Comser\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h" />
     <ClInclude Include="TupleHook.h">
       <Filter>Comser</Filter>
     </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>Comser\Scene\Group</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentAssociator.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupEntityList.h">
+      <Filter>Comser\Scene\Group</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupComponentManager.h">
+      <Filter>Comser\Scene\Group</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Comser\Scene\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="GridPosition.h">
+      <Filter>Comser\Scene\Grid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ComponentManager.cpp">
-      <Filter>Comser\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityList.cpp">
-      <Filter>Comser\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Group.cpp">
-      <Filter>Comser\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Comser</Filter>
     </ClCompile>
     <ClCompile Include="UpdateCounter.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Group.cpp">
+      <Filter>Comser\Scene\Group</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentAssociator.cpp">
+      <Filter>Comser\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupEntityList.cpp">
+      <Filter>Comser\Scene\Group</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupComponentManager.cpp">
+      <Filter>Comser\Scene\Group</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt" />

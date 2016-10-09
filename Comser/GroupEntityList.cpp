@@ -1,11 +1,11 @@
-#include "EntityList.h"
+#include "GroupEntityList.h"
 
 #include <algorithm>
 
 using namespace Comser;
-using namespace Comser::Scene;
+using namespace Comser::Group;
 
-EntityId        EntityList::createEntity()
+EntityList::EntityId        EntityList::createEntity()
 {
     // Now add the item to the vector
     // Find an available entity slot

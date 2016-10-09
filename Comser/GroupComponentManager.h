@@ -5,93 +5,17 @@
  * Author: Nonanon
  */
 #pragma once
-#ifndef COMPONENT_MAP_H
-#define COMPONENT_MAP_H
 
 #include <vector>
 
 #include "Component.h"
 #include "Entity.h"
+#include "ComponentAssociator.h"
 
 namespace Comser
 {
-    namespace Scene
+    namespace Group
     {
-        /// <summary>
-        /// An explicitly typed integer used to reference
-        ///  a certain component type for a single group.
-        /// </summary>
-        struct    LocalComponentType
-        {
-            friend struct ComponentAssociator;
-        public:
-            LocalComponentType()
-                : _type( 0 )
-            {}
-
-            unsigned __int16 get() const
-            {
-                return _type;
-            }
-
-            bool    operator > ( const LocalComponentType b ) const
-            {
-                return _type > b._type;
-            }
-            bool    operator < ( const LocalComponentType b ) const
-            {
-                return _type < b._type;
-            }
-            bool    operator ==( const LocalComponentType b ) const
-            {
-                return _type == b._type;
-            }
-            bool    operator !=( const LocalComponentType b ) const
-            {
-                return _type != b._type;
-            }
-        private:
-            LocalComponentType( unsigned short type )
-                : _type( type )
-            {}
-            /// <summary>
-            /// Sets the LocalComponentType to the type.
-            /// Is private so only the Associator can do this
-            /// </summary>
-            void operator =( unsigned short type )
-            {
-                _type = type;
-            }
-
-            unsigned __int16 _type;
-        };
-
-        /// <summary>
-        /// Class that creates the association with a component's global ComponentType,
-        ///  and the LocalComponentType for that component in one Group.
-        /// </summary>
-        struct ComponentAssociator
-        {
-        public:
-            /* TODO
-             * Give it the ComponentTypes, it forms the LocalComponentTypes
-             */
-            ComponentAssociator( const std::initializer_list<ComponentType>& types );
-            ~ComponentAssociator()
-            {
-                delete[] _types;
-                _count = 0;
-            }
-
-            /* TODO
-             * Put in the global ComponentType, it gets the LocalComponentType
-             */
-            LocalComponentType operator[]( ComponentType type ) const;
-        private:
-            size_t          _count;
-            ComponentType*  _types;
-        };
-
         // TODO: More memory efficient form
         /// <summary>
         /// A vector of components of a certain type,
@@ -103,19 +27,8 @@ namespace Comser
         {
         public:
             typedef unsigned __int32            Index;
-            struct ComponentInfo
-            {
-                ComponentInfo()
-                {}
-                ComponentInfo( EntityId i, Component* c )
-                    : entity( i ), component( c )
-                {}
 
-                EntityId    entity;
-                Component*  component;
-            };
-
-            typedef std::vector<ComponentInfo>  Vector;
+            typedef std::vector<Component*>     Vector;
             typedef Vector::iterator            Iterator;
             typedef Vector::const_iterator      ConstIterator;
         public:
@@ -128,12 +41,11 @@ namespace Comser
             // <param name="args">The arguments used to initialize the COMPONENT</param>
             // <returns>The index of the created component</returns>
             template< class COMPONENT, typename... COMARGS >
-            Index               push( EntityId id, COMARGS&... args )
+            Index               push( COMARGS&... args )
             {
                 // TODO: Better memory
                 COMPONENT* comp = new COMPONENT( std::forward<COMARGS>( args )... );
-                ComponentInfo info = ComponentInfo( id, (Component*)comp );
-                _vector.push_back( info );
+                _vector.push_back( (Component*)comp );
 
                 return (Index)(_vector.size() - 1);
             }
@@ -203,18 +115,16 @@ namespace Comser
             Components( size_t count );
             ~Components();
 
-            const ComponentVector*  operator[]( LocalComponentType type ) const
+            const ComponentVector*     operator[]( LocalComponentType type ) const
             {
                 return &_componentvectors[type.get()];
             }
-            ComponentVector*        operator[]( LocalComponentType type )
+            ComponentVector*           operator[]( LocalComponentType type )
             {
                 return &_componentvectors[type.get()];
             }
         private:
-            ComponentVector*    _componentvectors;
+            ComponentVector*           _componentvectors;
         };
     }
 }
-
-#endif

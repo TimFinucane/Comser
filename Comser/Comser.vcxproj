@@ -186,13 +186,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentAssociator.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Group.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="GridPosition.h" />
     <ClInclude Include="TupleHook.h" />
     <ClInclude Include="UpdateCounter.h" />
-    <ClInclude Include="EntityList.h" />
+    <ClInclude Include="GroupEntityList.h" />
     <ClInclude Include="EventManager.h" />
-    <ClInclude Include="ComponentManager.h" />
+    <ClInclude Include="GroupComponentManager.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="ResourceHandler.h" />
@@ -200,11 +204,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ComponentManager.cpp" />
+    <ClCompile Include="ComponentAssociator.cpp" />
+    <ClCompile Include="GroupComponentManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="UpdateCounter.cpp" />
     <ClCompile Include="Group.cpp" />
-    <ClCompile Include="EntityList.cpp" />
+    <ClCompile Include="GroupEntityList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">

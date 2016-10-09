@@ -1,8 +1,9 @@
 #pragma once
 
 #include <list>
+#include <type_traits>
 
-#include "Group.h"
+#include "Scene.h"
 #include "UpdateCounter.h"
 
 namespace Comser
@@ -11,10 +12,10 @@ namespace Comser
 
     class Game
     {
-        friend System;
     public:
-        typedef std::list<Scene::Group>     Scenes;
-        typedef Scenes::iterator            SceneIterator;
+        typedef std::list<Scene*>       SceneList;
+        typedef SceneList::iterator     SceneIterator;
+        typedef std::vector<System>     Systems;
     public:
         /// <summary>
         /// Initialises the game
@@ -39,16 +40,23 @@ namespace Comser
             _counter.ticksPerUpdate( order, ticksPerUpdate );
         }
 
-        /// <summary>
-        /// Creates a new scene, and returns the scene's id.
-        /// Starts disabled by default.
-        /// </summary>
-        SceneIterator       createScene( const std::initializer_list<ComponentType>& types )
+
+
+        // <summary>
+        // Creates a new scene, and returns the scene's id.
+        // Starts disabled by default.
+        // </summary>
+        template <class SceneClass, typename... ARGS>
+        SceneIterator       createScene( const std::initializer_list<ComponentType>& types, ARGS... args )
         {
-            _scenes.emplace_back( types );
+            static_assert( std::is_base_of<Scene, SceneClass>::value );
+            _scenes.emplace_back( new SceneClass( types, args... ) );
+            
+            // TODO: Inform systems
         }
         void                destroyScene( SceneIterator it )
         {
+            // TODO: Warn systems
             _scenes.erase( it );
         }
 
@@ -56,7 +64,14 @@ namespace Comser
         /// Will enable/disable the given scene, determining whether or not it is used in updates
         /// </summary>
         void                setScene( SceneIterator* scene, bool enable );
-        void                setScene( Scene::Group*  scene, bool enable );
+        void                setScene( Scene* scene, bool enable );
+
+
+
+        void                addSystem( System* system );
+        void                removeSystem( System* system );
+
+
 
         /// <summary>
         /// Updates all systems in the set
@@ -72,9 +87,11 @@ namespace Comser
         {
             return _scenes.end();
         }
+
+        // TODO: Scenes added, removed, enabled, and disabled
     private:
 
-        Scenes                      _scenes;
+        SceneList                   _scenes;
 
         UpdateCounter               _counter;
 

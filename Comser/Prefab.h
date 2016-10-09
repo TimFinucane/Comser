@@ -8,6 +8,7 @@
 
 namespace Comser
 {
+    // TODO: Work on changes
     // A static type class used for easily sharing certain entity formats (made up of a bunch of components)
     template <class... COMPONENTS>
     class Prefab
@@ -20,7 +21,7 @@ namespace Comser
          * <param name="args">The arguments for each component you add</param>
          * <returns>The entity</returns>
          */
-        static EntityId     operator()( Scene::Group* group, COMPONENTS&&... args )
+        static EntityHandle operator()( Scene* group, COMPONENTS&&... args )
         {
             EntityId entity = group->createEntity();
 
@@ -28,6 +29,7 @@ namespace Comser
 
             return entity;
         }
+
         /*
          * <summary>
          * Destroys the entity.
@@ -36,7 +38,7 @@ namespace Comser
          * <param name="group">The group you made the entity in</param>
          * <param name="id">The entity</param>
          */
-        static void         operator()( Scene::Group* group, EntityId id )
+        static void         operator()( Scene* group, EntityHandle id )
         {
             group->destroyEntity( id );
         }

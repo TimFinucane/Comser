@@ -2,38 +2,38 @@
 
 #include <algorithm>
 
-using namespace Comser;
-using namespace Comser::Scene;
+using namespace Comser::Group;
 
-Group::Group( const std::initializer_list<ComponentType>& types )
-    : _associator( types ), _components( types.size() ), _active( false )
+Scene::Scene( const std::initializer_list<Comser::ComponentType>& types )
+    : _components( types.size() ), Comser::Scene( types )
 {
-    _addedSignals.resize( types.size() );
-    _removedSignals.resize( types.size() );
 }
-Group::~Group()
+Scene::~Scene()
 {
     clear();
-
-    _addedSignals.clear();
-    _removedSignals.clear();
 }
 
-void        Group::clear()
+void                    Scene::clear()
 {
     // Destroying in reverse order without iterators for safety
     for( size_t i = _entities.size(); i > 0; --i )
     {
-        destroyEntity( (EntityId)(i - 1) );
+        for( size_t j = _entities[(unsigned int)i-1]->size(); j > 0; --j )
+            _removeComponent( (unsigned int)i - 1, (_entities[(unsigned int)i - 1]->begin() + (unsigned int)j - 1) );
+
+        // Destroy the entity
+        _entities.destroyEntity( (unsigned int)i - 1 );
     }
 }
 
-EntityId    Group::createEntity()
+Comser::EntityHandle    Scene::createEntity()
 {
-    return _entities.createEntity();
+    return std::make_shared<EntityList::EntityId>( _entities.createEntity() );
 }
-void        Group::destroyEntity( EntityId id )
+void                    Scene::destroyEntity( Comser::EntityHandle handle )
 {
+    EntityList::EntityId id = *reinterpret_cast<EntityList::EntityId*>( handle.get() );
+
     for( size_t i = _entities[id]->size(); i > 0; --i )
         _removeComponent( id, (_entities[id]->begin() + i - 1) );
 
@@ -41,19 +41,30 @@ void        Group::destroyEntity( EntityId id )
     _entities.destroyEntity( id );
 }
 
-void        Group::_swap( EntityList::EntityIterator entityIt )
+void        Scene::_swap( EntityList::EntityIterator entityIt )
 {
     // TODO: CHECK THIS WORKS MY MIND IS FUCK
 
     // Find the entities
-    EntityId back = _components[entityIt->type]->get( (ComponentVector::Index)(_components[entityIt->type]->size() - 1) )->entity;
+    EntityList::ComponentDef search;
+    search.index = (unsigned int)_components[entityIt->type]->size() - 1;
+    search.type = entityIt->type;
 
-    // Now get the component definition for that given type
-    EntityList::EntityIterator backIt = _entities.findComponent( back, entityIt->type );
-    
+    // Find and replace the component index of the entity owning the last component with
+    //  the new position in which that component will soon be.
+    for( auto it = _entities.begin(); it != _entities.end(); ++it )
+    {
+        auto compDef = std::find( it->begin(), it->end(), search );
+        if( compDef != it->end() )
+        {
+            compDef->index = entityIt->index;
+            break;
+        }
+    };
+
     // Swap the two components in the vector
-    _components[entityIt->type]->swap( backIt->index, entityIt->index );
+    _components[entityIt->type]->swap( search.index, entityIt->index );
 
-    // Now swap the components in their entities componentDef
-    std::iter_swap( backIt, entityIt );
+    // And set the entity index to the last component
+    entityIt->index = search.index;
 }
