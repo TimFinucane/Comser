@@ -4,19 +4,42 @@ namespace Graphics
 {
     namespace Shaders
     {
+        // TODO: TYPE SYSTEM IMPROVEMENT WHEN WE ARE ABLE TO CREATE TUPLES
+        //  THAT HAVE AN ORDERED MEMORY LAYOUT
+
+
         // A buffer array is a group of component arrays that
         //  are stored on the device for use by the Graphics Program.
-        class BufferArray
+
+        /// <summary>
+        /// A buffer info class is how you tell the generic graphics base class
+        ///  what kind of vertex data is being used, and how to store it.
+        /// </summary>
+        class BufferInfo
         {
         public:
-            BufferArray( unsigned int components, unsigned int step, bool updateable = false, unsigned int instancing = 0 );
-            ~BufferArray();
 
-            // Binds the buffer objects to the device context.
-            // The [location] defines the starting location to
-            //  bind to. Each subsequent buffer binds 1 up.
-            void            bind( unsigned int location );
+            /// <param name="components>The number of different buffers being used</param>
+            /// <param name="step">The total size of a single vertex</param>
+            /// <param name="updateable">Whether or not the vertex buffer will be edited frequently</param>
+            /// <param name="instancing">The number of vertices before the next element is loaded into the program. 0 means per vertex.</param>
+            BufferInfo( unsigned int components, unsigned int step, bool updateable = false, unsigned int instancing = 0 );
+            ~BufferInfo();
 
+            /// <summary>
+            /// Sets up opengl to recieve the buffer described
+            ///  by this class
+            /// </summary>
+            void            prepareBind( unsigned int location );
+
+            /// <summary>
+            /// Used to define a specific component of the buffer data
+            ///  you plan on passing in.
+            /// </summary>
+            /// <param name="component">The number this component is into the POD</param>
+            /// <param name="offset">The number of bytes offset from the start of the array</param>
+            /// <param name="type">The OpenGL type out of which this component is comprised</param>
+            /// <param name="numItems">The number of these types present in the component</param>
             void            define( unsigned int component, unsigned int offset, unsigned int type, unsigned int numItems )
             {
                 _items[component].offset    = offset;
@@ -24,14 +47,6 @@ namespace Graphics
                 _items[component].numItems  = numItems;
             }
 
-            // Items must be in the format of a POD of the previously defined components.
-            // The size is the number of structures
-            void            updateBuffer( void* items, unsigned int count );
-
-            unsigned int    count()
-            {
-                return _count;
-            }
         private:
             struct BufferItem
             {
@@ -40,37 +55,29 @@ namespace Graphics
                 unsigned int    numItems;
             };
         private:
-            unsigned int    _buffer;
-
             unsigned int    _components;
             BufferItem*     _items;
             unsigned int    _step;
 
             unsigned int    _instancing;
             bool            _updateable;
-
-            unsigned int    _count;
         };
 
-        class IndexedBufferArray : public BufferArray
+        /// <summary>
+        /// An indexed buffer info is a buffer whose elements can be accessed
+        ///  by OpenGL by an index, allowing for the same element to be reused.
+        /// </summary>
+        class IndexedBufferInfo : public BufferInfo
         {
         public:
-            IndexedBufferArray( unsigned int components, unsigned int step, bool updateable = false );
-            ~IndexedBufferArray();
+            // TODO: Instancing with an indexed buffer?
+            /// <summary>
+            /// Defines the initial info of an IndexedBuffer
+            /// </summary>
+            IndexedBufferInfo( unsigned int components, unsigned int step, bool updateable = false );
+            ~IndexedBufferInfo();
 
-            void            updateIndices( unsigned short* indices, unsigned int count );
-
-            void            bind( unsigned int location );
-            
-            unsigned int    count()
-            {
-                return _indexCount;
-            }
-        private:
-            unsigned int    _indexBuffer;
-
-            unsigned int    _indices;
-            unsigned int    _indexCount;
+            void            prepareBind( unsigned int location );
         };
     }
 }

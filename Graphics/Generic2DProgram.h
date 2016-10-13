@@ -45,15 +45,6 @@ public:
     void    setPos( const Maths::Vector2D& pos );
     void    setMatrix( const Maths::Matrix2& mat );
 
-    void    loadBuffer( Generic2DVertex* vertices, unsigned int count )
-    {
-        _array.updateBuffer( vertices, count );
-    }
-    void    loadIndices( unsigned short* indices, unsigned int count )
-    {
-        _array.updateIndices( indices, count );
-    }
-
     void    draw();
 private:
     unsigned int    _vertexPos;
@@ -61,5 +52,5 @@ private:
     unsigned int    _posUniform;
     unsigned int    _matUniform;
 
-    Graphics::Shaders::IndexedBufferArray  _array;
+    Graphics::Shaders::IndexedBufferInfo  _array;
 };
