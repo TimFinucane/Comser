@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="Mesh.h">
-      <Filter>3D</Filter>
-    </ClInclude>
     <ClInclude Include="Program.h">
       <Filter>Shader</Filter>
     </ClInclude>
@@ -68,9 +65,6 @@
     <Text Include="Todo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="3D">
-      <UniqueIdentifier>{37f9ce13-88c5-409c-8228-c4089e5c2463}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader">
       <UniqueIdentifier>{d7fd6758-0d36-41c1-980a-450ed6f5a914}</UniqueIdentifier>
     </Filter>

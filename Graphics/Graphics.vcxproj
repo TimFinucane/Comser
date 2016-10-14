@@ -178,7 +178,6 @@
     <ClInclude Include="Atlas2DProgram.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Library.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TextureAtlas.h" />
