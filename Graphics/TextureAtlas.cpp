@@ -1,16 +1,16 @@
-#include "SpriteSheet.h"
+#include "TextureAtlas.h"
 
 #include <GraphicsIncludes.h>
 
 
 using namespace Graphics;
 
-SpriteSheet::SpriteSheet()
+TextureAtlas::TextureAtlas()
 {
     glCreateTextures( GL_TEXTURE_2D_ARRAY, 1, &_texture );
 }
 
-void SpriteSheet::load( const Image::File& file, unsigned int width, unsigned int height, unsigned int layers )
+void TextureAtlas::load( const Image::File& file, unsigned int width, unsigned int height, unsigned int layers )
 {
     // TODO: If feeling kind, store and then restore anything currently bound to GL_TEXTURE_2D_ARRAY. Should be pointless though
     glBindTexture( GL_TEXTURE_2D_ARRAY, _texture );
@@ -23,12 +23,7 @@ void SpriteSheet::load( const Image::File& file, unsigned int width, unsigned in
     glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
     glTexParameteri( GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 }
-void    SpriteSheet::clear()
+void    TextureAtlas::clear()
 {
     glDeleteTextures( 1, &_texture );
-}
-
-void    SpriteSheet::bind()
-{
-    glBindTexture( GL_TEXTURE_2D_ARRAY, _texture );
 }

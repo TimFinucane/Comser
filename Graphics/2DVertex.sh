@@ -1,11 +1,11 @@
-#version 320
+#version 150
 
-uniform vec2 position;
+uniform dvec2 position;
 uniform mat2 matrix;
 
-in vec2 vertex;
-in vec2 texCoord;
-out vec2 fragTexCoord;
+in  dvec2 vertex;
+in  dvec2 texCoord;
+out dvec2 fragTexCoord;
 
 void main()
 {

@@ -16,21 +16,22 @@
     <ClInclude Include="Texture.h">
       <Filter>Texture</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteSheet.h">
-      <Filter>Texture</Filter>
-    </ClInclude>
     <ClInclude Include="Device.h" />
     <ClInclude Include="BufferArray.h">
       <Filter>Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="Generic2DProgram.h">
-      <Filter>Shader\Some Programs</Filter>
     </ClInclude>
     <ClInclude Include="Library.h">
       <Filter>Text</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertices.h" />
+    <ClInclude Include="Atlas2DProgram.h">
+      <Filter>Shader\Some Programs</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureAtlas.h">
+      <Filter>Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -46,21 +47,21 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Texture</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteSheet.cpp">
-      <Filter>Texture</Filter>
-    </ClCompile>
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="BufferArray.cpp">
       <Filter>Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="Generic2DProgram.cpp">
-      <Filter>Shader\Some Programs</Filter>
     </ClCompile>
     <ClCompile Include="Library.cpp">
       <Filter>Text</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Atlas2DProgram.cpp">
+      <Filter>Shader\Some Programs</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureAtlas.cpp">
+      <Filter>Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

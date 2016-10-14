@@ -6,8 +6,8 @@
 
 namespace Maths
 {
-    // TODO: template?
-    struct Vector
+    // TODO: template? doubles
+    struct Vector3D
     {
         Vector()
             : _x( 0.0f ), _y( 0.0f ), _z( 0.0f )
@@ -116,23 +116,23 @@ namespace Maths
             : _x( 0.0f ), _y( 0.0f )
         {
         }
-        Vector2D( float x, float y )
+        Vector2D( double x, double y )
             : _x( x ), _y( y )
         {
         }
 
-        float x() const
+        double x() const
         {
             return _x;
         }
-        float y() const
+        double y() const
         {
             return _y;
         }
 
     private:
-        float _x;
-        float _y;
+        double _x;
+        double _y;
     };
 }
 

@@ -1,25 +1,49 @@
 #pragma once
-#ifndef GRAPHICS_MESH_H
-#define GRAPHICS_MESH_H
 
-// This structure is implemented as an interface first if the program wants to use it in conjunction with a Physics mesh
-struct MeshInterface
+#include <initializer_list>
+
+namespace Graphics
 {
-    // TODO
-};
+    template <typename VERTEX>
+    struct Mesh
+    {
+    public:
+        Mesh( std::initializer_list<VERTEX> vertices, std::initializer_list<unsigned short> indices )
+            : mesh( vertices.size(), indices.size() )
+        {
+            unsigned int i = 0;
+            for( auto it = vertices.begin(); it != vertices.end(); ++i, ++it )
+                _vertices[i] = *it;
+            
+            i = 0;
+            for( auto it = indices.begin(); it != indices.end(); ++i, ++it )
+                _indices[i] = *it;
+        }
+        Mesh( unsigned int vertexCount, unsigned int indexCount )
+            : _vertexCount( vertexCount ), _indexCount( indexCount )
+        {
+            _vertices = new VERTEX[vertexCount];
+            _indices = new unsigned short[indexCount];
+        }
+        ~Mesh()
+        {
+            delete[] _vertices;
+            delete[] _indices;
+        }
 
-template <typename COORDINATE>
-struct Mesh : public MeshInterface
-{
-    friend class Graphics;
-public:
-    Mesh();
-    ~Mesh();
+        VERTEX*         vertices()
+        {
+            return _vertices;
+        }
+        unsigned short* indices()
+        {
+            return _indices;
+        }
+    private:
+        unsigned int        _vertexCount;
+        unsigned int        _indexCount;
 
-    void load( COORDINATE* coords, unsigned int count );
-
-private:
-    unsigned int _mesh;
-};
-
-#endif
+        VERTEX*             _vertices;
+        unsigned short*     _indices;
+    };
+}

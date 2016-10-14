@@ -175,25 +175,26 @@
   <ItemGroup>
     <ClInclude Include="BufferArray.h" />
     <ClInclude Include="Device.h" />
-    <ClInclude Include="Generic2DProgram.h" />
+    <ClInclude Include="Atlas2DProgram.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="SpriteSheet.h" />
+    <ClInclude Include="TextureAtlas.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Vertices.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferArray.cpp" />
     <ClCompile Include="Device.cpp" />
-    <ClCompile Include="Generic2DProgram.cpp" />
+    <ClCompile Include="Atlas2DProgram.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="SpriteSheet.cpp" />
+    <ClCompile Include="TextureAtlas.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>

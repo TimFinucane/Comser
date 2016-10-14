@@ -6,17 +6,17 @@
 
 namespace Graphics
 {
-    class SpriteSheet
+    class TextureAtlas
     {
     public:
-        SpriteSheet();
-        ~SpriteSheet()
+        TextureAtlas();
+        ~TextureAtlas()
         {
             clear();
         }
 
-        SpriteSheet( SpriteSheet&& tex ) = default;
-        SpriteSheet& operator =( SpriteSheet&& tex ) = default;
+        TextureAtlas( TextureAtlas&& tex ) = default;
+        TextureAtlas& operator =( TextureAtlas&& tex ) = default;
 
         void            load( const Image::File& file, unsigned int width, unsigned int height, unsigned int layers );
         void            clear();
@@ -24,17 +24,23 @@ namespace Graphics
         void            bind();
 
         unsigned int    width()
-    {
-        return _width;
-    }
+        {
+            return _width;
+        }
         unsigned int    height()
-    {
-        return _height;
-    }
+        {
+            return _height;
+        }
         unsigned int    layers()
-    {
-        return _layers;
-    }
+        {
+            return _layers;
+        }
+
+        // For use by graphics shaders
+        unsigned int    texture()
+        {
+            return _texture;
+        }
     private:
         unsigned int    _texture;
 
