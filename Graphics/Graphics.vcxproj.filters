@@ -19,14 +19,17 @@
     <ClInclude Include="Font.h">
       <Filter>Text</Filter>
     </ClInclude>
-    <ClInclude Include="Atlas2DProgram.h">
-      <Filter>Shader\Some Programs</Filter>
-    </ClInclude>
     <ClInclude Include="TextureAtlas.h">
       <Filter>Texture</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="BufferInfo.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteProgram.h">
+      <Filter>Shader\Some Programs</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayObject.h">
       <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
@@ -49,9 +52,6 @@
     <ClCompile Include="Font.cpp">
       <Filter>Text</Filter>
     </ClCompile>
-    <ClCompile Include="Atlas2DProgram.cpp">
-      <Filter>Shader\Some Programs</Filter>
-    </ClCompile>
     <ClCompile Include="TextureAtlas.cpp">
       <Filter>Texture</Filter>
     </ClCompile>
@@ -59,6 +59,9 @@
       <Filter>Shader</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="SpriteProgram.cpp">
+      <Filter>Shader\Some Programs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />

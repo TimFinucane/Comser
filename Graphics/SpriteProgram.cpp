@@ -1,10 +1,10 @@
-#include "Atlas2DProgram.h"
+#include "SpriteProgram.h"
 
 #include <GraphicsIncludes.h>
 
 using namespace Graphics;
 
-Atlas2DProgram::Atlas2DProgram()
+SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile )
     : _array( 2, sizeof( Vertex ) )
 {
     _array.define( 0, offsetof( Vertex, Vertex::x ), GL_DOUBLE, 2 );
@@ -19,10 +19,7 @@ Atlas2DProgram::Atlas2DProgram()
 
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
-}
 
-void Atlas2DProgram::create( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile )
-{
     std::string error;
     Shaders::Shader vertex( GL_VERTEX_SHADER, vertexFile.file(), vertexFile.length(), error );
     Shaders::Shader fragment( GL_FRAGMENT_SHADER, vertexFile.file(), vertexFile.length(), error );
@@ -32,22 +29,22 @@ void Atlas2DProgram::create( const FileSystem::File& vertexFile, const FileSyste
     if( !error.empty() )
         throw std::runtime_error( error );
 
-    _matUniform  = glGetUniformLocation( _program, "matrix" );
-    _posUniform  = glGetUniformLocation( _program, "position" );
-    _vertexPos   = glGetAttribLocation(  _program, "vertex" );
-    _texCoordPos = glGetAttribLocation(  _program, "texCoord" );
+    _matUniform = glGetUniformLocation( _program, "matrix" );
+    _posUniform = glGetUniformLocation( _program, "position" );
+    _vertexPos = glGetAttribLocation( _program, "vertex" );
+    _texCoordPos = glGetAttribLocation( _program, "texCoord" );
 }
 
-void Atlas2DProgram::setPos( const Maths::Vector2D& pos )
+void SpriteProgram::setPos( const Maths::Vector2D& pos )
 {
     glUniform2f( _posUniform, pos.x(), pos.y() );
 }
-void Atlas2DProgram::setMatrix( const Maths::Matrix2& mat )
+void SpriteProgram::setMatrix( const Maths::Matrix2& mat )
 {
     glUniformMatrix2fv( _matUniform, 1, GL_FALSE, &mat[0] );
 }
 
-void Atlas2DProgram::draw()
+void SpriteProgram::draw()
 {
     _array.bind( _vertexPos );
 

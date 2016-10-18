@@ -173,8 +173,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ArrayObject.h" />
     <ClInclude Include="BufferInfo.h" />
-    <ClInclude Include="Atlas2DProgram.h" />
+    <ClInclude Include="SpriteProgram.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="Mesh.h" />
@@ -186,7 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferInfo.cpp" />
-    <ClCompile Include="Atlas2DProgram.cpp" />
+    <ClCompile Include="SpriteProgram.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="Mesh.cpp" />

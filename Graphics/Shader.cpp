@@ -4,7 +4,7 @@
 
 using namespace Graphics::Shaders;
 
-Shader::Shader( unsigned int shaderType, const char* file, int length, std::string& error )
+Shader::Shader( unsigned int shaderType, FileSystem::File& file )
 {
     _shader = glCreateShader( shaderType );
 
@@ -18,10 +18,12 @@ Shader::Shader( unsigned int shaderType, const char* file, int length, std::stri
         int len = 0;
         glGetShaderiv( _shader, GL_INFO_LOG_LENGTH, &len );
 
-        error.resize( len );
+        std::string error( len, 0 );
         glGetShaderInfoLog( _shader, len, &len, &error[0] );
 
         glDeleteShader( _shader );
+
+        throw std::runtime_error( "Error compiling shader: " + error );
     }
 
 }

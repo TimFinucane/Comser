@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include <File.h>
+
 namespace Graphics
 {
     namespace Shaders
@@ -11,7 +13,7 @@ namespace Graphics
             friend class Program;
         public:
             // TODO: throwing
-            Shader( unsigned int shaderType, const char* file, int length, std::string& error );
+            Shader( unsigned int shaderType, FileSystem::File& file );
             ~Shader();
 
             Shader( Shader&& shader ) noexcept = default;

@@ -6,6 +6,8 @@ namespace FileSystem
 {
     struct File
     {
+        // TODO: Need to check if linking is required for this constructor by Graphics.lib if it is
+        //  never used
         File( const std::wstring& filename );
         ~File();
 
