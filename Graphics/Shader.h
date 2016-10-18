@@ -10,6 +10,7 @@ namespace Graphics
         {
             friend class Program;
         public:
+            // TODO: throwing
             Shader( unsigned int shaderType, const char* file, int length, std::string& error );
             ~Shader();
 

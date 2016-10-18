@@ -13,7 +13,6 @@
     <ClInclude Include="Texture.h">
       <Filter>Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Device.h" />
     <ClInclude Include="Library.h">
       <Filter>Text</Filter>
     </ClInclude>
@@ -44,7 +43,6 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Texture</Filter>
     </ClCompile>
-    <ClCompile Include="Device.cpp" />
     <ClCompile Include="Library.cpp">
       <Filter>Text</Filter>
     </ClCompile>

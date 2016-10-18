@@ -70,6 +70,17 @@ public:
     /// <param name="event">The function that will process all your events</param>
     void                    loop( LoopFunction loop, EventFunction event );
 
+    /// <summary>
+    /// Shows whatever was drawn on the screen
+    ///  by swapping the opengl buffers
+    /// </summary>
+    void                    update();
+    /// <summary>
+    /// Clears the current buffer
+    ///  and sets it to the given colour
+    /// </summary>
+    void                    clear( double r, double g, double b, double a );
+
     // Some static functions for getting info about the system.
     static unsigned int     defaultScreen();
     static unsigned int     numScreens();
@@ -86,6 +97,7 @@ private:
     WindowSettings  _curSettings;
 
     SDL_Window*     _window;
+    void*           _context; // The opengl context
 };
 
 #endif

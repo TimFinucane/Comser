@@ -11,12 +11,12 @@ Program::Program()
     _program = glCreateProgram();
 }
 
-void    Program::create( const Shader* shaders, unsigned int count, std::string& error )
+std::string Program::create( std::initializer_list<const Shader*> shaders )
 {
     // Attach shaders
-    for( unsigned int i = 0; i < count; ++i )
+    for( auto i = shaders.begin(); i != shaders.end(); ++i )
     {
-        glAttachShader( _program, shaders[i]._shader );
+        glAttachShader( _program, (*i)->_shader );
     }
 
     glLinkProgram( _program );

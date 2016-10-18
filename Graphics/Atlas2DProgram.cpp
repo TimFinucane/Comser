@@ -12,12 +12,22 @@ Atlas2DProgram::Atlas2DProgram()
 
     glEnableVertexAttribArray( 0 );
     glEnableVertexAttribArray( 1 );
+
+    // TODO: Find some better way of storing these
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+    glEnable( GL_CULL_FACE );
+    glCullFace( GL_BACK );
 }
 
-void Atlas2DProgram::create( Graphics::Shaders::Shader shaders[2] )
+void Atlas2DProgram::create( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile )
 {
     std::string error;
-    Program::create( shaders, 2, error );
+    Shaders::Shader vertex( GL_VERTEX_SHADER, vertexFile.file(), vertexFile.length(), error );
+    Shaders::Shader fragment( GL_FRAGMENT_SHADER, vertexFile.file(), vertexFile.length(), error );
+
+    Program::create( { &vertex, &fragment } );
 
     if( !error.empty() )
         throw std::runtime_error( error );

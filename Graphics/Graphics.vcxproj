@@ -174,7 +174,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BufferInfo.h" />
-    <ClInclude Include="Device.h" />
     <ClInclude Include="Atlas2DProgram.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Library.h" />
@@ -187,7 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BufferInfo.cpp" />
-    <ClCompile Include="Device.cpp" />
     <ClCompile Include="Atlas2DProgram.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Library.cpp" />

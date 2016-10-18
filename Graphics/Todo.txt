@@ -9,3 +9,5 @@ Control window from here (what did he mean by this?)
 Research if its possible to have stronger types
  and static info for mesh vertices so we can do
  BufferInfo effectively statically.
+
+ Exception safety for shaders, throwing and such too

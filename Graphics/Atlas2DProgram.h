@@ -3,6 +3,8 @@
 #include <Vector.h>
 #include <Matrix.h>
 
+#include <File.h>
+
 #include "Shader.h"
 #include "Program.h"
 #include "Mesh.h"
@@ -25,7 +27,7 @@ namespace Graphics
     public:
         Atlas2DProgram( /* shaders filenames here */ );
 
-        void    create( Graphics::Shaders::Shader shaders[2] );
+        void    create( const FileSystem::File& vertex, const FileSystem::File& fragment );
 
         static IndexedMesh square( double width, double height )
         {

@@ -1,6 +1,7 @@
 #include "Window.h"
 
 #include "SDLDev.h"
+#include "GraphicsIncludes.h"
 
 #include <sigc++/sigc++.h>
 #include <tchar.h>
@@ -8,6 +9,7 @@
 Window::Window( const WindowSettings& settings )
 {
     SDLDevice::create();
+    // TODO: Option to change device
     int error = SDL_VideoInit( nullptr );
     sdlError( error );
 
@@ -51,9 +53,14 @@ Window::Window( const WindowSettings& settings )
 
     // Do that cool thing where the game doesn't minimize if you open something else.
     SDL_SetHint( SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0" );
+
+    glewInit();
+
+    _context = SDL_GL_CreateContext( _window );
 }
 Window::~Window()
 {
+    SDL_GL_DeleteContext( _context );
     SDL_DestroyWindow( _window );
 }
 
@@ -116,6 +123,16 @@ void                            Window::loop( LoopFunction loop, EventFunction e
         }
         loop();
     }
+}
+
+void                            Window::update()
+{
+    SDL_GL_SwapWindow( *_window );
+}
+void                            Window::clear( double r, double b, double g, double a )
+{
+    glClearColor( 0.0, 0.0, 0.0, 1.0 );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
 unsigned int                    Window::defaultScreen()
