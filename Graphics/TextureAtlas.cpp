@@ -5,13 +5,10 @@
 
 using namespace Graphics;
 
-TextureAtlas::TextureAtlas()
+TextureAtlas::TextureAtlas( const Image::File& file, unsigned int width, unsigned int height, unsigned int layers )
 {
-    glCreateTextures( GL_TEXTURE_2D_ARRAY, 1, &_texture );
-}
+    glGenTextures( 1, &_texture );
 
-void TextureAtlas::load( const Image::File& file, unsigned int width, unsigned int height, unsigned int layers )
-{
     // TODO: If feeling kind, store and then restore anything currently bound to GL_TEXTURE_2D_ARRAY. Should be pointless though
     glBindTexture( GL_TEXTURE_2D_ARRAY, _texture );
 

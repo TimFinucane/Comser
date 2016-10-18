@@ -5,18 +5,12 @@
 #include <sigc++/sigc++.h>
 #include <tchar.h>
 
-Window::Window()
+Window::Window( const WindowSettings& settings )
 {
     SDLDevice::create();
     int error = SDL_VideoInit( nullptr );
     sdlError( error );
-}
-Window::~Window()
-{
-}
 
-void                            Window::init( const WindowSettings& settings )
-{
     _curSettings = settings;
 
     /* Request opengl 3.2 context.
@@ -50,15 +44,15 @@ void                            Window::init( const WindowSettings& settings )
         break;
     }
 
-    _window = SDL_CreateWindow( settings.name.c_str(), 
-                                settings.rect.x, 
-                                settings.rect.y, 
+    _window = SDL_CreateWindow( settings.name.c_str(),
+                                settings.rect.x,
+                                settings.rect.y,
                                 settings.rect.width, settings.rect.height, windowFlags );
 
     // Do that cool thing where the game doesn't minimize if you open something else.
     SDL_SetHint( SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0" );
 }
-void                            Window::release()
+Window::~Window()
 {
     SDL_DestroyWindow( _window );
 }

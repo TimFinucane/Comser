@@ -30,7 +30,7 @@ Finish the docs and get a proper external doc out			X						MED
 Find a better solution for communication between 
  game and system?											X						HIGH
 
-Different scene types
+Different scene types										DONE!
 
 Documentation for different scene types
 

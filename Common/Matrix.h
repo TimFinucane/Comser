@@ -103,6 +103,7 @@ namespace Maths
         // TODO: Specialisation here
     };
 
+    // For 3D operations, along with a 4th column for translations
     template <>
     class Matrix<4> : public BaseMatrix<4, Matrix<4>>
     {
@@ -111,7 +112,7 @@ namespace Maths
         // All rotation units are in radians, not degrees
         // Rotates in a counterclockwise manner
         static Matrix<4>    rotate( float x, float y, float z );
-        static Matrix<4>    rotate( float amt, Vector axis );
+        static Matrix<4>    rotate( float amt, Vector3D axis );
         static Matrix<4>    rotateX( float angle );
         static Matrix<4>    rotateY( float angle );
         static Matrix<4>    rotateZ( float angle );

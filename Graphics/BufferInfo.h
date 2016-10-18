@@ -1,13 +1,11 @@
 #pragma once
 
+#include "Mesh.h"
+
 namespace Graphics
 {
     namespace Shaders
     {
-        // TODO: TYPE SYSTEM IMPROVEMENT WHEN WE ARE ABLE TO CREATE TUPLES
-        //  THAT HAVE AN ORDERED MEMORY LAYOUT
-
-
         // A buffer array is a group of component arrays that
         //  are stored on the device for use by the Graphics Program.
 
@@ -19,18 +17,18 @@ namespace Graphics
         {
         public:
 
-            /// <param name="components>The number of different buffers being used</param>
+            /// <param name="components">The number of different buffers being used</param>
             /// <param name="step">The total size of a single vertex</param>
             /// <param name="updateable">Whether or not the vertex buffer will be edited frequently</param>
             /// <param name="instancing">The number of vertices before the next element is loaded into the program. 0 means per vertex.</param>
-            BufferInfo( unsigned int components, unsigned int step, bool updateable = false, unsigned int instancing = 0 );
+            BufferInfo( unsigned int components, unsigned int step, unsigned int instancing = 0 );
             ~BufferInfo();
 
             /// <summary>
             /// Sets up opengl to recieve the buffer described
             ///  by this class
             /// </summary>
-            void            prepareBind( unsigned int location );
+            void            bind( Mesh& mesh, unsigned int location );
 
             /// <summary>
             /// Used to define a specific component of the buffer data
@@ -47,6 +45,8 @@ namespace Graphics
                 _items[component].numItems  = numItems;
             }
 
+        protected:
+
         private:
             struct BufferItem
             {
@@ -60,7 +60,6 @@ namespace Graphics
             unsigned int    _step;
 
             unsigned int    _instancing;
-            bool            _updateable;
         };
 
         /// <summary>
@@ -74,10 +73,10 @@ namespace Graphics
             /// <summary>
             /// Defines the initial info of an IndexedBuffer
             /// </summary>
-            IndexedBufferInfo( unsigned int components, unsigned int step, bool updateable = false );
+            IndexedBufferInfo( unsigned int components, unsigned int step );
             ~IndexedBufferInfo();
 
-            void            prepareBind( unsigned int location );
+            void            bind( IndexedMesh& mesh, unsigned int location );
         };
     }
 }

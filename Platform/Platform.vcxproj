@@ -177,12 +177,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="File.h" />
     <ClInclude Include="Encoding.h" />
-    <ClInclude Include="FileSystem.h" />
     <ClInclude Include="GraphicsIncludes.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="SDLDev.h" />

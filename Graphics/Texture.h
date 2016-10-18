@@ -10,7 +10,7 @@ namespace Graphics
     struct Texture
     {
     public:
-        Texture();
+        Texture( const Image::File& file );
         ~Texture();
 
         Texture( Texture& tex ) = delete;
@@ -18,8 +18,6 @@ namespace Graphics
 
         Texture( Texture&& tex ) = default;
         Texture& operator =( Texture&& tex ) = default;
-
-        void    load( const Image::File& file );
 
         void    bind();
     private:

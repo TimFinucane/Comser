@@ -4,27 +4,34 @@
 
 #include <png.h>
 
-using namespace Graphics::Image;
+using namespace Graphics;
 
 const unsigned int SIGNATURE_SIZE = 8;
 
+struct FileInfo
+{
+    FileInfo( const FileSystem::File& f )
+        : file( f ), curPt( 0 )
+    {
+    }
+
+    const FileSystem::File& file;
+    unsigned int curPt;
+};
+
 void readData( png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead );
 
-File    File::createPng( std::istream& png )
+Image   Image::createPng( const FileSystem::File& png )
 {
     // Read the signature and check that it's good
-    unsigned char signature[SIGNATURE_SIZE];
-
-    png.read( (char*)signature, SIGNATURE_SIZE );
-
-    if( !png_check_sig( signature, SIGNATURE_SIZE ) )
-        return File();
+    if( !png_check_sig( png.file, SIGNATURE_SIZE ) )
+        return Image();
 
     png_structp png_ptr = 0;
     png_ptr = png_create_read_struct( PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr );
 
     if( !png_ptr )
-        return File();
+        return Image();
 
     png_infop info_ptr = 0;
     info_ptr = png_create_info_struct( png_ptr );
@@ -32,10 +39,12 @@ File    File::createPng( std::istream& png )
     if( !info_ptr )
     {
         png_destroy_read_struct( &png_ptr, nullptr, nullptr );
-        return File();
+        return Image();
     }
 
-    png_set_read_fn( png_ptr, &png, readData );
+    FileInfo file( png );
+    file.curPt = SIGNATURE_SIZE;
+    png_set_read_fn( png_ptr, (void*)&png, readData );
 
     // and lets tell libpng we already read the signature
     png_set_sig_bytes( png_ptr, SIGNATURE_SIZE );
@@ -58,7 +67,7 @@ File    File::createPng( std::istream& png )
     if( retval != 1 )
     {
         png_destroy_read_struct( &png_ptr, &info_ptr, nullptr );
-        return File();
+        return Image();
     }
 
     switch( colourType )
@@ -78,7 +87,7 @@ File    File::createPng( std::istream& png )
         break;
     }
 
-    File image( w, h, bitDepth, channels );
+    Image image( w, h, bitDepth, channels );
 
     // And now read it for file copying
     size_t rowbytes = png_get_rowbytes( png_ptr, info_ptr );
@@ -103,12 +112,10 @@ File    File::createPng( std::istream& png )
 
 void readData( png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead )
 {
+    asdfasdfa
+        // TODO:
     png_voidp io_ptr = png_get_io_ptr( png_ptr );
     /*if( io_ptr == nullptr )
     return;   // add custom error handling here*/
 
-    // Get the stream
-    std::istream& file = *(std::istream*)io_ptr;
-    // And perform the read operation
-    file.read( (char*)outBytes, (size_t)byteCountToRead );
 }

@@ -14,21 +14,21 @@
       <Filter>Texture</Filter>
     </ClInclude>
     <ClInclude Include="Device.h" />
-    <ClInclude Include="BufferArray.h">
-      <Filter>Shader</Filter>
-    </ClInclude>
     <ClInclude Include="Library.h">
       <Filter>Text</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Text</Filter>
     </ClInclude>
-    <ClInclude Include="Vertices.h" />
     <ClInclude Include="Atlas2DProgram.h">
       <Filter>Shader\Some Programs</Filter>
     </ClInclude>
     <ClInclude Include="TextureAtlas.h">
       <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="BufferInfo.h">
+      <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,9 +45,6 @@
       <Filter>Texture</Filter>
     </ClCompile>
     <ClCompile Include="Device.cpp" />
-    <ClCompile Include="BufferArray.cpp">
-      <Filter>Shader</Filter>
-    </ClCompile>
     <ClCompile Include="Library.cpp">
       <Filter>Text</Filter>
     </ClCompile>
@@ -60,6 +57,10 @@
     <ClCompile Include="TextureAtlas.cpp">
       <Filter>Texture</Filter>
     </ClCompile>
+    <ClCompile Include="BufferInfo.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />

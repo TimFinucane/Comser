@@ -9,7 +9,7 @@ namespace Graphics
     class TextureAtlas
     {
     public:
-        TextureAtlas();
+        TextureAtlas( const Image::File& file, unsigned int width, unsigned int height, unsigned int layers );
         ~TextureAtlas()
         {
             clear();
@@ -18,7 +18,6 @@ namespace Graphics
         TextureAtlas( TextureAtlas&& tex ) = default;
         TextureAtlas& operator =( TextureAtlas&& tex ) = default;
 
-        void            load( const Image::File& file, unsigned int width, unsigned int height, unsigned int layers );
         void            clear();
 
         void            bind();

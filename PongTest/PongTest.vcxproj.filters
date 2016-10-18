@@ -12,5 +12,11 @@
     <ClInclude Include="RenderSystem.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="PositionComponent.h" />
+    <ClInclude Include="RenderComponent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
 </Project>

@@ -4,17 +4,10 @@
 
 using namespace Graphics::Shaders;
 
-Shader::Shader( unsigned int shaderType )
+Shader::Shader( unsigned int shaderType, const char* file, int length, std::string& error )
 {
     _shader = glCreateShader( shaderType );
-}
-Shader::~Shader()
-{
-    glDeleteShader( _shader );
-}
 
-bool Shader::load( const char* file, int length, std::string& error )
-{
     glShaderSource( _shader, 1, &file, &length );
     glCompileShader( _shader );
 
@@ -29,9 +22,10 @@ bool Shader::load( const char* file, int length, std::string& error )
         glGetShaderInfoLog( _shader, len, &len, &error[0] );
 
         glDeleteShader( _shader );
-
-        return false;
     }
 
-    return true;
+}
+Shader::~Shader()
+{
+    glDeleteShader( _shader );
 }

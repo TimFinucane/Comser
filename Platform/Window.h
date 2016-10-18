@@ -19,7 +19,7 @@ class Window
 public:
     typedef Maths::Rect<short> Rect;
 
-    enum Mode
+    enum class Mode
     {
         WINDOWED,
         WINDOWED_BORDERLESS,
@@ -47,11 +47,8 @@ public:
     typedef sigc::slot1<void, const WindowSettings&>    SettingsSlot;
     typedef sigc::signal1<void, const WindowSettings&>  SettingsSignal;
 public:
-    Window();
+    Window( const WindowSettings& settings );
     ~Window();
-
-    void                    init( const WindowSettings& settings );
-    void                    release();
 
     void                    settings( const WindowSettings& settings );
     const WindowSettings&   settings() const

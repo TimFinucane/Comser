@@ -26,6 +26,9 @@
   <ItemGroup>
     <ClCompile Include="Matrix.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Todo.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0B7209CE-94CB-4393-94EA-B2675C2AED41}</ProjectGuid>
     <RootNamespace>Common</RootNamespace>

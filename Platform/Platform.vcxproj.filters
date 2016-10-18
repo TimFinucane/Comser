@@ -2,19 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Window.cpp" />
-    <ClCompile Include="FileSystem.cpp">
+    <ClCompile Include="File.cpp">
       <Filter>Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h" />
     <ClInclude Include="GraphicsIncludes.h" />
-    <ClInclude Include="FileSystem.h">
-      <Filter>Files</Filter>
-    </ClInclude>
     <ClInclude Include="Encoding.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="SDLDev.h" />
+    <ClInclude Include="File.h">
+      <Filter>Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Files">

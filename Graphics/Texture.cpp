@@ -4,18 +4,11 @@
 
 using namespace Graphics;
 
-Texture::Texture()
+Texture::Texture( const Image::File& file )
 {
-    //glCreateTextures( GL_TEXTURE_2D, 1, &texture ); only :(
+    //glCreateTextures( GL_TEXTURE_2D, 1, &texture ); 4.1 and above only :(
     glGenTextures( 1, &_texture );
-}
-Texture::~Texture()
-{
-    glDeleteTextures( 1, &_texture );
-}
 
-void Texture::load( const Image::File& file )
-{
     // TODO: If feeling kind, store and then restore anything currently bound to GL_TEXTURE_2D_ARRAY. Should be pointless though
     glBindTexture( GL_TEXTURE_2D, _texture );
 
@@ -48,6 +41,11 @@ void Texture::load( const Image::File& file )
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 }
+Texture::~Texture()
+{
+    glDeleteTextures( 1, &_texture );
+}
+
 void Texture::bind()
 {
     glBindTexture( GL_TEXTURE_2D, _texture );

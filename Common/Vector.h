@@ -6,25 +6,24 @@
 
 namespace Maths
 {
-    // TODO: template? doubles
     struct Vector3D
     {
-        Vector()
+        Vector3D()
             : _x( 0.0f ), _y( 0.0f ), _z( 0.0f )
         {
         }
-        Vector( float x, float y, float z )
+        Vector3D( float x, float y, float z )
             : _x( x ), _y( y ), _z( z )
         {
         }
-        Vector( Vector&& x )
+        Vector3D( Vector3D&& x )
             : _x( x._x ), _y( x._y ), _z( x._z )
         {
             x._x = 0;
             x._y = 0;
             x._z = 0;
         }
-        Vector( const Vector& x )
+        Vector3D( const Vector3D& x )
             : _x( x._x ), _y( x._y ), _z( x._z )
         {
         }
@@ -56,16 +55,16 @@ namespace Maths
         }
 
         // Multiplies each member by its counterpart
-        Vector      operator * ( const Vector& v )
+        Vector3D    operator * ( const Vector3D& v )
         {
-            return Vector( _x * v._x, _y * v._y, _z * v._z );
+            return Vector3D( _x * v._x, _y * v._y, _z * v._z );
         }
-        Vector      operator / ( const Vector& v );
-        Vector      operator + ( const Vector& v );
-        Vector      operator - ( const Vector& v );
-        Vector&     operator *=( const Vector& v );
-        Vector&     operator /=( const Vector& v );
-        Vector&     operator +=( const Vector& v )
+        Vector3D    operator / ( const Vector3D& v );
+        Vector3D    operator + ( const Vector3D& v );
+        Vector3D    operator - ( const Vector3D& v );
+        Vector3D&   operator *=( const Vector3D& v );
+        Vector3D&   operator /=( const Vector3D& v );
+        Vector3D&   operator +=( const Vector3D& v )
         {
             _x += v._x;
             _y += v._y;
@@ -73,22 +72,22 @@ namespace Maths
 
             return *this;
         }
-        Vector&     operator -=( const Vector& v );
+        Vector3D&     operator -=( const Vector3D& v );
 
-        Vector      operator * ( float d )
+        Vector3D    operator * ( float d )
         {
-            return Vector( _x * d, _y * d, _z * d );
+            return Vector3D( _x * d, _y * d, _z * d );
         }
-        Vector      operator / ( float d )
+        Vector3D    operator / ( float d )
         {
-            return Vector( _x / d, _y / d, _z / d );
+            return Vector3D( _x / d, _y / d, _z / d );
         }
-        Vector      operator + ( float d );
-        Vector      operator - ( float d );
-        Vector&     operator *=( float d );
-        Vector&     operator /=( float d );
-        Vector&     operator +=( float d );
-        Vector&     operator -=( float d );
+        Vector3D    operator + ( float d );
+        Vector3D    operator - ( float d );
+        Vector3D&   operator *=( float d );
+        Vector3D&   operator /=( float d );
+        Vector3D&   operator +=( float d );
+        Vector3D&   operator -=( float d );
 
         void        invert();
 
@@ -98,13 +97,13 @@ namespace Maths
         }
 
         // Gives this vector with magnitude of 1
-        Vector      unit()
+        Vector3D    unit()
         {
             return (*this)/magnitude();
         }
 
-        Vector&     cross( const Vector& v );
-        float       dot( const Vector& v );
+        Vector3D&   cross( const Vector3D& v );
+        float       dot( const Vector3D& v );
     private:
 
         float _x,_y,_z;

@@ -6,7 +6,8 @@
 #include "Shader.h"
 #include "Program.h"
 #include "Mesh.h"
-#include "BufferArray.h"
+#include "BufferInfo.h"
+#include "TextureAtlas.h"
 
 // Uses a 2D texture
 namespace Graphics
@@ -21,40 +22,37 @@ namespace Graphics
             double u;
             double v;
         };
-
-        typedef Mesh<Vertex>    Mesh;
     public:
         Atlas2DProgram( /* shaders filenames here */ );
 
         void    create( Graphics::Shaders::Shader shaders[2] );
 
-        static void square( double x, double y, Vertex in[4] )
+        static IndexedMesh square( double width, double height )
         {
-            in[0] ={ -x / 2.0f, y / 2.0f,  0.0f, 0.0f };
-            in[1] ={ -x / 2.0f, -y / 2.0f, 0.0f, 1.0f };
-            in[2] ={ x / 2.0f,  y / 2.0f, 1.0f, 0.0f };
-            in[3] ={ x / 2.0f, -y / 2.0f, 1.0f, 1.0f };
-        }
-        static void squareIndices( unsigned short indices[6] )
-        {
-            indices[0] = 0;
-            indices[1] = 1;
-            indices[2] = 3;
-
-            indices[3] = 3;
-            indices[4] = 2;
-            indices[5] = 0;
+            return IndexedMesh( 
+                IndexedMeshData<Vertex>( 
+                {
+                    { -width / 2.0,  height / 2.0, 0.0, 0.0 },
+                    { -width / 2.0, -height / 2.0, 0.0, 1.0 },
+                    {  width / 2.0,  height / 2.0, 1.0, 0.0 },
+                    {  width / 2.0, -height / 2.0, 1.0, 1.0 }
+                },
+                {
+                    0, 1, 3,
+                    3, 2, 0
+                } ) 
+            );
         }
 
         void    add( Mesh& mesh, Maths::Vector2D vector, Maths::Matrix2& mat, unsigned int layer );
 
-        void    draw();
+        void    draw( TextureAtlas& atlas );
     private:
         unsigned int    _vertexPos;
         unsigned int    _texCoordPos;
         unsigned int    _posUniform;
         unsigned int    _matUniform;
 
-        Graphics::Shaders::IndexedBufferArray  _array;
+        Graphics::Shaders::IndexedBufferInfo    _array;
     };
 }
