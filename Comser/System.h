@@ -23,7 +23,7 @@ namespace Comser
         
         void    update(){}
 
-        virtual bool    
+        //virtual bool    
 
         template<class... COMPONENTS>
         TupleHook<COMPONENTS...>   createTupleHook()

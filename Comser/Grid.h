@@ -34,7 +34,7 @@ namespace Comser
             };
 
             typedef std::vector<ComponentDef>   Entity;
-            typedef std::vector<Entity>         Tile;
+            typedef Entity                      Tile;
 
             typedef sigc::signal<void, const Position&, const Position&>    SignalPositionChange;
 

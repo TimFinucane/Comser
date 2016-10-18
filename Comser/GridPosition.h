@@ -13,11 +13,10 @@ namespace Comser
         {
             unsigned int x;
             unsigned int y;
-            unsigned int z;
 
             bool operator ==( const Position& pos ) const
             {
-                return (x == pos.x && y == pos.y && z == pos.z);
+                return (x == pos.x && y == pos.y);
             }
         };
     }

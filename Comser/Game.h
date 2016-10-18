@@ -40,8 +40,6 @@ namespace Comser
             _counter.ticksPerUpdate( order, ticksPerUpdate );
         }
 
-
-
         // <summary>
         // Creates a new scene, and returns the scene's id.
         // Starts disabled by default.
@@ -66,12 +64,8 @@ namespace Comser
         void                setScene( SceneIterator* scene, bool enable );
         void                setScene( Scene* scene, bool enable );
 
-
-
         void                addSystem( System* system );
         void                removeSystem( System* system );
-
-
 
         /// <summary>
         /// Updates all systems in the set
@@ -90,7 +84,6 @@ namespace Comser
 
         // TODO: Scenes added, removed, enabled, and disabled
     private:
-
         SceneList                   _scenes;
 
         UpdateCounter               _counter;
