@@ -4,11 +4,13 @@
 
 using namespace Graphics::Shaders;
 
-Shader::Shader( unsigned int shaderType, FileSystem::File& file )
+Shader::Shader( unsigned int shaderType, const FileSystem::File& file )
 {
     _shader = glCreateShader( shaderType );
 
-    glShaderSource( _shader, 1, &file, &length );
+    int length = static_cast<int>(file.length);
+
+    glShaderSource( _shader, 1, (char**)&file.file, &length );
     glCompileShader( _shader );
 
     int compiled = 0;

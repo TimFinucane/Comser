@@ -20,20 +20,15 @@ namespace Graphics
         class Program
         {
         public:
-            Program();
-            ~Program()
-            {
-                destroy();
-            }
+            Program( std::initializer_list<Shader> shaders );
+            ~Program();
 
             Program( Program&& tex ) = default;
             Program& operator =( Program&& tex ) = default;
 
-            void    destroy();
-
             void    use();
         protected:
-            std::string     create( std::initializer_list<const Shader*> shaders );
+            std::string     create( std::initializer_list<const Shader&> shaders );
 
             unsigned int    _program;
         };

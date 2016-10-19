@@ -173,7 +173,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ArrayObject.h" />
+    <ClInclude Include="ObjectArray.h" />
     <ClInclude Include="BufferInfo.h" />
     <ClInclude Include="SpriteProgram.h" />
     <ClInclude Include="Image.h" />

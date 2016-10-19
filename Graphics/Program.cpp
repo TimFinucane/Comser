@@ -6,18 +6,13 @@ using namespace Graphics::Shaders;
 
 const unsigned int INVALID_PROGRAM = 0xDEADBEEF;
 
-Program::Program()
+Program::Program( std::initializer_list<Shader> shaders )
 {
     _program = glCreateProgram();
-}
 
-std::string Program::create( std::initializer_list<const Shader*> shaders )
-{
     // Attach shaders
     for( auto i = shaders.begin(); i != shaders.end(); ++i )
-    {
-        glAttachShader( _program, (*i)->_shader );
-    }
+        glAttachShader( _program, i->_shader );
 
     glLinkProgram( _program );
 
@@ -30,11 +25,13 @@ std::string Program::create( std::initializer_list<const Shader*> shaders )
         int length = 0;
         glGetProgramiv( _program, GL_INFO_LOG_LENGTH, &length );
 
-        error.resize( length );
+        std::string error( length, 0 );
         glGetProgramInfoLog( _program, length, &length, &error[0] );
+
+        throw std::runtime_error( "Error linking program: " + error );
     }
 }
-void    Program::destroy()
+Program::~Program()
 {
     glDeleteProgram( _program );
 }

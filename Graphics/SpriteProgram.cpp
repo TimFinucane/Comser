@@ -4,11 +4,11 @@
 
 using namespace Graphics;
 
-SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile )
-    : _array( 2, sizeof( Vertex ) )
+SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile, const FileSystem::File& geometryFile )
+    : Program{ Shaders::Shader( GL_VERTEX_SHADER, vertexFile ), Shaders::Shader( GL_FRAGMENT_SHADER, fragmentFile ), Shaders::Shader( GL_GEOMETRY_SHADER, geometryFile ) },
+        _array( 1, sizeof( Sprite ) )
 {
-    _array.define( 0, offsetof( Vertex, Vertex::x ), GL_DOUBLE, 2 );
-    _array.define( 1, offsetof( Vertex, Vertex::u ), GL_DOUBLE, 2 );
+    _array.define( 0, 0, GL_DOUBLE, 2 );
 
     glEnableVertexAttribArray( 0 );
     glEnableVertexAttribArray( 1 );
@@ -20,28 +20,10 @@ SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSyst
     glEnable( GL_CULL_FACE );
     glCullFace( GL_BACK );
 
-    std::string error;
-    Shaders::Shader vertex( GL_VERTEX_SHADER, vertexFile.file(), vertexFile.length(), error );
-    Shaders::Shader fragment( GL_FRAGMENT_SHADER, vertexFile.file(), vertexFile.length(), error );
-
-    Program::create( { &vertex, &fragment } );
-
-    if( !error.empty() )
-        throw std::runtime_error( error );
-
-    _matUniform = glGetUniformLocation( _program, "matrix" );
-    _posUniform = glGetUniformLocation( _program, "position" );
-    _vertexPos = glGetAttribLocation( _program, "vertex" );
-    _texCoordPos = glGetAttribLocation( _program, "texCoord" );
-}
-
-void SpriteProgram::setPos( const Maths::Vector2D& pos )
-{
-    glUniform2f( _posUniform, pos.x(), pos.y() );
-}
-void SpriteProgram::setMatrix( const Maths::Matrix2& mat )
-{
-    glUniformMatrix2fv( _matUniform, 1, GL_FALSE, &mat[0] );
+    //_matUniform = glGetUniformLocation( _program, "matrix" );
+    //_posUniform = glGetUniformLocation( _program, "position" );
+    //_vertexPos = glGetAttribLocation( _program, "vertex" );
+    //_texCoordPos = glGetAttribLocation( _program, "texCoord" );
 }
 
 void SpriteProgram::draw()

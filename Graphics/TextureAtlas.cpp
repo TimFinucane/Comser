@@ -5,7 +5,7 @@
 
 using namespace Graphics;
 
-TextureAtlas::TextureAtlas( const Image::File& file, unsigned int width, unsigned int height, unsigned int layers )
+TextureAtlas::TextureAtlas( const Image& file, unsigned int width, unsigned int height, unsigned int layers )
 {
     glGenTextures( 1, &_texture );
 

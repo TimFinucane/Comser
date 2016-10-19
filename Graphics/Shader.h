@@ -13,7 +13,7 @@ namespace Graphics
             friend class Program;
         public:
             // TODO: throwing
-            Shader( unsigned int shaderType, FileSystem::File& file );
+            Shader( unsigned int shaderType, const FileSystem::File& file );
             ~Shader();
 
             Shader( Shader&& shader ) noexcept = default;

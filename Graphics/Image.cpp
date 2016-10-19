@@ -112,10 +112,11 @@ Image   Image::createPng( const FileSystem::File& png )
 
 void readData( png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead )
 {
-    asdfasdfa
-        // TODO:
     png_voidp io_ptr = png_get_io_ptr( png_ptr );
     /*if( io_ptr == nullptr )
     return;   // add custom error handling here*/
+    FileInfo* fileInfo = reinterpret_cast<FileInfo*>( io_ptr );
+    unsigned char* start = fileInfo->file.file + fileInfo->curPt; // HA
 
+    std::copy( start, start + byteCountToRead, outBytes );
 }

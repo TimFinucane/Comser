@@ -5,11 +5,10 @@
 
 #include <File.h>
 
-#include "Shader.h"
 #include "Program.h"
-#include "Mesh.h"
 #include "BufferInfo.h"
 #include "TextureAtlas.h"
+#include "ObjectArray.h"
 
 // Uses a 2D texture
 namespace Graphics
@@ -24,14 +23,16 @@ namespace Graphics
         {
             float           x;
             float           y;
+
             float           width;
             float           height;
+
             float           rotation;
 
             uint32_t        layer;
         };
     public:
-        SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment );
+        SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment, const FileSystem::File& geometry );
         ~SpriteProgram();
 
         // Adds a sprite to the current rendering batch

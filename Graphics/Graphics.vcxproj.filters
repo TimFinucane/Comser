@@ -8,10 +8,10 @@
       <Filter>Shader</Filter>
     </ClInclude>
     <ClInclude Include="Image.h">
-      <Filter>Texture</Filter>
+      <Filter>Storage\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Texture</Filter>
+      <Filter>Storage\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Library.h">
       <Filter>Text</Filter>
@@ -20,7 +20,7 @@
       <Filter>Text</Filter>
     </ClInclude>
     <ClInclude Include="TextureAtlas.h">
-      <Filter>Texture</Filter>
+      <Filter>Storage\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="BufferInfo.h">
@@ -29,8 +29,8 @@
     <ClInclude Include="SpriteProgram.h">
       <Filter>Shader\Some Programs</Filter>
     </ClInclude>
-    <ClInclude Include="ArrayObject.h">
-      <Filter>Shader</Filter>
+    <ClInclude Include="ObjectArray.h">
+      <Filter>Storage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -41,10 +41,10 @@
       <Filter>Shader</Filter>
     </ClCompile>
     <ClCompile Include="Image.cpp">
-      <Filter>Texture</Filter>
+      <Filter>Storage\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Texture</Filter>
+      <Filter>Storage\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Library.cpp">
       <Filter>Text</Filter>
@@ -53,7 +53,7 @@
       <Filter>Text</Filter>
     </ClCompile>
     <ClCompile Include="TextureAtlas.cpp">
-      <Filter>Texture</Filter>
+      <Filter>Storage\Texture</Filter>
     </ClCompile>
     <ClCompile Include="BufferInfo.cpp">
       <Filter>Shader</Filter>
@@ -70,14 +70,17 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{d7fd6758-0d36-41c1-980a-450ed6f5a914}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Texture">
-      <UniqueIdentifier>{b07e5ed8-01cb-4adb-a326-9a7459df7876}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shader\Some Programs">
       <UniqueIdentifier>{e5882570-a05f-4390-afb9-2e746eb6fc02}</UniqueIdentifier>
     </Filter>
     <Filter Include="Text">
       <UniqueIdentifier>{5d9bb66c-9e6d-4c91-8071-14eee44103f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Storage">
+      <UniqueIdentifier>{888ab181-1b21-4d18-9a9b-96c1d5828728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Storage\Texture">
+      <UniqueIdentifier>{b07e5ed8-01cb-4adb-a326-9a7459df7876}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
