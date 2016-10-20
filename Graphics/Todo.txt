@@ -10,4 +10,6 @@ Research if its possible to have stronger types
  and static info for mesh vertices so we can do
  BufferInfo effectively statically.
 
- Exception safety for shaders, throwing and such too
+Exception safety for shaders, throwing and such too
+
+More functionality for changing ObjectArrays

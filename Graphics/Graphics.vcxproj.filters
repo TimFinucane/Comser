@@ -62,6 +62,9 @@
     <ClCompile Include="SpriteProgram.cpp">
       <Filter>Shader\Some Programs</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectArray.cpp">
+      <Filter>Storage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />

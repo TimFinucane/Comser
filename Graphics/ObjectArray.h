@@ -1,37 +1,70 @@
 #pragma once
 
+#include <vector>
+#include <memory>
+
 namespace Graphics
 {
+    class _ObjectArrayBase
+    {
+    public:
+        enum class UpdateFrequency
+        {
+            ONCE,
+            OCCASIONALLY,
+            FREQUENTLY
+        };
+    
+    protected:
+        _ObjectArrayBase( UpdateFrequency freq );
+        _ObjectArrayBase( UpdateFrequency freq, size_t length, void* data );
+        ~_ObjectArrayBase();
+
+        void        recreate( size_t length, void* data );
+        void        replace( size_t start, size_t length, void* data );
+    private:
+        UpdateFrequency _frequency;
+        unsigned int    _buffer;
+    };
+
     // An array object is a single buffer used by the
     //  graphics device to render objects
     template <typename OBJECT>
-    class ObjectArray
+    class ObjectArray : protected _ObjectArrayBase
     {
+        typedef std::vector<Object> Buffer;
     public:
-        ObjectArray();
-        ~ObjectArray();
+        ObjectArray( UpdateFrequency freq )
+            : _ObjectArrayBase( freq ), _length( 0 )
+        {
+        }
+        ObjectArray( UpdateFrequency freq, Buffer buffer )
+            : _ObjectArrayBase( freq, buffer.size() * sizeof( OBJECT ), &buffer[0] )
+        {
+        }
+        ~ObjectArray()
+        {
+        }
 
         /// <summary>
-        /// Pulls the array over to memory so that it can
-        ///  be modified by the program
+        /// Updates the object array without
+        ///  mapping it to the client side.
         /// </summary>
-        void    pull();
+        void        update( Buffer buffer )
+        {
+            if( buffer.size() == _size )
+                replace( 0, _size * sizeof( OBJECT ), &buffer[0] );
+            else
+                recreate( _size, &buffer[0] );
+        }
 
+        // TODO:
         /// <summary>
-        /// Updates the graphics device with any changes that
-        ///  the program has made
+        /// Will push some updates to the object array
         /// </summary>
-        void    push();
+        //void        push( InstructionBuffer instructionBuffer );
 
-        /// <summary>
-        /// Adds the given object to the array.
-        /// Only works when object has been pulled
-        /// </summary>
-        /// <returns>Index of added object</returns>
-        unsigned int    add( const OBJECT& object );
-        unsigned int    add( OBJECT&& object ); // For move semantics
-
-        void            remove( unsigned int object );
-        
+    private:
+        size_t  _size;
     };
 }
