@@ -34,7 +34,7 @@ namespace Graphics
 
         typedef ObjectArray<Sprite> Sprites;
     public:
-        SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment, const FileSystem::File& geometry );
+        SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment );
         ~SpriteProgram();
 
         // Adds a sprite to the current rendering batch

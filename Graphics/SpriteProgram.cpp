@@ -4,8 +4,8 @@
 
 using namespace Graphics;
 
-SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile, const FileSystem::File& geometryFile )
-    : Program{ Shaders::Shader( GL_VERTEX_SHADER, vertexFile ), Shaders::Shader( GL_FRAGMENT_SHADER, fragmentFile ), Shaders::Shader( GL_GEOMETRY_SHADER, geometryFile ) },
+SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile )
+    : Program{ Shaders::Shader( GL_VERTEX_SHADER, vertexFile ), Shaders::Shader( GL_FRAGMENT_SHADER, fragmentFile ) },
         _array( 1, sizeof( Sprite ) )
 {
     _array.define( 0, 0, GL_DOUBLE, 2 );
@@ -30,5 +30,5 @@ void SpriteProgram::draw( Sprites& sprites, const TextureAtlas& atlas )
 {
     _array.bind( sprites, _vertexPos );
 
-    glDrawArrays( GL_POINTS, 0, sprites.size());
+    glDrawArrays( GL_POINTS, 0, sprites.size() );
 }
