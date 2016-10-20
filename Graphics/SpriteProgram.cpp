@@ -26,9 +26,9 @@ SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSyst
     //_texCoordPos = glGetAttribLocation( _program, "texCoord" );
 }
 
-void SpriteProgram::draw()
+void SpriteProgram::draw( Sprites& sprites, const TextureAtlas& atlas )
 {
-    _array.bind( _vertexPos );
+    _array.bind( sprites, _vertexPos );
 
-    glDrawElements( GL_TRIANGLES, _array.count(), GL_UNSIGNED_SHORT, nullptr );
+    glDrawArrays( GL_POINTS, 0, sprites.size());
 }

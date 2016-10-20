@@ -22,7 +22,6 @@
     <ClInclude Include="TextureAtlas.h">
       <Filter>Storage\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="BufferInfo.h">
       <Filter>Shader</Filter>
     </ClInclude>
@@ -30,6 +29,9 @@
       <Filter>Shader\Some Programs</Filter>
     </ClInclude>
     <ClInclude Include="ObjectArray.h">
+      <Filter>Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
       <Filter>Storage</Filter>
     </ClInclude>
   </ItemGroup>
@@ -58,11 +60,13 @@
     <ClCompile Include="BufferInfo.cpp">
       <Filter>Shader</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="SpriteProgram.cpp">
       <Filter>Shader\Some Programs</Filter>
     </ClCompile>
     <ClCompile Include="ObjectArray.cpp">
+      <Filter>Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
       <Filter>Storage</Filter>
     </ClCompile>
   </ItemGroup>

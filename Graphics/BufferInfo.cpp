@@ -13,7 +13,7 @@ BufferInfo::~BufferInfo()
 {
 }
 
-void    BufferInfo::bind( Mesh& mesh, unsigned int location )
+void    BufferInfo::bind( Buffer& array, unsigned int location )
 {
     for( unsigned int i = 0; i < _components; ++i )
     {
@@ -21,7 +21,7 @@ void    BufferInfo::bind( Mesh& mesh, unsigned int location )
         glVertexAttribDivisor( location + i, _instancing ); // Sets up instancing if enabled
     }
 
-    glBindBuffer( GL_ARRAY_BUFFER, mesh.vertexBuffer() );
+    glBindBuffer( GL_ARRAY_BUFFER, array.buffer() );
 }
 
 IndexedBufferInfo::IndexedBufferInfo( unsigned int components, unsigned int step )
@@ -32,9 +32,9 @@ IndexedBufferInfo::~IndexedBufferInfo()
 {
 }
 
-void    IndexedBufferInfo::bind( IndexedMesh& mesh, unsigned int location )
+void    IndexedBufferInfo::bind( Buffer& indices, Buffer& vertices, unsigned int location )
 {
-    BufferInfo::bind( mesh.vertexBuffer(), location );
+    BufferInfo::bind( vertices, location );
 
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, mesh.indexBuffer() );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indices.buffer() );
 }

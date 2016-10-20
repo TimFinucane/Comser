@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Mesh.h"
+#include "Buffer.h"
 
 namespace Graphics
 {
@@ -28,7 +28,7 @@ namespace Graphics
             /// Sets up opengl to recieve the buffer described
             ///  by this class
             /// </summary>
-            void            bind( Mesh& mesh, unsigned int location );
+            void            bind( Buffer& array, unsigned int location );
 
             /// <summary>
             /// Used to define a specific component of the buffer data
@@ -76,7 +76,7 @@ namespace Graphics
             IndexedBufferInfo( unsigned int components, unsigned int step );
             ~IndexedBufferInfo();
 
-            void            bind( IndexedMesh& mesh, unsigned int location );
+            void            bind( Buffer& indices, Buffer& vertices, unsigned int location );
         };
     }
 }

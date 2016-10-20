@@ -1,38 +1,16 @@
 #pragma once
-
 #include <vector>
-#include <memory>
+
+#include "Buffer.h"
 
 namespace Graphics
 {
-    class _ObjectArrayBase
-    {
-    public:
-        enum class UpdateFrequency
-        {
-            ONCE,
-            OCCASIONALLY,
-            FREQUENTLY
-        };
-    
-    protected:
-        _ObjectArrayBase( UpdateFrequency freq );
-        _ObjectArrayBase( UpdateFrequency freq, size_t length, void* data );
-        ~_ObjectArrayBase();
-
-        void        recreate( size_t length, void* data );
-        void        replace( size_t start, size_t length, void* data );
-    private:
-        UpdateFrequency _frequency;
-        unsigned int    _buffer;
-    };
-
     // An array object is a single buffer used by the
     //  graphics device to render objects
     template <typename OBJECT>
-    class ObjectArray : protected _ObjectArrayBase
+    class ObjectArray : public Buffer
     {
-        typedef std::vector<Object> Buffer;
+        typedef std::vector<OBJECT> Buffer;
     public:
         ObjectArray( UpdateFrequency freq )
             : _ObjectArrayBase( freq ), _length( 0 )
@@ -55,7 +33,15 @@ namespace Graphics
             if( buffer.size() == _size )
                 replace( 0, _size * sizeof( OBJECT ), &buffer[0] );
             else
+            {
+                _size = buffer.size();
                 recreate( _size, &buffer[0] );
+            }
+        }
+
+        size_t      size() const
+        {
+            return _size;
         }
 
         // TODO:

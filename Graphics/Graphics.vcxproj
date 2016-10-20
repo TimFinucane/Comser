@@ -173,12 +173,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Buffer.h" />
     <ClInclude Include="ObjectArray.h" />
     <ClInclude Include="BufferInfo.h" />
     <ClInclude Include="SpriteProgram.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Library.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TextureAtlas.h" />
@@ -186,12 +186,12 @@
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="BufferInfo.cpp" />
     <ClCompile Include="ObjectArray.cpp" />
     <ClCompile Include="SpriteProgram.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Library.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="TextureAtlas.cpp" />

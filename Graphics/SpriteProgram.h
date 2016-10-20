@@ -31,6 +31,8 @@ namespace Graphics
 
             uint32_t        layer;
         };
+
+        typedef ObjectArray<Sprite> Sprites;
     public:
         SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment, const FileSystem::File& geometry );
         ~SpriteProgram();
@@ -44,13 +46,13 @@ namespace Graphics
         void    set( unsigned int index, const Sprite& sprite );
 
         // Draws all sprites
-        void    draw( TextureAtlas& atlas );
+        void    draw( Sprites& sprites, const TextureAtlas& atlas );
     private:
         unsigned int    _vertexPos;
         unsigned int    _texCoordPos;
         unsigned int    _posUniform;
         unsigned int    _matUniform;
 
-        Graphics::Shaders::IndexedBufferInfo    _array;
+        Graphics::Shaders::BufferInfo   _array;
     };
 }
