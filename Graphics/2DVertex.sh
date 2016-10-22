@@ -1,14 +1,18 @@
 #version 150
 
-uniform dvec2 position;
-uniform mat2 matrix;
+layout(location=0) in vec2 vertexPos;
+layout(location=1) in vec2 vertexTex;
 
-in  dvec2 vertex;
-in  dvec2 texCoord;
+layout(location=2) in vec2 position;
+layout(location=3) in vec2 scale;
+layout(location=4) in uint layer;
+
+out uint  fragLayer;
 out dvec2 fragTexCoord;
 
 void main()
 {
-	fragTexCoord = texCoord;
-	gl_Position = position + matrix * vertex;
+    fragLayer = layer;
+	fragTexCoord = vertexTex;
+	gl_Position = position + vertexPos * scale;
 }

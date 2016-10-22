@@ -73,7 +73,7 @@
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\ProgLibs\SDL2\include;$(ProjectDir)..\Common\;C:\ProgLibs\GL;C:\ProgLibs\libsigc++;$(IncludePath)</IncludePath>
+    <IncludePath>C:\ProgLibs\SDL2\include;$(ProjectDir)..\Common\;C:\ProgLibs\libsigc++;$(IncludePath)</IncludePath>
     <ReferencePath>C:\Users\Acre\Documents\Visual Studio 2013\Projects\Comser\libsig\MSVC_Net2010\Win32\$(Configuration);$(ReferencePath)</ReferencePath>
     <LibraryPath>$(ProjectDir)..\GL\Lib\;C:\ProgLibs\libsigc++\lib;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>

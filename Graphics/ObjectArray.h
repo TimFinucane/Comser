@@ -10,14 +10,14 @@ namespace Graphics
     template <typename OBJECT>
     class ObjectArray : public Buffer
     {
-        typedef std::vector<OBJECT> Buffer;
+        typedef std::vector<OBJECT> Objects;
     public:
         ObjectArray( UpdateFrequency freq )
-            : _ObjectArrayBase( freq ), _length( 0 )
+            : Buffer( freq ), _size( 0 )
         {
         }
-        ObjectArray( UpdateFrequency freq, Buffer buffer )
-            : _ObjectArrayBase( freq, buffer.size() * sizeof( OBJECT ), &buffer[0] )
+        ObjectArray( UpdateFrequency freq, const Objects& buffer )
+            : Buffer( freq, buffer.size() * sizeof( OBJECT ), &buffer[0] )
         {
         }
         ~ObjectArray()
@@ -25,10 +25,9 @@ namespace Graphics
         }
 
         /// <summary>
-        /// Updates the object array without
-        ///  mapping it to the client side.
+        /// Updates the object array without mapping it to the client side.
         /// </summary>
-        void        update( Buffer buffer )
+        void        update( const Objects& buffer )
         {
             if( buffer.size() == _size )
                 replace( 0, _size * sizeof( OBJECT ), &buffer[0] );
@@ -45,12 +44,14 @@ namespace Graphics
         }
 
         // TODO:
-        /// <summary>
-        /// Will push some updates to the object array
-        /// </summary>
+        // <summary>
+        // Will push some updates to the object array
+        // </summary>
         //void        push( InstructionBuffer instructionBuffer );
 
     private:
         size_t  _size;
     };
+
+
 }

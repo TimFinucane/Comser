@@ -24,3 +24,8 @@ void    TextureAtlas::clear()
 {
     glDeleteTextures( 1, &_texture );
 }
+
+void    TextureAtlas::bind() const
+{
+    glBindTexture( GL_TEXTURE_2D_ARRAY, _texture );
+}

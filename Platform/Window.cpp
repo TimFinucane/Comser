@@ -26,7 +26,7 @@ Window::Window( const WindowSettings& settings )
     // TODO: Check opengl version
 
     // We want double buffering
-    int error = SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+    error = SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
     sdlError( error, "Double Buffering not enabled on this device" ); // TODO: Try get around this?
 
     int windowFlags = 0;
@@ -35,13 +35,13 @@ Window::Window( const WindowSettings& settings )
 
     switch( settings.mode )
     {
-    case WINDOWED:
+    case Mode::WINDOWED:
         windowFlags |= SDL_WINDOW_RESIZABLE;
         break;
-    case WINDOWED_BORDERLESS:
+    case Mode::WINDOWED_BORDERLESS:
         windowFlags |= SDL_WINDOW_BORDERLESS;
         break;
-    case FULLSCREEN:
+    case Mode::FULLSCREEN:
         windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
         break;
     }
@@ -82,15 +82,15 @@ void                            Window::settings( const WindowSettings& settings
     {
         switch( settings.mode )
         {
-        case WINDOWED:
+        case Mode::WINDOWED:
             SDL_SetWindowBordered( _window, SDL_TRUE );
             SDL_SetWindowSize( _window, settings.rect.width, settings.rect.height );
             break;
-        case WINDOWED_BORDERLESS:
+        case Mode::WINDOWED_BORDERLESS:
             SDL_SetWindowBordered( _window, SDL_FALSE );
             SDL_SetWindowSize( _window, settings.rect.width, settings.rect.height );
             break;
-        case FULLSCREEN: // Note that we use fullscreen as windowed borderless because i do not like normal fullscreen
+        case Mode::FULLSCREEN: // Note that we use fullscreen as windowed borderless because i do not like normal fullscreen
             {
                 SDL_Rect rect;
 
@@ -127,11 +127,11 @@ void                            Window::loop( LoopFunction loop, EventFunction e
 
 void                            Window::update()
 {
-    SDL_GL_SwapWindow( *_window );
+    SDL_GL_SwapWindow( _window );
 }
-void                            Window::clear( double r, double b, double g, double a )
+void                            Window::clear( float r, float b, float g, float a )
 {
-    glClearColor( 0.0, 0.0, 0.0, 1.0 );
+    glClearColor( r, g, b, a );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 

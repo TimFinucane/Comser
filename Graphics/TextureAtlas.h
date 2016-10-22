@@ -20,7 +20,7 @@ namespace Graphics
 
         void            clear();
 
-        void            bind();
+        void            bind() const;
 
         unsigned int    width()
         {

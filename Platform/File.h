@@ -15,6 +15,6 @@ namespace FileSystem
         File& operator =( const File& file ) = delete;
 
         unsigned char*  file;
-        unsigned int    length;
+        size_t          length;
     };
 }

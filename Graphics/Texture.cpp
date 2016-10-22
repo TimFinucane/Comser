@@ -4,7 +4,7 @@
 
 using namespace Graphics;
 
-Texture::Texture( const Image::File& file )
+Texture::Texture( const Image& file )
 {
     //glCreateTextures( GL_TEXTURE_2D, 1, &texture ); 4.1 and above only :(
     glGenTextures( 1, &_texture );

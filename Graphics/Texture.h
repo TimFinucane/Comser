@@ -10,7 +10,7 @@ namespace Graphics
     struct Texture
     {
     public:
-        Texture( const Image::File& file );
+        Texture( const Image& file );
         ~Texture();
 
         Texture( Texture& tex ) = delete;

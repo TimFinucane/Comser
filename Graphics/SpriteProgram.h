@@ -13,8 +13,10 @@
 // Uses a 2D texture
 namespace Graphics
 {
+    // TODO: Docs
     /// <summary>
     /// This
+    /// </summary>
     class SpriteProgram : public Graphics::Shaders::Program
     {
     public:
@@ -24,35 +26,35 @@ namespace Graphics
             float           x;
             float           y;
 
-            float           width;
-            float           height;
-
-            float           rotation;
+            float           xScale;
+            float           yScale;
 
             uint32_t        layer;
         };
+        typedef std::vector<Sprite> Sprites;
 
-        typedef ObjectArray<Sprite> Sprites;
+    private:
+        struct Vertex
+        {
+            float xPos;
+            float yPos;
+
+            float xTex;
+            float yTex;
+        };
     public:
         SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment );
-        ~SpriteProgram();
-
-        // Adds a sprite to the current rendering batch
-        void    add( const Sprite& sprite );
-        void    clearBatch();
-        /// <summary>
-        /// Changes a single sprite in the batch
-        /// </summary>
-        void    set( unsigned int index, const Sprite& sprite );
+        ~SpriteProgram(){}
 
         // Draws all sprites
-        void    draw( Sprites& sprites, const TextureAtlas& atlas );
+        void    draw( const Sprites& sprites, const TextureAtlas& atlas );
     private:
-        unsigned int    _vertexPos;
-        unsigned int    _texCoordPos;
-        unsigned int    _posUniform;
-        unsigned int    _matUniform;
+        ObjectArray<Vertex>                     _vertices;
+        ObjectArray<unsigned short>             _indices;
 
-        Graphics::Shaders::BufferInfo   _array;
+        ObjectArray<Sprite>                     _sprites;
+
+        Graphics::Shaders::IndexedBufferInfo    _squareInfo;
+        Graphics::Shaders::BufferInfo           _spriteInfo;
     };
 }

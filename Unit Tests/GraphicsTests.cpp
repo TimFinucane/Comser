@@ -1,5 +1,4 @@
 #include <CppUnitTest.h>
-#include <Device.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

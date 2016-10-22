@@ -63,9 +63,6 @@
     <ClCompile Include="SpriteProgram.cpp">
       <Filter>Shader\Some Programs</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectArray.cpp">
-      <Filter>Storage</Filter>
-    </ClCompile>
     <ClCompile Include="Buffer.cpp">
       <Filter>Storage</Filter>
     </ClCompile>

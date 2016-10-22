@@ -188,7 +188,6 @@
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="BufferInfo.cpp" />
-    <ClCompile Include="ObjectArray.cpp" />
     <ClCompile Include="SpriteProgram.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Library.cpp" />
