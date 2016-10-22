@@ -21,13 +21,13 @@ namespace Graphics
         {
             // The image (in single-channel 8-bit alpha) that can be directly converted to a texture.
             // Also contains width and height of file
-            Image::File file;
+            Image file;
             // Distance between text baseline and the actual top of the image
             unsigned int cntrHeight;
         };
         struct Paragraph
         {
-            Image::File file;
+            Image file;
         };
 
         // A specific font

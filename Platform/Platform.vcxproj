@@ -113,7 +113,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -174,6 +174,7 @@
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>SDL2.lib;sigc-vc110-2_0_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Verbose>false</Verbose>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

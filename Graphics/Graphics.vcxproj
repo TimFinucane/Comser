@@ -111,8 +111,8 @@
       <SDLCheck>true</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <PreprocessorDefinitions>_HAS_EXCEPTIONS=0;OPENGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>_HAS_EXCEPTIONS=0;OPENGL;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -121,8 +121,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>libpng16x64.lib;zlibx64.lib;</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
+    <CustomBuildStep>
+      <Command>%systemroot%\System32\xcopy /y "*.sh" "$(OutDir)"</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>Moving shader files</Message>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>.sh</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -150,7 +160,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -169,11 +179,18 @@
       </Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>libpng16x64.lib;zlibx64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlibx64.lib;libpng16x64.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <Verbose>false</Verbose>
     </Lib>
+    <CustomBuildStep>
+      <Command>%systemroot%\System32\xcopy /y "*.sh" "$(OutDir)"</Command>
+      <Message>Moving shader files</Message>
+      <Outputs>.sh</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="lodepng.h" />
     <ClInclude Include="ObjectArray.h" />
     <ClInclude Include="BufferInfo.h" />
     <ClInclude Include="SpriteProgram.h" />
@@ -188,6 +205,7 @@
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="BufferInfo.cpp" />
+    <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="SpriteProgram.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Library.cpp" />

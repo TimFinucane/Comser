@@ -28,12 +28,9 @@ public:
             settings.rect = Window::Rect{ 100, 100, 800, 600 };
             settings.screen = 0;
 
-            Window simple;
-            simple.init( settings );
+            Window simple( settings );
 
             simple.loop( []{}, sigc::ptr_fun( &escapeFunc ) );
-
-            simple.release();
         }
         catch( std::exception e )
         {
@@ -52,12 +49,9 @@ public:
             settings.rect = Window::getCentreRect( Window::defaultScreen(), 800, 600 );
             settings.screen = 0;
 
-            Window window;
-            window.init( settings );
+            Window window( settings );
 
             window.loop( [] {}, sigc::ptr_fun( &escapeFunc ) );
-
-            window.release();
         }
         catch( std::exception e )
         {
@@ -78,12 +72,9 @@ public:
             settings.rect = Window::getScreenInfo( screen ).rect;
             settings.screen = screen;
 
-            Window window;
-            window.init( settings );
+            Window window( settings );
 
             window.loop( [] {}, sigc::ptr_fun( &escapeFunc ) );
-
-            window.release();
         }
         catch( std::exception e )
         {
@@ -104,12 +95,9 @@ public:
             settings.rect = Window::getScreenInfo( screen ).rect;
             settings.screen = screen;
 
-            Window window;
-            window.init( settings );
+            Window window( settings );
 
             window.loop( [] {}, sigc::ptr_fun( &escapeFunc ) );
-
-            window.release();
         }
         catch( std::exception e )
         {
@@ -129,12 +117,9 @@ public:
             settings.rect = { 0, 0, 0, 0 };
             settings.screen = screen;
 
-            Window window;
-            window.init( settings );
+            Window window( settings );
 
             window.loop( [] {}, sigc::ptr_fun( &escapeFunc ) );
-
-            window.release();
         }
         catch( std::exception e )
         {

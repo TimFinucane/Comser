@@ -1,11 +1,13 @@
-#version 150
+#version 330
 
-uniform sampler2DArray texture;
+uniform sampler2DArray tex;
 
-in uint fragLayer;
+flat in uint fragLayer;
 in vec2 fragTexCoord;
+
+out vec4 colour;
 
 void main()
 {
-	gl_FragColor = texture( texture, fragTexCoord, fragLayer );
+	colour = texture( tex, vec3( fragTexCoord, fragLayer ) );
 }

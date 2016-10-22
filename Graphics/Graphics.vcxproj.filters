@@ -34,6 +34,9 @@
     <ClInclude Include="Buffer.h">
       <Filter>Storage</Filter>
     </ClInclude>
+    <ClInclude Include="lodepng.h">
+      <Filter>Storage\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="Buffer.cpp">
       <Filter>Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="lodepng.cpp">
+      <Filter>Storage\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

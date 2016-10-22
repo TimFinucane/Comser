@@ -24,9 +24,9 @@ namespace Graphics
         {
         }
 
-        /// <summary>
-        /// Updates the object array without mapping it to the client side.
-        /// </summary>
+        // <summary>
+        // Updates the object array without mapping it to the client side.
+        // </summary>
         void        update( const Objects& buffer )
         {
             if( buffer.size() == _size )
@@ -34,7 +34,7 @@ namespace Graphics
             else
             {
                 _size = buffer.size();
-                recreate( _size, &buffer[0] );
+                recreate( _size * sizeof( OBJECT ), &buffer[0] );
             }
         }
 

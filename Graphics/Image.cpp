@@ -3,6 +3,7 @@
 #include <GraphicsIncludes.h>
 
 #include <png.h>
+#include "lodepng.h"
 
 using namespace Graphics;
 
@@ -19,7 +20,24 @@ struct FileInfo
     unsigned int curPt;
 };
 
-void readData( png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead );
+Image   Image::createPng( const FileSystem::File& png )
+{
+    std::vector<unsigned char> image;
+    unsigned int width;
+    unsigned int height;
+    unsigned int state = lodepng::decode( image, width, height, png.file, png.length );
+
+    if( state != 0 )
+        throw std::runtime_error( std::string( "LodePng error: " ) + lodepng_error_text( state ) );
+
+    Image img( width, height, 8, 4 );
+    img._file = new unsigned char[image.size()];
+    std::copy( image.begin(), image.end(), img._file );
+
+    return img;
+}
+
+/*void readData( png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead );
 
 Image   Image::createPng( const FileSystem::File& png )
 {
@@ -44,7 +62,7 @@ Image   Image::createPng( const FileSystem::File& png )
 
     FileInfo file( png );
     file.curPt = SIGNATURE_SIZE;
-    png_set_read_fn( png_ptr, (void*)&png, readData );
+    png_set_read_fn( png_ptr, (void*)&file, readData );
 
     // and lets tell libpng we already read the signature
     png_set_sig_bytes( png_ptr, SIGNATURE_SIZE );
@@ -57,12 +75,13 @@ Image   Image::createPng( const FileSystem::File& png )
     int bitDepth = 0;
     int colourType = -1;
     unsigned int channels = 0;
+
     png_uint_32 retval = png_get_IHDR( png_ptr, info_ptr,
-                                       &w,
-                                       &h,
-                                       &bitDepth,
-                                       &colourType,
-                                       nullptr, nullptr, nullptr );
+        &w,
+        &h,
+        &bitDepth,
+        &colourType,
+        nullptr, nullptr, nullptr );
 
     if( retval != 1 )
     {
@@ -104,8 +123,10 @@ Image   Image::createPng( const FileSystem::File& png )
     }
 
     png_read_image( png_ptr, rowPointers );
-    
+
     png_destroy_read_struct( &png_ptr, &info_ptr, nullptr );
+
+    (file);
 
     return image;
 }
@@ -113,10 +134,10 @@ Image   Image::createPng( const FileSystem::File& png )
 void readData( png_structp png_ptr, png_bytep outBytes, png_size_t byteCountToRead )
 {
     png_voidp io_ptr = png_get_io_ptr( png_ptr );
-    /*if( io_ptr == nullptr )
-    return;   // add custom error handling here*/
-    FileInfo* fileInfo = reinterpret_cast<FileInfo*>( io_ptr );
-    unsigned char* start = fileInfo->file.file + fileInfo->curPt; // HA
+    if( io_ptr == nullptr )
+    return;   // add custom error handling here
+    FileInfo& fileInfo = *reinterpret_cast<FileInfo*>(io_ptr);
+    unsigned char* start = fileInfo.file.file + fileInfo.curPt;
 
     std::copy( start, start + byteCountToRead, outBytes );
-}
+}*/

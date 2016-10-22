@@ -8,20 +8,23 @@ using namespace Graphics::Shaders;
 BufferInfo::BufferInfo( unsigned int components, unsigned int step, unsigned int instancing )
     : _components( components ), _step( step ), _instancing( instancing )
 {
+    _items = new BufferItem[components];
 }
 BufferInfo::~BufferInfo()
 {
+    if( _components > 0 )
+        delete[] _items;
 }
 
 void    BufferInfo::bind( Buffer& array, unsigned int location )
 {
+    glBindBuffer( GL_ARRAY_BUFFER, array.buffer() );
+
     for( unsigned int i = 0; i < _components; ++i )
     {
         glVertexAttribPointer( location + i, _items[i].numItems, _items[i].type, GL_FALSE, _step, (void*)_items[i].offset );
         glVertexAttribDivisor( location + i, _instancing ); // Sets up instancing if enabled
     }
-
-    glBindBuffer( GL_ARRAY_BUFFER, array.buffer() );
 }
 
 IndexedBufferInfo::IndexedBufferInfo( unsigned int components, unsigned int step )

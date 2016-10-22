@@ -34,7 +34,7 @@ namespace Graphics
         typedef std::vector<Sprite> Sprites;
 
     private:
-        struct Vertex
+        struct alignas(16) Vertex
         {
             float xPos;
             float yPos;
@@ -44,11 +44,13 @@ namespace Graphics
         };
     public:
         SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment );
-        ~SpriteProgram(){}
+        ~SpriteProgram();
 
         // Draws all sprites
         void    draw( const Sprites& sprites, const TextureAtlas& atlas );
     private:
+        unsigned int                            _vao;
+
         ObjectArray<Vertex>                     _vertices;
         ObjectArray<unsigned short>             _indices;
 

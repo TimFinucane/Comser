@@ -112,7 +112,7 @@ Line    Font::genLine( UChar* text, unsigned int length, bool kern )
     // And now write them all to the texture
     Line line;
     line.cntrHeight = highest;
-    line.file = Image::File( width, highest - lowest, 8, 1 );
+    line.file = Image( width, highest - lowest, 8, 1 );
 
     for( auto jt = glyphPositions.begin(); jt != glyphPositions.end(); ++jt )
     {

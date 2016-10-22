@@ -118,7 +118,7 @@
       <EnablePREfast>true</EnablePREfast>
       <ExceptionHandling>Sync</ExceptionHandling>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4634;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -183,6 +183,9 @@
     <PostBuildEvent>
       <Message>Copies to game directory</Message>
     </PostBuildEvent>
+    <Lib>
+      <Verbose>false</Verbose>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />

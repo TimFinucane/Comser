@@ -15,20 +15,6 @@ Window::Window( const WindowSettings& settings )
 
     _curSettings = settings;
 
-    /* Request opengl 3.2 context.
-    *  SDL doesn't have the ability to choose which profile at this time of writing,
-    *  but it should default to the core profile */
-    // TODO: Choose a graphics device?
-    int errorMaj = SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 3 );
-    int errorMin = SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 2 );
-    sdlError( errorMaj + errorMin, "Cannot setup OpenGL context of 3.2 or above. Please confirm you have drivers capable of supporting at least GL 3.2" );
-
-    // TODO: Check opengl version
-
-    // We want double buffering
-    error = SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-    sdlError( error, "Double Buffering not enabled on this device" ); // TODO: Try get around this?
-
     int windowFlags = 0;
     windowFlags |= SDL_WINDOW_OPENGL;
     windowFlags |= SDL_WINDOW_SHOWN;
@@ -54,9 +40,28 @@ Window::Window( const WindowSettings& settings )
     // Do that cool thing where the game doesn't minimize if you open something else.
     SDL_SetHint( SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0" );
 
-    glewInit();
+    /* Request opengl 3.2 context.
+    *  SDL doesn't have the ability to choose which profile at this time of writing,
+    *  but it should default to the core profile */
+    // TODO: Choose a graphics device?
+    int errorMaj = SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 3 );
+    int errorMin = SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 3 );
+    sdlError( errorMaj + errorMin, "Cannot setup OpenGL context of 3.2 or above. Please confirm you have drivers capable of supporting at least GL 3.2" );
+
+    // TODO: Check opengl version
+
+    // We want double buffering
+    error = SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+    sdlError( error, "Double Buffering not enabled on this device" ); // TODO: Try get around this?
 
     _context = SDL_GL_CreateContext( _window );
+
+    glewExperimental = GL_TRUE;
+    GLenum glewError = glewInit();
+    if( glewError != GLEW_OK )
+        throw std::runtime_error( "Error intializing opengl with glew: " + std::string( (char*)glewGetErrorString( glewError ) ) );
+
+    glViewport( 0, 0, settings.rect.width, settings.rect.height );
 }
 Window::~Window()
 {
@@ -129,7 +134,7 @@ void                            Window::update()
 {
     SDL_GL_SwapWindow( _window );
 }
-void                            Window::clear( float r, float b, float g, float a )
+void                            Window::clear( float r, float g, float b, float a )
 {
     glClearColor( r, g, b, a );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

@@ -44,14 +44,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CLRSupport>true</CLRSupport>
+    <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CLRSupport>true</CLRSupport>
+    <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -78,13 +78,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Repos\Game Design\Comser\Platform;C:\Repos\Game Design\Comser\Graphics;C:\Repos\Game Design\Comser\Common;C:\Repos\Game Design\Comser\Comser;C:\ProgLibs\libsigc++;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\ProgLibs\libsigc++\lib;C:\Repos\Game Design\Comser\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Repos\Game Design\Comser\Platform;C:\Repos\Game Design\Comser\Graphics;C:\Repos\Game Design\Comser\Common;C:\Repos\Game Design\Comser\Comser;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Repos\Game Design\Comser\Platform;C:\Repos\Game Design\Comser\Graphics;C:\Repos\Game Design\Comser\Common;C:\Repos\Game Design\Comser\Comser;C:\ProgLibs\libsigc++;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\ProgLibs\libsigc++\lib;C:\Repos\Game Design\Comser\x64\Release;C:\ProgLibs\SDL2\lib\x64;C:\ProgLibs\GL\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -98,12 +100,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>SDL2-d.lib;SDL2main-d.lib;sigc-vc110-2_0_x64.lib;platform.lib;graphics.lib;common.lib</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -121,7 +126,8 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;sigc-vc110-2_0_x64.lib;common.lib;platform.lib;graphics.lib</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
