@@ -84,9 +84,9 @@
     <LibraryPath>$(SolutionDir)..\GL\Lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\ProgLibs\SDL2\include;$(ProjectDir)..\Common\;C:\ProgLibs\GL;C:\ProgLibs\libsigc++;$(IncludePath)</IncludePath>
+    <IncludePath>C:\ProgLibs\SDL2\include;C:\ProgLibs\GL;C:\ProgLibs\libsigc++;$(IncludePath)</IncludePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>$(ProjectDir)..\GL\Lib\;C:\ProgLibs\libsigc++\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\ProgLibs\libsigc++\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

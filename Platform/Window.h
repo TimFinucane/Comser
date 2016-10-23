@@ -11,13 +11,14 @@
 #include <SDL.h>
 #pragma warning( pop )
 
-#include <Rect.h>
-
 // TODO: More options on mouse and keyboard input
 class Window
 {
 public:
-    typedef Maths::Rect<short> Rect;
+    struct Rect
+    {
+        short x, y, width, height;
+    };
 
     enum class Mode
     {

@@ -20,11 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rect.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="Matrix.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Matrix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />

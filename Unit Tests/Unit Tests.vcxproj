@@ -24,9 +24,6 @@
     <ClCompile Include="PlatformTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.vcxproj">
-      <Project>{0b7209ce-94cb-4393-94ea-b2675c2aed41}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Graphics\Graphics.vcxproj">
       <Project>{b856a7c1-afba-4b10-8322-ec2586433a83}</Project>
     </ProjectReference>
@@ -180,7 +177,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sigc-vc110-2_0_x64.lib;SDL2.lib;graphics.lib;common.lib;platform.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sigc-vc110-2_0_x64.lib;SDL2.lib;graphics.lib;platform.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

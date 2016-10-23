@@ -81,8 +81,8 @@
     <LibraryPath>C:\ProgLibs\png\lib\$(Configuration)\;C:\Repos\Game Design\Comser\Graphics\$(Configuration)\;$(SolutionDir)..\GL\Lib;C:\ProgLibs\png\libs\Release\;$(LibraryPath);C:\ProgLibs\freetype-2.6\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\ProgLibs\libsigc++;C:\ProgLibs\glm;C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;C:\ProgLibs\GL\Include;$(ProjectDir)..\Common\;C:\ProgLibs\png;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\ProgLibs\png\lib\Release;$(SolutionDir)..\GL\Lib;C:\ProgLibs\libsigc++\lib;C:\ProgLibs\freetype-2.6\lib</LibraryPath>
+    <IncludePath>C:\ProgLibs\libsigc++;C:\ProgLibs\glm;C:\ProgLibs\freetype-2.6\include;$(ProjectDir)..\Platform\;C:\ProgLibs\GL\Include;C:\ProgLibs\png;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\GL\Lib;C:\ProgLibs\libsigc++\lib;C:\ProgLibs\freetype-2.6\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -180,7 +180,7 @@
       </Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>zlibx64.lib;libpng16x64.lib%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <Verbose>false</Verbose>
     </Lib>
     <CustomBuildStep>

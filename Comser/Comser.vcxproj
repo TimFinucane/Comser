@@ -84,7 +84,7 @@
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\ProgLibs\libsigc++;C:\ProgLibs\SDL2\include;$(ProjectDir)..\libsig;$(ProjectDir)..\Common;$(IncludePath)</IncludePath>
+    <IncludePath>C:\ProgLibs\libsigc++;C:\ProgLibs\SDL2\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\GL\Lib</LibraryPath>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
