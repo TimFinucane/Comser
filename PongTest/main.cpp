@@ -26,8 +26,8 @@ int main( int argc, char *argv[] )
             Window::Rect{ 100, 100, 800, 600 }
         } );
     
-    FileSystem::File vert( L"2DVertex.sh" );
-    FileSystem::File frag( L"2DFragment.sh" );
+    FileSystem::File vert( L"SpriteVertex.sh" );
+    FileSystem::File frag( L"SpriteFragment.sh" );
 
     spriteProgram = std::make_shared<Graphics::SpriteProgram>( vert, frag );
 

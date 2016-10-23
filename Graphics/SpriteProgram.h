@@ -13,14 +13,18 @@
 // Uses a 2D texture
 namespace Graphics
 {
-    // TODO: Docs
     /// <summary>
-    /// This
+    /// This class is used for rendering a series of 2d sprites to the screen.
+    /// To use this class, you must have a texture atlas that holds all the desired sprites.
     /// </summary>
     class SpriteProgram : public Graphics::Shaders::Program
     {
     public:
-        // TODO: Packing?
+        // TODO: Rotation
+        /// <summary>
+        /// This struct represents a single sprite being rendered onto the
+        ///  screen.
+        /// </summary>
         struct Sprite
         {
             float           x;
@@ -43,16 +47,24 @@ namespace Graphics
             float yTex;
         };
     public:
+        /// <summary>
+        /// Initialises the sprite program with the necessary shader files.
+        /// For this class to work, the files must be SpriteFragment.sh and SpriteVertex.sh
+        /// </summary>
         SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment );
         ~SpriteProgram();
 
-        // Draws all sprites
+        /// <summary>
+        /// Draws all the given sprites using the given texture atlas.
+        /// If you want to use a different texture atlas then you will need to
+        ///  call draw again with that new atlas.
+        /// </summary>
         void    draw( const Sprites& sprites, const TextureAtlas& atlas );
     private:
+        // Called in constructor for filling BufferInfo data
         void    defineBufferInfo();
+        // Called in constructor for setting up vertex attributes
         void    bindVaoState();
-
-        unsigned int                            _vao;
 
         ObjectArray<Vertex>                     _vertices{ Buffer::UpdateFrequency::ONCE };
         ObjectArray<unsigned short>             _indices { Buffer::UpdateFrequency::ONCE };

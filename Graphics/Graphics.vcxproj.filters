@@ -94,10 +94,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="2DVertex.sh">
+    <None Include="SpriteFragment.sh">
       <Filter>Shader\Some Programs</Filter>
     </None>
-    <None Include="2DFragment.sh">
+    <None Include="SpriteVertex.sh">
       <Filter>Shader\Some Programs</Filter>
     </None>
   </ItemGroup>

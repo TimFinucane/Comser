@@ -16,3 +16,5 @@ More functionality for changing ObjectArrays
 
 Changing some exceptions to fail states for potential failures in shaders
  (e.g. compilation failures should not throw exceptions, as they are too common. Zombie state instead?)
+
+ Rotation for SpriteProgram

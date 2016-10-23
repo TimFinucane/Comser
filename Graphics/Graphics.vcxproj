@@ -220,8 +220,8 @@
     <Text Include="Todo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="2DFragment.sh" />
-    <None Include="2DVertex.sh" />
+    <None Include="SpriteFragment.sh" />
+    <None Include="SpriteVertex.sh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

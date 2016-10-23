@@ -31,7 +31,6 @@ SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSyst
 }
 SpriteProgram::~SpriteProgram()
 {
-    glDeleteVertexArrays( 1, &_vao );
 }
 
 void SpriteProgram::draw( const Sprites& sprites, const TextureAtlas& atlas )
