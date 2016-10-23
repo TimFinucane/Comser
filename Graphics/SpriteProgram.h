@@ -1,5 +1,11 @@
 #pragma once
 
+#pragma warning( push )
+#pragma warning( disable : 4634 )
+#pragma warning( disable : 4635 )
+#include <glm/matrix.hpp>
+#pragma warning( pop )
+
 #include <File.h>
 
 #include "Program.h"
@@ -48,8 +54,14 @@ namespace Graphics
         /// Initialises the sprite program with the necessary shader files.
         /// For this class to work, the files must be SpriteFragment.sh and SpriteVertex.sh
         /// </summary>
-        SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment );
+        /// <param name="matrix">The projection/view matrix</param>
+        SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment, glm::mat3 matrix );
         ~SpriteProgram();
+
+        /// <summary>
+        /// Updates the projection/view matrix used by the shader
+        /// </summary>
+        void    updateMatrix( glm::mat3 matrix );
 
         /// <summary>
         /// Draws all the given sprites using the given texture atlas.
@@ -62,6 +74,8 @@ namespace Graphics
         void    defineBufferInfo();
         // Called in constructor for setting up vertex attributes
         void    bindVaoState();
+
+        unsigned int                            _modelProjPos;
 
         ObjectArray<Vertex>                     _vertices{ Buffer::UpdateFrequency::ONCE };
         ObjectArray<unsigned short>             _indices { Buffer::UpdateFrequency::ONCE };

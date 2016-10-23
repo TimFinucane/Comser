@@ -2,9 +2,15 @@
 
 #include <GraphicsIncludes.h>
 
+#pragma warning( push )
+#pragma warning( disable : 4634 )
+#pragma warning( disable : 4635 )
+#include <glm/gtc/type_ptr.hpp>
+#pragma warning( pop )
+
 using namespace Graphics;
 
-SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile )
+SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile, glm::mat3 matrix )
     : Program{ Shaders::Shader( GL_VERTEX_SHADER, vertexFile ), Shaders::Shader( GL_FRAGMENT_SHADER, fragmentFile ) },
         _squareInfo( 2, sizeof( Vertex ) ), _spriteInfo( 3, sizeof( Sprite ), 1 )
 {
@@ -28,9 +34,19 @@ SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSyst
 
     std::vector<unsigned short> indices{ 0, 2, 1, 1, 2, 3 };
     _indices.update( indices );
+
+    _modelProjPos = uniformLoc( "modelProj" );
+    updateMatrix( matrix );
 }
 SpriteProgram::~SpriteProgram()
 {
+}
+
+void SpriteProgram::updateMatrix( glm::mat3 matrix )
+{
+    use();
+    glUniformMatrix3fv( 0, 1, false, glm::value_ptr( matrix ) );
+    unbind();
 }
 
 void SpriteProgram::draw( const Sprites& sprites, const TextureAtlas& atlas )
@@ -41,6 +57,8 @@ void SpriteProgram::draw( const Sprites& sprites, const TextureAtlas& atlas )
     atlas.bind();
 
     glDrawElementsInstanced( GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr, (GLsizei)_sprites.size() );
+
+    unbind();
 }
 
 void SpriteProgram::defineBufferInfo()
@@ -71,4 +89,6 @@ void SpriteProgram::bindVaoState()
     glBindVertexArray( 0 );
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+
+    unbind();
 }

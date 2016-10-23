@@ -47,3 +47,12 @@ void    Program::bindVao()
 {
     glBindVertexArray( _vao );
 }
+void    Program::unbind()
+{
+    glUseProgram( 0 );
+    glBindVertexArray( 0 );
+}
+unsigned int Program::uniformLoc( char* name )
+{
+    return glGetUniformLocation( _program, name );
+}

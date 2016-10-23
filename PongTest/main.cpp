@@ -5,6 +5,12 @@
 
 #include <memory>
 
+#pragma warning( push )
+#pragma warning( disable : 4634 )
+#pragma warning( disable : 4635 )
+#include <glm/gtc/matrix_transform.hpp>
+#pragma warning( pop )
+
 void loop();
 bool event( SDL_Event e );
 
@@ -29,7 +35,7 @@ int main( int argc, char *argv[] )
     FileSystem::File vert( L"SpriteVertex.sh" );
     FileSystem::File frag( L"SpriteFragment.sh" );
 
-    spriteProgram = std::make_shared<Graphics::SpriteProgram>( vert, frag );
+    spriteProgram = std::make_shared<Graphics::SpriteProgram>( vert, frag, glm::ortho( -800.0f/600.0f, 800.0f/600.0f, -1.0f, 1.0f ) );
 
     Graphics::Image img = Graphics::Image::createPng( FileSystem::File( L"tilemap.png" ) );
 

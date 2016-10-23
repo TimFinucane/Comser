@@ -7,6 +7,8 @@ layout(location=2) in vec2 position;
 layout(location=3) in vec2 scale;
 layout(location=4) in uint layer;
 
+uniform mat3 modelProj;
+
 flat out uint fragLayer;
 out vec2 fragTexCoord;
 
@@ -14,5 +16,5 @@ void main()
 {
     fragLayer = layer;
 	fragTexCoord = vertexTex;
-	gl_Position.xyz = vec3( (position + vertexPos * scale), 0.0 );
+	gl_Position.xyz = modelProj * vec3( (position + vertexPos * scale), 0.0 );
 }

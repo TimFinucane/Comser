@@ -26,8 +26,12 @@ namespace Graphics
             Program( Program&& tex ) = default;
             Program& operator =( Program&& tex ) = default;
 
-            void    use();
-            void    bindVao();
+            void            use();
+            void            bindVao();
+
+            void            unbind();
+
+            unsigned int    uniformLoc( char* name );
         protected:
 
         private:
