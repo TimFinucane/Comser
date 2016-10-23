@@ -8,9 +8,9 @@
 void loop();
 bool event( SDL_Event e );
 
-std::unique_ptr<Graphics::SpriteProgram> spriteProgram;
-std::unique_ptr<Graphics::TextureAtlas> textureAtlas;
-std::unique_ptr<Window> window;
+std::shared_ptr<Graphics::SpriteProgram> spriteProgram;
+std::shared_ptr<Graphics::TextureAtlas> textureAtlas;
+std::shared_ptr<Window> window;
 
 int main( int argc, char *argv[] )
 {
@@ -18,7 +18,7 @@ int main( int argc, char *argv[] )
     (argv);
     try
     {
-    window = std::make_unique<Window>( 
+    window = std::make_shared<Window>(
         Window::WindowSettings{
             "Window",
             Window::Mode::WINDOWED,
@@ -29,11 +29,11 @@ int main( int argc, char *argv[] )
     FileSystem::File vert( L"2DVertex.sh" );
     FileSystem::File frag( L"2DFragment.sh" );
 
-    spriteProgram = std::make_unique<Graphics::SpriteProgram>( vert, frag );
+    spriteProgram = std::make_shared<Graphics::SpriteProgram>( vert, frag );
 
     Graphics::Image img = Graphics::Image::createPng( FileSystem::File( L"tilemap.png" ) );
 
-    textureAtlas = std::make_unique<Graphics::TextureAtlas>( img, 32, 32, 2 );
+    textureAtlas = std::make_shared<Graphics::TextureAtlas>( img, 32, 32, 2 );
 
     window->loop( sigc::ptr_fun( loop ), sigc::ptr_fun( event ) );
     }
@@ -41,9 +41,9 @@ int main( int argc, char *argv[] )
     {
         SDL_ShowSimpleMessageBox( SDL_MESSAGEBOX_ERROR, "Runtime error", e.what(), nullptr );
     }
-    spriteProgram.release();
-    textureAtlas.release();
-    window.release();
+    textureAtlas.reset();
+    spriteProgram.reset();
+    window.reset();
 
     return 0;
 }

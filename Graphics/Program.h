@@ -28,7 +28,6 @@ namespace Graphics
 
             void    use();
         protected:
-            std::string     create( std::initializer_list<const Shader&> shaders );
 
             unsigned int    _program;
         };

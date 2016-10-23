@@ -137,6 +137,7 @@
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
