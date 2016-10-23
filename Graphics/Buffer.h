@@ -16,6 +16,11 @@ namespace Graphics
         {
             return _buffer;
         }
+        /// <summary>
+        /// Binds the buffer to the given buffertype.
+        /// The default is the GL_ARRAY_BUFFER value
+        /// </summary>
+        void            bind( unsigned int bufferType = 0x8892 );
     protected:
         Buffer( UpdateFrequency freq );
         Buffer( UpdateFrequency freq, size_t length, const void* data );

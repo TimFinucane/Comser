@@ -34,7 +34,7 @@ namespace Graphics
         typedef std::vector<Sprite> Sprites;
 
     private:
-        struct alignas(16) Vertex
+        struct Vertex
         {
             float xPos;
             float yPos;
@@ -49,12 +49,15 @@ namespace Graphics
         // Draws all sprites
         void    draw( const Sprites& sprites, const TextureAtlas& atlas );
     private:
+        void    defineBufferInfo();
+        void    bindVaoState();
+
         unsigned int                            _vao;
 
-        ObjectArray<Vertex>                     _vertices;
-        ObjectArray<unsigned short>             _indices;
+        ObjectArray<Vertex>                     _vertices{ Buffer::UpdateFrequency::ONCE };
+        ObjectArray<unsigned short>             _indices { Buffer::UpdateFrequency::ONCE };
 
-        ObjectArray<Sprite>                     _sprites;
+        ObjectArray<Sprite>                     _sprites { Buffer::UpdateFrequency::FREQUENTLY };
 
         Graphics::Shaders::IndexedBufferInfo    _squareInfo;
         Graphics::Shaders::BufferInfo           _spriteInfo;

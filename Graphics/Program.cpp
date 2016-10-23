@@ -9,6 +9,7 @@ const unsigned int INVALID_PROGRAM = 0xDEADBEEF;
 Program::Program( std::initializer_list<Shader> shaders )
 {
     _program = glCreateProgram();
+    glGenVertexArrays( 1, &_vao );
 
     // Attach shaders
     for( auto i = shaders.begin(); i != shaders.end(); ++i )
@@ -33,10 +34,16 @@ Program::Program( std::initializer_list<Shader> shaders )
 }
 Program::~Program()
 {
+    glDeleteVertexArrays( 1, &_vao );
     glDeleteProgram( _program );
 }
 
 void    Program::use()
 {
     glUseProgram( _program );
+    bindVao();
+}
+void    Program::bindVao()
+{
+    glBindVertexArray( _vao );
 }

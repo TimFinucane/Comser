@@ -27,8 +27,11 @@ namespace Graphics
             Program& operator =( Program&& tex ) = default;
 
             void    use();
+            void    bindVao();
         protected:
 
+        private:
+            unsigned int    _vao;
             unsigned int    _program;
         };
     }
