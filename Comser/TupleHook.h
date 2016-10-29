@@ -42,11 +42,11 @@ namespace Comser
             SceneTuples( Scene* scene, Signal& added, Signal& removed )
                 : _scene( scene ), _addedSig( added ), _removeSig( removed )
             {
-                _localTypes[i] = LocalTypes{ group->localTypes( COMPONENTS::id() )... };
+                _localTypes[i] = LocalTypes{ scene->localTypes( COMPONENTS::id() )... };
 
                 for( int i = 0; i < _localTypes.size(); ++i )
                 {
-                    _group->connectAdded( _localTypes[i] ).connect( cinder::signals::slot( this, &TupleHook<COMPONENTS...>::_componentAdded ) );
+                    _scene->connectAdded( _localTypes[i] ).connect( cinder::signals::slot( this, &TupleHook<COMPONENTS...>::_componentAdded ) );
                     _group->connectRemoved( _localTypes[i] ).connect( cinder::signals::slot( this, &TupleHook<COMPONENTS...>::_componentRemoved ) );
                 }
 

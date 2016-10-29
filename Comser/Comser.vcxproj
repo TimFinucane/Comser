@@ -194,6 +194,7 @@
     <ClInclude Include="ComponentAssociator.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Group.h" />
+    <ClInclude Include="MultiGrid.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="GridPosition.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="ComponentAssociator.cpp" />
     <ClCompile Include="GroupComponentManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="MultiGrid.cpp" />
     <ClCompile Include="UpdateCounter.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="GroupEntityList.cpp" />

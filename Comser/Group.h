@@ -78,7 +78,7 @@ namespace Comser
 
                 _entities.addComponent( getId( handle ), localType, index );
 
-                addedSignals[localType.get()].emit( _components[localType]->get( index ) );
+                signalAdded( localType, handle, *_components[localType]->get( index ) );
             }
 
             template< class COMPONENT >
@@ -170,7 +170,7 @@ namespace Comser
             void                _removeComponent( EntityList::EntityId id, EntityList::EntityIterator entityIt )
             {
                 // Call the signal
-                removedSignals[entityIt->type.get()].emit( _components[entityIt->type]->get( entityIt->index ) );
+                signalRemoved( entityIt->type, std::make_shared<EntityList::EntityId>( id ), *_components[entityIt->type]->get( entityIt->index ) );
 
                 // Move this component to last position in its component list
                 _swap( entityIt->type, id, entityIt );
@@ -184,7 +184,7 @@ namespace Comser
             void                _removeComponent( EntityList::EntityId id, EntityList::EntityIterator entityIt )
             {
                 // Call the signal
-                removedSignals[entityIt->type.get()].emit( std::make_shared<EntityList::EntityId>( id ), *_components[entityIt->type]->get( entityIt->index ) );
+                signalRemoved( entityIt->type, std::make_shared<EntityList::EntityId>( id ), *_components[entityIt->type]->get( entityIt->index ) );
 
                 // Move this component to last position
                 _swap( entityIt );

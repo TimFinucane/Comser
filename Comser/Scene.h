@@ -13,7 +13,8 @@ namespace Comser
     {
         NONE,
         GROUP,
-        TILE_SET
+        GRID,
+        MULTIGRID
     };
 
     class Scene abstract
@@ -65,9 +66,19 @@ namespace Comser
         virtual void    onEnable(){};
         virtual void    onDisable(){};
 
+        void            signalAdded( LocalComponentType comType, EntityHandle handle, Component* component )
+        {
+            addedSignals[comType.get()].emit( handle, component );
+        }
+        void            signalRemoved( LocalComponentType comType, EntityHandle handle, Component* component )
+        {
+            removedSignals[comType.get()].emit( handle, component );
+        }
+
+    private:
         SignalList      addedSignals;
         SignalList      removedSignals;
-    private:
+
         void    disable()
         {
             _active = false;

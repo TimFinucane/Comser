@@ -1,8 +1,5 @@
 Use templates for stronger types(?)							DONE (I THINK)!
 
-Finish Differentiating between ComponentType, 
-    EntityId, etc. etc. (Stronger Types)					X ?						LOW
-
 Work on entity manager efficiency and memory saving			X						LOW
 
 ResourceHandler and Manager									X						MED
@@ -10,12 +7,6 @@ ResourceHandler and Manager									X						MED
 Memory class												X						LOW
 
 Use vectors instead of maps with EventSystem?				X						HIGH
-
-Have seperate scenes/ groupings of entities				    DONE!
-
-ComponentSet												DONE (I THINK)!
-
-World/Engine for holding multiple scenes					DONE!
 
 Functionality for multiple scenes							X						HIGH
 
@@ -30,8 +21,6 @@ Finish the docs and get a proper external doc out			X						MED
 Find a better solution for communication between 
  game and system?											X						HIGH
 
-Different scene types										DONE!
-
 Documentation for different scene types
 
 Make those static ids multi thread safe
@@ -42,3 +31,5 @@ Incorporate event system and resource handler into game
 
 Improved entity handles? Imagine we could even
   replace TupleHook if we did enough work
+
+Two types of entity handle: weak and strong
