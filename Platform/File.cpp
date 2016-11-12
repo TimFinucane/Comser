@@ -5,8 +5,12 @@
 using namespace FileSystem;
 
 File::File( const std::wstring& filename )
+    : File( filename.c_str() )
 {
-    std::ifstream f( filename.c_str(), std::fstream::binary | std::fstream::ate );
+}
+File::File( const wchar_t filename[] )
+{
+    std::ifstream f( filename, std::fstream::binary | std::fstream::ate );
     length = f.tellg();
     f.seekg( std::ios::beg, 0 );
 
