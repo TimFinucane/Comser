@@ -16,22 +16,14 @@ namespace Comser
     {
     public:
 
-        void    sceneAdded( Game::SceneIterator scene ){}
-        void    sceneRemoved( Game::SceneIterator scene ){}
-        void    sceneDisabled( Game::SceneIterator scene ){}
-        void    sceneEnabled( Game::SceneIterator scene ){}
+        virtual void    sceneAdded( Game::SceneIterator scene ){}
+        virtual void    sceneRemoved( Game::SceneIterator scene ){}
+        virtual void    sceneDisabled( Game::SceneIterator scene ){}
+        virtual void    sceneEnabled( Game::SceneIterator scene ){}
         
-        void    update(){}
+        virtual void    update(){}
 
         //virtual bool    
-
-        template<class... COMPONENTS>
-        TupleHook<COMPONENTS...>   createTupleHook()
-        {
-            return TupleHook<COMPONENTS...>( *_game );
-        }
-    protected:
-
 
     private:
         sigc::connection                _counterCon;

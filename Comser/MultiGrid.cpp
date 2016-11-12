@@ -1,12 +1,12 @@
 #include "MultiGrid.h"
 
-using namespace Comser::MultiGrid;
+using namespace Comser;
 
-Comser::WeakHandle Scene::createEntity( const Position& pos )
+Comser::WeakHandle MultiGrid::createEntity( const Position& pos )
 {
     return std::make_shared<WeakEnt>( pos );
 }
-void Scene::destroyEntity( Comser::WeakPtr entPtr )
+void MultiGrid::destroyEntity( Comser::WeakPtr entPtr )
 {
     Entity& ent = getEnt( entPtr );
 
@@ -16,7 +16,7 @@ void Scene::destroyEntity( Comser::WeakPtr entPtr )
     }
     ent.clear();
 }
-void Scene::destroyEntity( const Position& pos )
+void MultiGrid::destroyEntity( const Position& pos )
 {
     const Comser::WeakPtr ptr = (void*)&pos;
     
