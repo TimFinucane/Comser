@@ -196,9 +196,6 @@
     <ClInclude Include="Group.h" />
     <ClInclude Include="MultiGrid.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="Grid.h" />
-    <ClInclude Include="GridPosition.h" />
-    <ClInclude Include="TupleHook.h" />
     <ClInclude Include="UpdateCounter.h" />
     <ClInclude Include="GroupEntityList.h" />
     <ClInclude Include="EventManager.h" />

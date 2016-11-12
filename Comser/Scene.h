@@ -7,6 +7,8 @@
 #include "Component.h"
 #include "ComponentAssociator.h"
 
+#include "Entity.h"
+
 namespace Comser
 {
     enum class SceneType
@@ -21,7 +23,7 @@ namespace Comser
     {
         friend class Game;
     public:
-        typedef sigc::signal<void, EntityHandle, Component*>    Signal;
+        typedef sigc::signal<void, WeakPtr, Component*>         Signal;
         typedef std::vector<Signal>                             SignalList;
     public:
         Scene( const std::initializer_list<ComponentType>& types )
@@ -32,33 +34,34 @@ namespace Comser
         }
         virtual ~Scene() = 0;
 
+        virtual StrongHandle    makeStrong( WeakHandle entity );
 
-        bool    active() const
+        bool                    active() const
         {
             return _active;
         }
-            
-        sigc::connection    connectAdded( LocalComponentType type, Signal::slot_type slot )
+        
+        sigc::connection        connectAdded( LocalComponentType type, Signal::slot_type slot )
         {
             return addedSignals[type.get()].connect( slot );
         }
-        sigc::connection    connectRemoved( LocalComponentType type, Signal::slot_type slot )
+        sigc::connection        connectRemoved( LocalComponentType type, Signal::slot_type slot )
         {
             return removedSignals[type.get()].connect( slot );
         }
 
-        virtual Component*  getComponent( EntityHandle id, LocalComponentType localType ) = 0;
+        virtual Component*      getComponent( WeakHandle id, LocalComponentType localType ) = 0;
 
-        LocalComponentType  operator[]( ComponentType type )
+        LocalComponentType      operator[]( ComponentType type )
         {
             return _associator[type];
         }
-        LocalComponentType  localType( ComponentType type )
+        LocalComponentType      localType( ComponentType type )
         {
             return (*this)[type];
         }
 
-        virtual SceneType    type() const
+        virtual SceneType       type() const
         {
             return SceneType::NONE;
         }
@@ -66,13 +69,13 @@ namespace Comser
         virtual void    onEnable(){};
         virtual void    onDisable(){};
 
-        void            signalAdded( LocalComponentType comType, EntityHandle handle, Component* component )
+        void            signalAdded( LocalComponentType comType, WeakPtr entPtr, Component* component )
         {
-            addedSignals[comType.get()].emit( handle, component );
+            addedSignals[comType.get()].emit( entPtr, component );
         }
-        void            signalRemoved( LocalComponentType comType, EntityHandle handle, Component* component )
+        void            signalRemoved( LocalComponentType comType, WeakPtr entPtr, Component* component )
         {
-            removedSignals[comType.get()].emit( handle, component );
+            removedSignals[comType.get()].emit( entPtr, component );
         }
 
     private:
@@ -90,8 +93,8 @@ namespace Comser
             onEnable();
         }
 
-        ComponentAssociator _associator;
+        ComponentAssociator     _associator;
 
-        bool _active;
+        bool                    _active;
     };
 }

@@ -2,29 +2,29 @@
 
 using namespace Comser::MultiGrid;
 
-Comser::EntityHandle Scene::createEntity( const Position& pos )
+Comser::WeakHandle Scene::createEntity( const Position& pos )
 {
-    return std::make_shared<Handle>( pos, _positionChange );
+    return std::make_shared<WeakEnt>( pos );
 }
-void Scene::destroyEntity( EntityHandle& handle )
+void Scene::destroyEntity( Comser::WeakPtr entPtr )
 {
-    Entity& ent = getEnt( handle );
+    Entity& ent = getEnt( entPtr );
 
     for( auto i = ent.begin(); i != ent.end(); ++i )
     {
-        signalRemoved( i->type, handle, i->component );
+        signalRemoved( i->type, entPtr, i->component );
     }
     ent.clear();
 }
 void Scene::destroyEntity( const Position& pos )
 {
-    EntityHandle handle = createEntity( pos );
-
+    const Comser::WeakPtr ptr = (void*)&pos;
+    
     Entity& ent = getEnt( pos );
 
     for( auto i = ent.begin(); i != ent.end(); ++i )
     {
-        signalRemoved( i->type, handle, i->component );
+        signalRemoved( i->type, ptr, i->component );
     }
     ent.clear();
 }

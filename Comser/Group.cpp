@@ -26,13 +26,13 @@ void                    Scene::clear()
     }
 }
 
-Comser::EntityHandle    Scene::createEntity()
+Comser::WeakHandle      Scene::createEntity()
 {
     return std::make_shared<EntityList::EntityId>( _entities.createEntity() );
 }
-void                    Scene::destroyEntity( Comser::EntityHandle handle )
+void                    Scene::destroyEntity( Comser::WeakPtr handle )
 {
-    EntityList::EntityId id = *reinterpret_cast<EntityList::EntityId*>( handle.get() );
+    EntityList::EntityId id = getId( handle );
 
     for( size_t i = _entities[id]->size(); i > 0; --i )
         _removeComponent( id, (_entities[id]->begin() + i - 1) );

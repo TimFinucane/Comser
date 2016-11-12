@@ -22,9 +22,9 @@ namespace Comser
         /// </summary>
         class Scene final : public Comser::Scene
         {
-            EntityList::EntityId getId( const EntityHandle& handle )
+            EntityList::EntityId getId( const WeakPtr handle )
             {
-                return *reinterpret_cast<EntityList::EntityId*>( handle.get() );
+                return *reinterpret_cast<EntityList::EntityId*>( handle );
             }
         public:
             Scene( const std::initializer_list<ComponentType>& types );
@@ -33,16 +33,15 @@ namespace Comser
             /// <summary>
             /// Creates an empty entity, with no components
             /// </summary>
-            /// <returns>The id to that entity</returns>
-            EntityHandle        createEntity();
+            /// <returns>The handle to that entity</returns>
+            WeakHandle          createEntity();
 
             /// <summary>
             /// Destroys the entity, plus all it's components
             /// </summary>
-            void                destroyEntity( EntityHandle handle );
+            void                destroyEntity( WeakPtr handle );
 
             void                clear();
-
 
             // <summary>
             // Adds a single component to the given entity
@@ -53,7 +52,7 @@ namespace Comser
             // <param name="localType">The local type of the component</param>
             // <param name="args">The args for the components constructor</param>
             template< class COMPONENT, typename... COMARGS >
-            void                addComponent( EntityHandle handle, LocalComponentType localType, COMARGS... args )
+            void                addComponent( WeakPtr handle, LocalComponentType localType, COMARGS... args )
             {
                 ComponentVector::Index index = _components[localType]->push<COMPONENT, COMARGS...>( args... );
 
@@ -70,7 +69,7 @@ namespace Comser
             // <param name="id">The entity Id</param>
             // <param name="args">The args for the components constructor</param>
             template< class COMPONENT, typename... COMARGS >
-            void                addComponent( EntityHandle handle, COMARGS... args )
+            void                addComponent( WeakPtr handle, COMARGS... args )
             {
                 LocalComponentType localType = _associator[COMPONENT::id()];
 
@@ -82,13 +81,13 @@ namespace Comser
             }
 
             template< class COMPONENT >
-            void                removeComponent( EntityHandle handle )
+            void                removeComponent( WeakPtr handle )
             {
                 EntityList::EntityIterator entityIt = _entities.findComponent( getId( handle ), _associator[COMPONENT::id] );
 
                 _removeComponent<COMPONENT>( getId( handle ), entityIt );
             }
-            void                removeComponent( EntityHandle handle, LocalComponentType localType )
+            void                removeComponent( WeakPtr handle, LocalComponentType localType )
             {
                 EntityList::EntityIterator entityIt = _entities.findComponent( getId( handle ), localType );
 
@@ -96,13 +95,13 @@ namespace Comser
             }
 
             template< class COMPONENT >
-            COMPONENT*          getComponent( EntityHandle handle )
+            COMPONENT*          getComponent( WeakPtr handle )
             {
                 LocalComponentType type = _associator[COMPONENT::id];
                 EntityList::EntityIterator it = _entities.findComponent( getId( handle ), type );
                 return reinterpret_cast<COMPONENT*>(*_components[type]->get( it->index ));
             }
-            Component*          getComponent( EntityHandle handle, LocalComponentType localType )
+            Component*          getComponent( WeakPtr handle, LocalComponentType localType )
             {
                 EntityList::EntityIterator it = _entities.findComponent( getId( handle ), localType );
                 // Tricky maths to avoid an extra if statement (cheeky)
@@ -130,10 +129,11 @@ namespace Comser
                 return _entities.end();
             }
 
-            EntityHandle                            getHandle( const EntityList::Iterator it )
+            WeakHandle                              getHandle( const EntityList::Iterator it )
             {
                 return std::make_shared<EntityList::EntityId>( (unsigned int)std::distance( it, begin() ) );
             }
+            StrongHandle                            makeStrong( WeakHandle handle );
 
             // Component vector Iterators
             const ComponentVector::ConstIterator    begin( LocalComponentType type ) const
@@ -170,7 +170,7 @@ namespace Comser
             void                _removeComponent( EntityList::EntityId id, EntityList::EntityIterator entityIt )
             {
                 // Call the signal
-                signalRemoved( entityIt->type, std::make_shared<EntityList::EntityId>( id ), *_components[entityIt->type]->get( entityIt->index ) );
+                signalRemoved( entityIt->type, &id, *_components[entityIt->type]->get( entityIt->index ) );
 
                 // Move this component to last position in its component list
                 _swap( entityIt->type, id, entityIt );
@@ -184,7 +184,8 @@ namespace Comser
             void                _removeComponent( EntityList::EntityId id, EntityList::EntityIterator entityIt )
             {
                 // Call the signal
-                signalRemoved( entityIt->type, std::make_shared<EntityList::EntityId>( id ), *_components[entityIt->type]->get( entityIt->index ) );
+                WeakPtr ptr = &id;
+                signalRemoved( entityIt->type, ptr, *_components[entityIt->type]->get( entityIt->index ) );
 
                 // Move this component to last position
                 _swap( entityIt );

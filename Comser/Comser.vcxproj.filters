@@ -16,9 +16,6 @@
     <Filter Include="Comser\Scene\Group">
       <UniqueIdentifier>{969dbfac-2121-4157-94da-e55c8736d847}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Comser\Scene\Grid">
-      <UniqueIdentifier>{a18a2d23-9d88-4c01-9cd9-b6325cbf65a6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Comser\Scene\MultiGrid">
       <UniqueIdentifier>{6d9b7581-fac4-41ea-a937-f35c1016be42}</UniqueIdentifier>
     </Filter>
@@ -44,9 +41,6 @@
     </ClInclude>
     <ClInclude Include="UpdateCounter.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="TupleHook.h">
-      <Filter>Comser</Filter>
-    </ClInclude>
     <ClInclude Include="Group.h">
       <Filter>Comser\Scene\Group</Filter>
     </ClInclude>
@@ -61,12 +55,6 @@
     </ClInclude>
     <ClInclude Include="GroupComponentManager.h">
       <Filter>Comser\Scene\Group</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Comser\Scene\Grid</Filter>
-    </ClInclude>
-    <ClInclude Include="GridPosition.h">
-      <Filter>Comser\Scene\Grid</Filter>
     </ClInclude>
     <ClInclude Include="MultiGrid.h">
       <Filter>Comser\Scene\MultiGrid</Filter>

@@ -3,8 +3,6 @@
 
 #include "Scene.h"
 
-#include "GridPosition.h"
-
 namespace Comser
 {
     namespace MultiGrid
@@ -28,7 +26,8 @@ namespace Comser
 
         typedef sigc::signal<void, const Position&, const Position&>    SignalPositionChange;
 
-        // TODO: Naive-ish implementation. Will fix at some point if it's necessary.
+        // Naive-ish implementation. Will fix at some point if it's necessary.
+        // TODO: Strong handle cache using container of weak ptrs(custom deleter?)
         // TODO: Docs
         class Scene final : public Comser::Scene
         {
@@ -53,36 +52,44 @@ namespace Comser
                 Component*              component;
             };
 
+        private:
+            typedef Position WeakEnt;
+            typedef std::vector<ComponentDef>   Entity;
+
             /// <summary>
             /// The entity handle for a specific entity in a multigrid.
             /// Should only be created by the scene
             /// </summary>
-            struct Handle
+            struct Strong : StrongEntity
             {
             public:
-                Handle( Position p, SignalPositionChange& signal )
-                    : pos( p )
+                Strong( Position pos, Scene* scene )
+                    : _pos( pos )
                 {
-                    _con = signal.connect( sigc::mem_fun( this, &Handle::positionChange ) );
+                    _conPosChange = scene->connectPositionChange( sigc::mem_fun( this, &Strong::positionChange ) );
                 }
-                ~Handle()
+                ~Strong()
                 {
                     _con.disconnect();
                 }
 
-                Position pos;
+                WeakPtr getEntity()
+                {
+                    return &_pos;
+                }
 
             protected:
+                // TODO: Better version
                 void positionChange( const Position& from, const Position& to )
                 {
-                    if( from == pos )
-                        pos = to;
+                    if( from == _pos )
+                        _pos = to;
                 }
             private:
-                sigc::connection _con;
+                WeakEnt             _pos;
+                
+                sigc::connection    _conPosChange;
             };
-
-            typedef std::vector<ComponentDef>   Entity;
         public:
             Scene( const std::initializer_list<ComponentType>& types, unsigned int width, unsigned int height, unsigned int depth )
                 : Comser::Scene( types ), _width( width ), _height( height )
@@ -93,41 +100,35 @@ namespace Comser
             {
                 delete[] _tiles;
             }
-
-            EntityHandle        createEntity( const Position& pos );
-            void                destroyEntity( EntityHandle& handle );
+            
+            WeakHandle          createEntity( const Position& pos );
+            void                destroyEntity( WeakPtr ent );
             void                destroyEntity( const Position& pos );
+            
+            StrongHandle        makeStrong( WeakHandle weakEnt );
 
-            const Position&     getPos( const EntityHandle& handle ) const
+            static Position&    getPos( WeakPtr ent )
             {
-                return reinterpret_cast<Handle*>(handle.get())->pos;
+                return *reinterpret_cast<Position*>(ent);
             }
-            Position&           getPos( EntityHandle& handle ) const
-            {
-                return reinterpret_cast<Handle*>(handle.get())->pos;
-            }
-
+            
             void                moveEntity( const Position& a, const Position& b );
-
-            Component*          getComponent( EntityHandle& handle, ComponentType type );
-
-
+            Component*          getComponent( WeakPtr& ent, ComponentType type );
             sigc::connection    connectPositionChange( SignalPositionChange::slot_type slot )
             {
                 return _positionChange.connect( slot );
             }
-
+            
             SceneType           type()
             {
                 return SceneType::MULTIGRID;
             }
         private:
-
             Entity&             getEnt( const Position& pos )
             {
                 return _tiles[(pos.y * _width + pos.x) * _depth + pos.z];
             }
-            Entity&             getEnt( const EntityHandle& handle )
+            Entity&             getEnt( const WeakPtr handle )
             {
                 return getEnt( getPos( handle ) );
             }
@@ -137,7 +138,7 @@ namespace Comser
             unsigned int            _depth;
 
             SignalPositionChange    _positionChange;
-
+            
             Entity*                 _tiles;
         };
     }
