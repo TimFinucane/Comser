@@ -47,7 +47,7 @@ namespace Comser
         template <class SceneClass, typename... ARGS>
         SceneIterator       createScene( const std::initializer_list<ComponentType>& types, ARGS... args )
         {
-            static_assert( std::is_base_of<Scene, SceneClass>::value );
+            static_assert( std::is_base_of<Scene, SceneClass>::value, "error: created scene must be derived from Comser::Scene" );
             _scenes.emplace_back( new SceneClass( types, args... ) );
             
             // TODO: Inform systems

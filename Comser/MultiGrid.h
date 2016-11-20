@@ -120,12 +120,11 @@ namespace Comser
         }
             
         void                moveEntity( const Position& a, const Position& b );
-        Component*          getComponent( WeakPtr ent, ComponentType type )
+        Component*          getComponent( WeakPtr ent, LocalComponentType type )
         {
             Entity& entity = getEnt( ent );
-            LocalComponentType local = localType( type );
 
-            return std::find_if( entity.begin(), entity.end(), [local]( const ComponentDef& comp ){ return comp.type == local; } )->component;
+            return std::find_if( entity.begin(), entity.end(), [type]( const ComponentDef& comp ){ return comp.type == type; } )->component;
         }
         sigc::connection    connectPositionChange( SignalPositionChange::slot_type slot )
         {
