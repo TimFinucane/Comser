@@ -45,7 +45,6 @@ public:
 
     typedef sigc::slot0<void>                           LoopFunction;
     typedef sigc::slot1<bool, SDL_Event>                EventFunction;
-    typedef sigc::slot1<void, const WindowSettings&>    SettingsSlot;
     typedef sigc::signal1<void, const WindowSettings&>  SettingsSignal;
 public:
     Window( const WindowSettings& settings );
@@ -60,7 +59,7 @@ public:
     /// <summary>
     /// Lets the user be updated when window settings change
     /// </summary>
-    sigc::connection        connectSettingsChange( SettingsSlot slot );
+    sigc::connection        connectSettingsChange( SettingsSignal::slot_type slot );
 
     /// <summary>
     /// Starts the main game loop. Function will send every event to the event function,

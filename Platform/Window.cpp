@@ -112,7 +112,7 @@ void                            Window::settings( const WindowSettings& settings
     _settingsSignal( settings );
 }
 
-sigc::connection                Window::connectSettingsChange( SettingsSlot slot )
+sigc::connection                Window::connectSettingsChange( SettingsSignal::slot_type slot )
 {
     return _settingsSignal.connect( slot );
 }

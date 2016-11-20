@@ -50,7 +50,7 @@ namespace Comser
             return removedSignals[type.get()].connect( slot );
         }
 
-        virtual Component*      getComponent( WeakHandle id, LocalComponentType localType ) = 0;
+        virtual Component*      getComponent( WeakPtr id, LocalComponentType localType ) = 0;
 
         LocalComponentType      operator[]( ComponentType type )
         {

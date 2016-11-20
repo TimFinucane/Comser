@@ -24,24 +24,24 @@ int main( int argc, char *argv[] )
     (argv);
     try
     {
-    window = std::make_shared<Window>(
-        Window::WindowSettings{
-            "Window",
-            Window::Mode::WINDOWED,
-            Window::defaultScreen(),
-            Window::Rect{ 100, 100, 800, 600 }
-        } );
+        window = std::make_shared<Window>(
+            Window::WindowSettings{
+                "Window",
+                Window::Mode::WINDOWED,
+                Window::defaultScreen(),
+                Window::Rect{ 100, 100, 800, 600 }
+            } );
     
-    FileSystem::File vert( L"SpriteVertex.sh" );
-    FileSystem::File frag( L"SpriteFragment.sh" );
+        FileSystem::File vert( L"SpriteVertex.sh" );
+        FileSystem::File frag( L"SpriteFragment.sh" );
 
-    spriteProgram = std::make_shared<Graphics::SpriteProgram>( vert, frag, glm::ortho( -800.0f/600.0f, 800.0f/600.0f, -1.0f, 1.0f ) );
+        spriteProgram = std::make_shared<Graphics::SpriteProgram>( vert, frag, glm::ortho( -800.0f/600.0f, 800.0f/600.0f, -1.0f, 1.0f ) );
 
-    Graphics::Image img = Graphics::Image::createPng( FileSystem::File( L"tilemap.png" ) );
+        Graphics::Image img = Graphics::Image::createPng( FileSystem::File( L"tilemap.png" ) );
 
-    textureAtlas = std::make_shared<Graphics::TextureAtlas>( img, 32, 32, 2 );
+        textureAtlas = std::make_shared<Graphics::TextureAtlas>( img, 32, 32, 2 );
 
-    window->loop( sigc::ptr_fun( loop ), sigc::ptr_fun( event ) );
+        window->loop( sigc::ptr_fun( loop ), sigc::ptr_fun( event ) );
     }
     catch( const std::exception& e )
     {
