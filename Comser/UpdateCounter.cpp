@@ -5,19 +5,20 @@
 
 // The maximum time to allow the engine to try to update through (in ticks),
 //  If higher than this, the engine will ignore the whole time.
-#define MAX_TIME 20.0f
+const double MAX_TIME = 20.0f;
 
 using namespace Comser;
 
 void UpdateCounter::init( unsigned int size )
 {
-    _delta = 0;
+    _delta = 0.0;
 
-    // Allocate signals TODO: Memory?
     _updates.resize( size );
 }
 void UpdateCounter::init( std::initializer_list<unsigned int> orders )
 {
+    _delta = 0.0;
+
     _updates.reserve( orders.size() );
     unsigned int i = 0;
     for( auto it = orders.begin(); it < orders.end(); ++i, ++it )

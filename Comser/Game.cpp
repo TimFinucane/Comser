@@ -1,4 +1,7 @@
 #include "Game.h"
+#include "System.h"
+
+#include <algorithm>
 
 #include <SDL_timer.h>
 
@@ -21,14 +24,25 @@ Game::Game( double tickRate, std::initializer_list<unsigned int> orderUpdateRate
     _prevTime = SDL_GetPerformanceCounter();
 }
 
+void Game::addSystem( System* system, UpdateOrder order )
+{
+    _systems.push_back( { system, _counter.signal( order, sigc::mem_fun( *system, &System::update ) ) } );
+}
+void Game::removeSystem( System* system )
+{
+    auto it = std::find_if( _systems.begin(), _systems.end(), [system]( const Systems::value_type& type ) { return type.first == system; } );
+
+    if( it != _systems.end() )
+        _systems.erase( it );
+}
+
 double Game::update()
 {
     uint64_t time = SDL_GetPerformanceCounter();
     double ticks = ((time - _prevTime) / (double)_timerFreq) / _tickRate;
     _prevTime = time;
 
-    if( ticks < 20.0 )
-        _counter.update( ticks );
+    _counter.update( ticks );
 
     return ticks;
 }

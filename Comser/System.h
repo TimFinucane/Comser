@@ -12,7 +12,7 @@ namespace Comser
     // TODO: Docs
     // NB: To update, you simply hook an update function to the engine with the desired priority
     // Also can hook to an entity with desired node being enabled or disabled
-    class System abstract
+    class System
     {
     public:
 

@@ -13,9 +13,9 @@ namespace Comser
     class Game
     {
     public:
-        typedef std::list<std::unique_ptr<Scene>>   SceneList;
-        typedef SceneList::iterator                 SceneIterator;
-        typedef std::vector<System*>                Systems;
+        typedef std::list<std::unique_ptr<Scene>>                   SceneList;
+        typedef SceneList::iterator                                 SceneIterator;
+        typedef std::vector<std::pair<System*, sigc::connection>>   Systems;
     public:
         /// <summary>
         /// Initialises the game
@@ -66,14 +66,8 @@ namespace Comser
         void                setScene( SceneIterator* scene, bool enable );
         void                setScene( Scene* scene, bool enable );
 
-        void                addSystem( System* system )
-        {
-            _systems.push_back( system );
-        }
-        void                removeSystem( System* system )
-        {
-            _systems.erase( std::find( _systems.begin(), _systems.end(), system ) );
-        }
+        void                addSystem( System* system, UpdateOrder order );
+        void                removeSystem( System* system );
 
         /// <summary>
         /// Updates all systems in the set
