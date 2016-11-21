@@ -14,6 +14,8 @@ File::File( const wchar_t filename[] )
     length = f.tellg();
     f.seekg( std::ios::beg, 0 );
 
+    // TODO: Throw on failure
+
     file = new unsigned char[length];
     f.read( reinterpret_cast<char*>(file), length );
 }

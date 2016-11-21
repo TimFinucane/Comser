@@ -129,7 +129,7 @@
       <AdditionalDependencies>sigc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>sigc-vc110-2_0_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sigc-vc110-d-2_0_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

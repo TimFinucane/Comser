@@ -142,10 +142,14 @@ void                            Window::clear( float r, float g, float b, float 
 
 unsigned int                    Window::defaultScreen()
 {
+    SDLDevice::create();
+
     return 0; // TODO: Could it be anything other than this?
 }
 unsigned int                    Window::numScreens()
 {
+    SDLDevice::create();
+
     int displays = SDL_GetNumVideoDisplays();
     sdlError( displays );
 
@@ -153,6 +157,8 @@ unsigned int                    Window::numScreens()
 }
 Window::ScreenSettings          Window::getScreenInfo( unsigned int screen )
 {
+    SDLDevice::create();
+
     Window::ScreenSettings settings;
 
     float w = 0.0f;
@@ -177,6 +183,8 @@ Window::ScreenSettings          Window::getScreenInfo( unsigned int screen )
 
 Window::Rect                    Window::getCentreRect( unsigned int screen, unsigned short width, unsigned short height )
 {
+    SDLDevice::create();
+
     SDL_Rect sdlrect;
     int error = SDL_GetDisplayBounds( screen, &sdlrect );
     sdlError( error );

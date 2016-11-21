@@ -9,7 +9,7 @@ namespace Comser
     // Naive-ish implementation. Will fix at some point if it's necessary.
     // TODO: Strong handle cache using container of weak ptrs(custom deleter?)
     // TODO: Docs
-    class MultiGrid final : public Comser::Scene
+    class MultiGrid final : public Scene
     {
     public:
         // TODO: Memory efficiency for loading into cpu?
@@ -26,6 +26,14 @@ namespace Comser
             bool operator ==( const Position& pos ) const
             {
                 return (x == pos.x && y == pos.y && z == pos.z);
+            }
+            bool operator !=( const Position& pos ) const
+            {
+                return !(*this == pos);
+            }
+            bool operator <( const Position& pos ) const
+            {
+                return x < pos.x || (x == pos.x && (y < pos.y || (y == pos.y && z < pos.z)));
             }
         };
 
@@ -64,20 +72,26 @@ namespace Comser
         {
         public:
             Strong( Position pos, MultiGrid* scene )
-                : _pos( pos )
+                : _pos( pos ), _scene( scene )
             {
-                _conPosChange = scene->connectPositionChange( sigc::mem_fun( this, &Strong::positionChange ) );
             }
             ~Strong()
             {
-                _conPosChange.disconnect();
+                _scene->strongHandleDeleter( this );
             }
 
-            WeakPtr getEntity()
+            WeakPtr     getWeak()
             {
                 return &_pos;
             }
-
+            Position&   getPosition()
+            {
+                return _pos;
+            }
+            Entity&     getEntity()
+            {
+                return _scene->getEnt( _pos );
+            }
         protected:
             // TODO: Better version
             void positionChange( const Position& from, const Position& to )
@@ -86,13 +100,14 @@ namespace Comser
                     _pos = to;
             }
         private:
+            MultiGrid*          _scene;
             WeakEnt             _pos;
-                
-            sigc::connection    _conPosChange;
         };
+
+        typedef std::vector<StrongHandle>   StrongCache;
     public:
         MultiGrid( const std::initializer_list<ComponentType>& types, unsigned int width, unsigned int height, unsigned int depth )
-            : Comser::Scene( types ), _width( width ), _height( height )
+            : Scene( types ), _width( width ), _height( height )
         {
             _tiles = new Entity[width * height * depth];
         }
@@ -110,9 +125,19 @@ namespace Comser
         {
             return &pos;
         }
-        bool                entityExists( WeakPtr ent );
+        bool                entityExists( WeakPtr ent )
+        {
+            return !getEnt( ent ).empty();
+        }
 
-        StrongHandle        makeStrong( WeakHandle weakEnt );
+        StrongHandle        makeStrong( WeakHandle weakEnt )
+        {
+            auto it = getCacheIterator( *(Position*)weakEnt.get() );
+            if( getStrong( (*it).get() )->getPosition() == getPos( weakEnt.get() ) )
+                it = _strongCache.insert( it, std::make_shared<Strong>( Strong( getPos( weakEnt.get() ), this ) ) );
+
+            return *it;
+        }
 
         static Position&    getPos( WeakPtr ent )
         {
@@ -149,21 +174,50 @@ namespace Comser
             return SceneType::MULTIGRID;
         }
     private:
-        Entity&             getEnt( const Position& pos )
+        Entity&                 getEnt( const Position& pos )
         {
             return _tiles[(pos.y * _width + pos.x) * _depth + pos.z];
         }
-        Entity&             getEnt( const WeakPtr handle )
+        Entity&                 getEnt( const WeakPtr handle )
         {
             return getEnt( getPos( handle ) );
         }
+        static Strong*          getStrong( const StrongPtr ptr )
+        {
+            return reinterpret_cast<Strong*>(ptr);
+        }
 
-        unsigned int            _width;
-        unsigned int            _height;
-        unsigned int            _depth;
+        StrongCache::iterator   getCacheIterator( StrongPtr ptr )
+        {
+            return std::lower_bound( _strongCache.begin(), _strongCache.end(), getStrong( ptr )->getPosition(),
+                []( const StrongHandle& handle, const Position& position )
+            {
+                return getStrong( handle.get() )->getPosition() < position;
+            } );
+        }
+        StrongCache::iterator   getCacheIterator( const Position& position )
+        {
+            return std::lower_bound( _strongCache.begin(), _strongCache.end(), position, 
+                []( const StrongHandle& handle, const Position& position )
+                {
+                    return getStrong( handle.get() )->getPosition() < position;
+                } );
+        }
+        void                    strongHandleDeleter( Strong* strong )
+        {
+            auto it = getCacheIterator( strong );
+            if( &**it == strong )
+                _strongCache.erase( it );
+        }
 
-        SignalPositionChange    _positionChange;
+        std::vector<StrongHandle>   _strongCache;
+
+        unsigned int                _width;
+        unsigned int                _height;
+        unsigned int                _depth;
+
+        SignalPositionChange        _positionChange;
             
-        Entity*                 _tiles;
+        Entity*                     _tiles;
     };
 }

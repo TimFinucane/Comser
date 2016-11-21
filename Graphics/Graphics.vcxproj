@@ -125,7 +125,7 @@
       </AdditionalDependencies>
     </Lib>
     <CustomBuildStep>
-      <Command>%systemroot%\System32\xcopy /y "*.sh" "$(OutDir)"</Command>
+      <Command>%systemroot%\System32\xcopy /y "$(ProjectDir)*.sh" "$(OutDir)"</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Message>Moving shader files</Message>

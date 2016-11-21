@@ -29,12 +29,12 @@ namespace Comser
         Scene( const std::initializer_list<ComponentType>& types )
             : _associator( types )
         {
-            addedSignals.resize( types.size() );
-            removedSignals.resize( types.size() );
+            _addedSignals.resize( types.size() );
+            _removedSignals.resize( types.size() );
         }
-        virtual ~Scene() = 0;
+        virtual ~Scene() = default;
 
-        virtual StrongHandle    makeStrong( WeakHandle entity );
+        virtual StrongHandle    makeStrong( WeakHandle entity ) = 0;
 
         bool                    active() const
         {
@@ -43,11 +43,11 @@ namespace Comser
         
         sigc::connection        connectAdded( LocalComponentType type, Signal::slot_type slot )
         {
-            return addedSignals[type.get()].connect( slot );
+            return _addedSignals[type.get()].connect( slot );
         }
         sigc::connection        connectRemoved( LocalComponentType type, Signal::slot_type slot )
         {
-            return removedSignals[type.get()].connect( slot );
+            return _removedSignals[type.get()].connect( slot );
         }
 
         virtual Component*      getComponent( WeakPtr id, LocalComponentType localType ) = 0;
@@ -71,16 +71,16 @@ namespace Comser
 
         void            signalAdded( LocalComponentType comType, WeakPtr entPtr, Component* component )
         {
-            addedSignals[comType.get()].emit( entPtr, component );
+            _addedSignals[comType.get()].emit( entPtr, component );
         }
         void            signalRemoved( LocalComponentType comType, WeakPtr entPtr, Component* component )
         {
-            removedSignals[comType.get()].emit( entPtr, component );
+            _removedSignals[comType.get()].emit( entPtr, component );
         }
 
     private:
-        SignalList      addedSignals;
-        SignalList      removedSignals;
+        SignalList      _addedSignals;
+        SignalList      _removedSignals;
 
         void    disable()
         {

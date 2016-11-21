@@ -41,7 +41,7 @@ namespace Comser
             return destroyed.connect( slot );
         }
 
-        virtual WeakPtr     getEntity() = 0;
+        virtual WeakPtr     getWeak() = 0;
         //virtual bool isDeleted(); Should do?
     protected:
         void    add( LocalComponentType type, Component* component )

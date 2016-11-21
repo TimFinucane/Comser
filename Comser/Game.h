@@ -13,9 +13,9 @@ namespace Comser
     class Game
     {
     public:
-        typedef std::list<Scene*>       SceneList;
-        typedef SceneList::iterator     SceneIterator;
-        typedef std::vector<System>     Systems;
+        typedef std::list<std::unique_ptr<Scene>>   SceneList;
+        typedef SceneList::iterator                 SceneIterator;
+        typedef std::vector<System*>                Systems;
     public:
         /// <summary>
         /// Initialises the game
@@ -48,11 +48,11 @@ namespace Comser
         SceneIterator       createScene( const std::initializer_list<ComponentType>& types, ARGS... args )
         {
             static_assert( std::is_base_of<Scene, SceneClass>::value, "error: created scene must be derived from Comser::Scene" );
-            _scenes.emplace_back( new SceneClass( types, args... ) );
+            _scenes.emplace_front( std::make_unique<SceneClass>( types, args... ) );
             
             // TODO: Inform systems
 
-            return _scenes.end()--;
+            return _scenes.begin();
         }
         void                destroyScene( SceneIterator it )
         {
@@ -66,8 +66,14 @@ namespace Comser
         void                setScene( SceneIterator* scene, bool enable );
         void                setScene( Scene* scene, bool enable );
 
-        void                addSystem( System* system );
-        void                removeSystem( System* system );
+        void                addSystem( System* system )
+        {
+            _systems.push_back( system );
+        }
+        void                removeSystem( System* system )
+        {
+            _systems.erase( std::find( _systems.begin(), _systems.end(), system ) );
+        }
 
         /// <summary>
         /// Updates all systems in the set
@@ -87,6 +93,8 @@ namespace Comser
         // TODO: Scenes added, removed, enabled, and disabled
     private:
         SceneList                   _scenes;
+
+        Systems                     _systems;
 
         UpdateCounter               _counter;
 

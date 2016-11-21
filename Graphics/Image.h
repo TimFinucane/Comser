@@ -15,19 +15,47 @@ namespace Graphics
         {
             _file = new unsigned char[size()];
         }
+        Image( unsigned int width, unsigned int height, unsigned int bitDepth, unsigned int channels, unsigned char* file )
+            : Image( width, height, bitDepth, channels )
+        {
+            memcpy( _file, file, size() );
+        }
 
         Image::~Image()
         {
             if( _file != nullptr )
+            {
                 delete[] _file;
+                _file = nullptr;
+            }
         }
 
         static Image createPng( const FileSystem::File& file );
 
         // No copying allowed as this contains
         //  dynamically allocated data
-        Image( Image& ) = delete;
-        Image& operator =( Image& ) = delete;
+        Image( Image& img )
+        {
+            _bitDepth = img.bitDepth();
+            _channels = img.channels();
+            _width = img.width();
+            _height = img.height();
+            _file = new unsigned char[size()];
+            memcpy( _file, img.file(), size() );
+        }
+        Image& operator =( Image& img )
+        {
+            _bitDepth = img.bitDepth();
+            _channels = img.channels();
+            _width = img.width();
+            _height = img.height();
+
+            if( _file != nullptr )
+                delete[] _file;
+
+            _file = new unsigned char[size()];
+            memcpy( _file, img.file(), size() );
+        }
 
         Image( Image&& info ) noexcept = default; // TODO: set _file nullptr first
         Image& operator= ( Image&& info ) noexcept = default;
@@ -40,7 +68,7 @@ namespace Graphics
         unsigned int                pixelDepth() const
         {
             // Produces a ceiling value for the bits per pixel
-            return (unsigned int)((_bitDepth * _channels - 1) / 8.0) + 1;
+            return (unsigned int)((_bitDepth * _channels) / 8);
         }
 
         unsigned int                channels() const
