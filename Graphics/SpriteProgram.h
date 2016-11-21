@@ -3,7 +3,8 @@
 #pragma warning( push )
 #pragma warning( disable : 4634 )
 #pragma warning( disable : 4635 )
-#include <glm/matrix.hpp>
+#pragma warning( disable : 4201 )
+#include <glm/gtc/matrix_transform.hpp>
 #pragma warning( pop )
 
 #include <File.h>

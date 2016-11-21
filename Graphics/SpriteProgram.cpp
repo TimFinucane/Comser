@@ -5,6 +5,7 @@
 #pragma warning( push )
 #pragma warning( disable : 4634 )
 #pragma warning( disable : 4635 )
+#pragma warning( disable : 4201 )
 #include <glm/gtc/type_ptr.hpp>
 #pragma warning( pop )
 

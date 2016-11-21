@@ -118,7 +118,7 @@
       <EnablePREfast>true</EnablePREfast>
       <ExceptionHandling>Sync</ExceptionHandling>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4634;%(DisableSpecificWarnings)</DisableSpecificWarnings>

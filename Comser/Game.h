@@ -51,6 +51,8 @@ namespace Comser
             _scenes.emplace_back( new SceneClass( types, args... ) );
             
             // TODO: Inform systems
+
+            return _scenes.end()--;
         }
         void                destroyScene( SceneIterator it )
         {
