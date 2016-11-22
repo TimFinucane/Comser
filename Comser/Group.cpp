@@ -5,7 +5,7 @@
 using namespace Comser::Group;
 
 Scene::Scene( const std::initializer_list<Comser::ComponentType>& types )
-    : _components( types.size() ), Comser::Scene( types )
+    : _components( types.size() ), Comser::Scene<EntityList::EntityId>( types )
 {
 }
 Scene::~Scene()
@@ -26,14 +26,8 @@ void                    Scene::clear()
     }
 }
 
-Comser::WeakHandle      Scene::createEntity()
+void                    Scene::destroyEntity( EntityId id )
 {
-    return std::make_shared<EntityList::EntityId>( _entities.createEntity() );
-}
-void                    Scene::destroyEntity( Comser::WeakPtr handle )
-{
-    EntityList::EntityId id = getId( handle );
-
     for( size_t i = _entities[id]->size(); i > 0; --i )
         _removeComponent( id, (_entities[id]->begin() + i - 1) );
 

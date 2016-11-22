@@ -7,8 +7,6 @@
 #include "Component.h"
 #include "ComponentAssociator.h"
 
-#include "Entity.h"
-
 namespace Comser
 {
     enum class SceneType
@@ -19,38 +17,17 @@ namespace Comser
         MULTIGRID
     };
 
-    class Scene abstract
+    // TODO: Comments
+
+    class SceneBase abstract
     {
         friend class Game;
     public:
-        typedef sigc::signal<void, WeakPtr, Component*>         Signal;
-        typedef std::vector<Signal>                             SignalList;
-    public:
-        Scene( const std::initializer_list<ComponentType>& types )
+        SceneBase( const std::initializer_list<ComponentType>& types )
             : _associator( types )
         {
-            _addedSignals.resize( types.size() );
-            _removedSignals.resize( types.size() );
         }
-        virtual ~Scene() = default;
-
-        virtual StrongHandle    makeStrong( WeakHandle entity ) = 0;
-
-        bool                    active() const
-        {
-            return _active;
-        }
-        
-        sigc::connection        connectAdded( LocalComponentType type, Signal::slot_type slot )
-        {
-            return _addedSignals[type.get()].connect( slot );
-        }
-        sigc::connection        connectRemoved( LocalComponentType type, Signal::slot_type slot )
-        {
-            return _removedSignals[type.get()].connect( slot );
-        }
-
-        virtual Component*      getComponent( WeakPtr id, LocalComponentType localType ) = 0;
+        virtual ~SceneBase() = default;
 
         LocalComponentType      operator[]( ComponentType type )
         {
@@ -61,19 +38,67 @@ namespace Comser
             return (*this)[type];
         }
 
+        bool                    active() const
+        {
+            return _active;
+        }
+
         virtual SceneType       type() const
         {
             return SceneType::NONE;
         }
     protected:
-        virtual void    onEnable(){};
-        virtual void    onDisable(){};
+        virtual void    onEnable() {};
+        virtual void    onDisable() {};
 
-        void            signalAdded( LocalComponentType comType, WeakPtr entPtr, Component* component )
+        void            disable()
+        {
+            _active = false;
+            onDisable();
+        }
+        void            enable()
+        {
+            _active = true;
+            onEnable();
+        }
+    private:
+
+        bool                _active;
+        ComponentAssociator _associator;
+    };
+
+    template <typename ENTITYREF>
+    class Scene abstract : SceneBase
+    {
+        using CONSTREF = typename std::conditional<std::is_fundamental<ENTITYREF>::value, ENTITYREF, const ENTITYREF&>::type;
+    public:
+        using Signal = typename sigc::signal<void, CONSTREF, Component*>;
+        using SignalList = typename std::vector<Signal>;
+    public:
+        Scene( const std::initializer_list<ComponentType>& types )
+            : SceneBase( types )
+        {
+            _addedSignals.resize( types.size() );
+            _removedSignals.resize( types.size() );
+        }
+        virtual ~Scene() = default;
+       
+        sigc::connection        connectAdded( LocalComponentType type, typename Signal::slot_type slot )
+        {
+            return _addedSignals[type.get()].connect( slot );
+        }
+        sigc::connection        connectRemoved( LocalComponentType type, typename Signal::slot_type slot )
+        {
+            return _removedSignals[type.get()].connect( slot );
+        }
+
+        virtual Component*      getComponent( CONSTREF id, LocalComponentType localType ) = 0;
+    protected:
+        void            signalAdded( LocalComponentType comType, CONSTREF entPtr, Component* component )
         {
             _addedSignals[comType.get()].emit( entPtr, component );
         }
-        void            signalRemoved( LocalComponentType comType, WeakPtr entPtr, Component* component )
+        void            signalRemoved( LocalComponentType comType, CONSTREF entPtr, Component* component )
         {
             _removedSignals[comType.get()].emit( entPtr, component );
         }
@@ -81,20 +106,5 @@ namespace Comser
     private:
         SignalList      _addedSignals;
         SignalList      _removedSignals;
-
-        void    disable()
-        {
-            _active = false;
-            onDisable();
-        }
-        void    enable()
-        {
-            _active = true;
-            onEnable();
-        }
-
-        ComponentAssociator     _associator;
-
-        bool                    _active;
     };
 }

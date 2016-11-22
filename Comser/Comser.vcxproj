@@ -200,7 +200,6 @@
     <ClInclude Include="GroupEntityList.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="GroupComponentManager.h" />
-    <ClInclude Include="Entity.h" />
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="ResourceHandler.h" />
     <ClInclude Include="System.h" />

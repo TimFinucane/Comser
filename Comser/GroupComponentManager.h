@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "Component.h"
-#include "Entity.h"
 #include "ComponentAssociator.h"
 
 namespace Comser

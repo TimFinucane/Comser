@@ -30,9 +30,6 @@
     <ClInclude Include="ResourceHandler.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Comser</Filter>
-    </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Event</Filter>
     </ClInclude>

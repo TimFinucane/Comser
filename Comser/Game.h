@@ -2,6 +2,7 @@
 
 #include <list>
 #include <type_traits>
+#include <memory>
 
 #include "Scene.h"
 #include "UpdateCounter.h"
@@ -13,7 +14,7 @@ namespace Comser
     class Game
     {
     public:
-        typedef std::list<std::unique_ptr<Scene>>                   SceneList;
+        typedef std::list<std::unique_ptr<SceneBase>>               SceneList;
         typedef SceneList::iterator                                 SceneIterator;
         typedef std::vector<std::pair<System*, sigc::connection>>   Systems;
     public:
@@ -47,7 +48,7 @@ namespace Comser
         template <class SceneClass, typename... ARGS>
         SceneIterator       createScene( const std::initializer_list<ComponentType>& types, ARGS... args )
         {
-            static_assert( std::is_base_of<Scene, SceneClass>::value, "error: created scene must be derived from Comser::Scene" );
+            static_assert( std::is_base_of<SceneBase, SceneClass>::value, "error: created scene must be derived from Comser::Scene" );
             _scenes.emplace_front( std::make_unique<SceneClass>( types, args... ) );
             
             // TODO: Inform systems
@@ -64,7 +65,7 @@ namespace Comser
         /// Will enable/disable the given scene, determining whether or not it is used in updates
         /// </summary>
         void                setScene( SceneIterator* scene, bool enable );
-        void                setScene( Scene* scene, bool enable );
+        void                setScene( SceneBase* scene, bool enable );
 
         void                addSystem( System* system, UpdateOrder order );
         void                removeSystem( System* system );

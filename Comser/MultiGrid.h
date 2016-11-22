@@ -1,41 +1,44 @@
 #pragma once
 #pragma once
 
+#include <memory>
 #include <algorithm>
 #include "Scene.h"
 
 namespace Comser
 {
+    // TODO: Memory efficiency for loading into cpu?
+    /// <summary>
+    /// A position in the grid.
+    /// Can be used as a unique key to an entity (as long as it doesn't move).
+    /// </summary>
+    struct MultiGridPosition
+    {
+        unsigned int x;
+        unsigned int y;
+        unsigned int z;
+
+        bool operator ==( const MultiGridPosition& pos ) const
+        {
+            return (x == pos.x && y == pos.y && z == pos.z);
+        }
+        bool operator !=( const MultiGridPosition& pos ) const
+        {
+            return !(*this == pos);
+        }
+        bool operator <( const MultiGridPosition& pos ) const
+        {
+            return x < pos.x || (x == pos.x && (y < pos.y || (y == pos.y && z < pos.z)));
+        }
+    };
+
     // Naive-ish implementation. Will fix at some point if it's necessary.
     // TODO: Strong handle cache using container of weak ptrs(custom deleter?)
     // TODO: Docs
-    class MultiGrid final : public Scene
+    class MultiGrid final : public Scene<MultiGridPosition>
     {
     public:
-        // TODO: Memory efficiency for loading into cpu?
-        /// <summary>
-        /// A position in the grid.
-        /// Can be used as a unique key to an entity (as long as it doesn't move).
-        /// </summary>
-        struct Position
-        {
-            unsigned int x;
-            unsigned int y;
-            unsigned int z;
-
-            bool operator ==( const Position& pos ) const
-            {
-                return (x == pos.x && y == pos.y && z == pos.z);
-            }
-            bool operator !=( const Position& pos ) const
-            {
-                return !(*this == pos);
-            }
-            bool operator <( const Position& pos ) const
-            {
-                return x < pos.x || (x == pos.x && (y < pos.y || (y == pos.y && z < pos.z)));
-            }
-        };
+        typedef MultiGridPosition Position;
 
         typedef sigc::signal<void, const Position&, const Position&>    SignalPositionChange;
 
@@ -74,7 +77,6 @@ namespace Comser
         };
 
     private:
-
         typedef Position WeakEnt;
         typedef std::vector<ComponentDef>   Entity;
 
@@ -83,7 +85,7 @@ namespace Comser
         /// The entity handle for a specific entity in a multigrid.
         /// Should only be created by the scene
         /// </summary>
-        struct Strong : StrongEntity
+        struct Strong
         {
         public:
             Strong( Position pos, MultiGrid* scene )
@@ -95,10 +97,6 @@ namespace Comser
                 _scene->strongHandleDeleter( this );
             }
 
-            WeakPtr     getWeak()
-            {
-                return &_pos;
-            }
             Position&   getPosition()
             {
                 return _pos;
@@ -118,8 +116,9 @@ namespace Comser
             MultiGrid*          _scene;
             WeakEnt             _pos;
         };
+        typedef std::shared_ptr<Strong> EntityHandle;
 
-        typedef std::vector<StrongHandle>   StrongCache;
+        typedef std::vector<std::weak_ptr<Strong>>   StrongCache;
     public:
         MultiGrid( const std::initializer_list<ComponentType>& types, unsigned int width, unsigned int height, unsigned int depth )
             : Scene( types ), _width( width ), _height( height ), _depth( depth )
@@ -131,46 +130,43 @@ namespace Comser
             delete[] _tiles;
         }
             
-        WeakHandle          createEntity( const Position& pos );
-        void                destroyEntity( WeakPtr ent );
+        void                createEntity( const Position& pos ) {}
         void                destroyEntity( const Position& pos );
         
         template<class COMPONENT, typename... ARGS>
-        void                addComponent( WeakPtr ptr, ARGS... args )
+        void                addComponent( const Position& pos, ARGS... args )
         {
             LocalComponentType type = localType( COMPONENT::id() );
 
-            getEnt( ptr ).emplace_back( ComponentDef::create<COMPONENT, ARGS...>( type, std::forward<ARGS>( args )... ) );
+            getEnt( pos ).emplace_back( ComponentDef::create<COMPONENT, ARGS...>( type, std::forward<ARGS>( args )... ) );
         }
-        void                removeComponent( LocalComponentType type );
+        void                removeComponent( const Position& pos, LocalComponentType type );
 
-        static WeakPtr      ptrFromPos( Position& pos )
+        bool                entityExists( const Position& pos )
         {
-            return &pos;
-        }
-        bool                entityExists( WeakPtr ent )
-        {
-            return !getEnt( ent ).empty();
+            return !getEnt( pos ).empty();
         }
 
-        StrongHandle        makeStrong( WeakHandle weakEnt )
+        EntityHandle        createHandle( const Position& pos )
         {
-            auto it = getCacheIterator( *(Position*)weakEnt.get() );
-            if( getStrong( (*it).get() )->getPosition() == getPos( weakEnt.get() ) )
-                it = _strongCache.insert( it, std::make_shared<Strong>( Strong( getPos( weakEnt.get() ), this ) ) );
+            auto it = getCacheIterator( pos );
 
-            return *it;
-        }
+            auto shared = it->lock();
+            if( shared->getPosition() == pos )
+                return shared;
+            else
+            {
+                std::shared_ptr<Strong> strong = std::make_shared<Strong>( Strong( pos, this ) );
+                _strongCache.insert( it, std::move( strong ) );
 
-        static Position&    getPos( WeakPtr ent )
-        {
-            return *reinterpret_cast<Position*>(ent);
+                return std::move( strong );
+            }
         }
             
         void                moveEntity( const Position& a, const Position& b );
-        Component*          getComponent( WeakPtr ent, LocalComponentType type )
+        Component*          getComponent( const Position& pos, LocalComponentType type )
         {
-            Entity& entity = getEnt( ent );
+            Entity& entity = getEnt( pos );
 
             return std::find_if( entity.begin(), entity.end(), [type]( const ComponentDef& comp ){ return comp.type == type; } )->component;
         }
@@ -201,46 +197,30 @@ namespace Comser
         {
             return _tiles[(pos.y * _width + pos.x) * _depth + pos.z];
         }
-        Entity&                 getEnt( const WeakPtr handle )
-        {
-            return getEnt( getPos( handle ) );
-        }
-        static Strong*          getStrong( const StrongPtr ptr )
-        {
-            return reinterpret_cast<Strong*>(ptr);
-        }
 
-        StrongCache::iterator   getCacheIterator( StrongPtr ptr )
-        {
-            return std::lower_bound( _strongCache.begin(), _strongCache.end(), getStrong( ptr )->getPosition(),
-                []( const StrongHandle& handle, const Position& position )
-            {
-                return getStrong( handle.get() )->getPosition() < position;
-            } );
-        }
         StrongCache::iterator   getCacheIterator( const Position& position )
         {
             return std::lower_bound( _strongCache.begin(), _strongCache.end(), position, 
-                []( const StrongHandle& handle, const Position& position )
+                []( const std::weak_ptr<Strong>& handle, const Position& position )
                 {
-                    return getStrong( handle.get() )->getPosition() < position;
+                    return handle.lock()->getPosition() < position;
                 } );
         }
         void                    strongHandleDeleter( Strong* strong )
         {
-            auto it = getCacheIterator( strong );
-            if( &**it == strong )
+            auto it = getCacheIterator( strong->getPosition() );
+            if( it->lock().get() == strong )
                 _strongCache.erase( it );
         }
 
-        std::vector<StrongHandle>   _strongCache;
+        StrongCache             _strongCache;
 
-        unsigned int                _width;
-        unsigned int                _height;
-        unsigned int                _depth;
+        unsigned int            _width;
+        unsigned int            _height;
+        unsigned int            _depth;
 
-        SignalPositionChange        _positionChange;
+        SignalPositionChange    _positionChange;
             
-        Entity*                     _tiles;
+        Entity*                 _tiles;
     };
 }
