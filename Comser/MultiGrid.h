@@ -44,22 +44,37 @@ namespace Comser
         /// </summary>
         struct ComponentDef
         {
-            template<typename COMPONENT, typename... ARGS>
-            ComponentDef( LocalComponentType t, ARGS... args )
-            {
-                type = t;
-                component = (Component*)(new COMPONENT( args ));
-            }
             ~ComponentDef()
             {
                 delete component;
             }
 
+            template<typename COMPONENT, typename... ARGS>
+            static ComponentDef create( LocalComponentType type, ARGS... args )
+            {
+                return ComponentDef( type, (Component*)new COMPONENT( std::forward<ARGS>( args)... ) );
+            }
+
+            ComponentDef( ComponentDef&& def )
+                : type( def.type ), component( def.component )
+            {
+                def.component = nullptr;
+            }
+            ComponentDef( const ComponentDef& def ) = delete;
+            ComponentDef& operator =( const ComponentDef& ) = delete;
+
             LocalComponentType      type;
             Component*              component;
+
+        private:
+            ComponentDef( LocalComponentType t, Component* comp )
+                : type( t ), component( comp )
+            {
+            }
         };
 
     private:
+
         typedef Position WeakEnt;
         typedef std::vector<ComponentDef>   Entity;
 
@@ -107,7 +122,7 @@ namespace Comser
         typedef std::vector<StrongHandle>   StrongCache;
     public:
         MultiGrid( const std::initializer_list<ComponentType>& types, unsigned int width, unsigned int height, unsigned int depth )
-            : Scene( types ), _width( width ), _height( height )
+            : Scene( types ), _width( width ), _height( height ), _depth( depth )
         {
             _tiles = new Entity[width * height * depth];
         }
@@ -120,6 +135,14 @@ namespace Comser
         void                destroyEntity( WeakPtr ent );
         void                destroyEntity( const Position& pos );
         
+        template<class COMPONENT, typename... ARGS>
+        void                addComponent( WeakPtr ptr, ARGS... args )
+        {
+            LocalComponentType type = localType( COMPONENT::id() );
+
+            getEnt( ptr ).emplace_back( ComponentDef::create<COMPONENT, ARGS...>( type, std::forward<ARGS>( args )... ) );
+        }
+        void                removeComponent( LocalComponentType type );
 
         static WeakPtr      ptrFromPos( Position& pos )
         {
