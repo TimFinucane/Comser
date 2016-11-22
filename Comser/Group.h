@@ -20,6 +20,7 @@ namespace Comser
     /// </summary>
     class Group final : public Scene<GroupSpace::EntityList::EntityId>
     {
+    public:
         typedef GroupSpace::EntityList      EntityList;
         typedef GroupSpace::Components      Components;
         typedef GroupSpace::ComponentVector ComponentVector;
