@@ -15,16 +15,20 @@ namespace Comser
     class System
     {
     public:
+        sigc::connection&   counterConnection()
+        {
+            return _counterCon;
+        }
 
-        virtual void    sceneAdded( Game::SceneIterator scene ){}
-        virtual void    sceneRemoved( Game::SceneIterator scene ){}
-        virtual void    sceneDisabled( Game::SceneIterator scene ){}
-        virtual void    sceneEnabled( Game::SceneIterator scene ){}
+        // Occurs on adding of the scene to a game
+        virtual void        added( const Game::SceneIterator, const Game::SceneIterator ){}
+
+        virtual void        sceneCreated( Game::SceneIterator scene ){}
+        virtual void        sceneDestroyed( Game::SceneIterator scene ){}
+        virtual void        sceneDisabled( Game::SceneIterator scene ){}
+        virtual void        sceneEnabled( Game::SceneIterator scene ){}
         
-        virtual void    update(){}
-
-        //virtual bool    
-
+        virtual void        update(){}
     private:
         sigc::connection                _counterCon;
     };

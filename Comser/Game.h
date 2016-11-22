@@ -16,7 +16,7 @@ namespace Comser
     public:
         typedef std::list<std::unique_ptr<SceneBase>>               SceneList;
         typedef SceneList::iterator                                 SceneIterator;
-        typedef std::vector<std::pair<System*, sigc::connection>>   Systems;
+        typedef std::vector<System*>   Systems;
     public:
         /// <summary>
         /// Initialises the game
@@ -36,7 +36,7 @@ namespace Comser
         /// </summary>
         /// <param name="order">The order to set</param>
         /// <param name="ticksPerUpdate">The number of game ticks to wait before updating</param>
-        void                counter( UpdateOrder order, unsigned int ticksPerUpdate )
+        void                setCounter( UpdateOrder order, unsigned int ticksPerUpdate )
         {
             _counter.ticksPerUpdate( order, ticksPerUpdate );
         }

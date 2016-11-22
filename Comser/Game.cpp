@@ -26,7 +26,10 @@ Game::Game( double tickRate, std::initializer_list<unsigned int> orderUpdateRate
 
 void Game::addSystem( System* system, UpdateOrder order )
 {
-    _systems.push_back( { system, _counter.signal( order, sigc::mem_fun( *system, &System::update ) ) } );
+    system->counterConnection() = _counter.signal( order, sigc::mem_fun( *system, &System::update ) );
+    _systems.push_back( system );
+
+    system->added( _scenes.begin(), _scenes.end() );
 }
 void Game::removeSystem( System* system )
 {
