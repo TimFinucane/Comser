@@ -56,7 +56,7 @@ namespace Graphics
         /// For this class to work, the files must be SpriteFragment.sh and SpriteVertex.sh
         /// </summary>
         /// <param name="matrix">The projection/view matrix</param>
-        SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment, glm::mat3 matrix );
+        SpriteProgram( const FileSystem::File& vertex, const FileSystem::File& fragment, glm::mat3 matrix = glm::mat3() );
         ~SpriteProgram();
 
         /// <summary>
