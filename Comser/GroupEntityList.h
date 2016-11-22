@@ -11,7 +11,7 @@
 
 namespace Comser
 {
-    namespace Group
+    namespace GroupSpace
     {
         /// <summary>
         /// Stores Entities as a vector of <c>ComponentLocalType</c> and

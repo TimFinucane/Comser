@@ -2,18 +2,18 @@
 
 #include <algorithm>
 
-using namespace Comser::Group;
+using namespace Comser;
 
-Scene::Scene( const std::initializer_list<Comser::ComponentType>& types )
+Group::Group( const std::initializer_list<Comser::ComponentType>& types )
     : _components( types.size() ), Comser::Scene<EntityList::EntityId>( types )
 {
 }
-Scene::~Scene()
+Group::~Group()
 {
     clear();
 }
 
-void                    Scene::clear()
+void        Group::clear()
 {
     // Destroying in reverse order without iterators for safety
     for( size_t i = _entities.size(); i > 0; --i )
@@ -26,7 +26,7 @@ void                    Scene::clear()
     }
 }
 
-void                    Scene::destroyEntity( EntityId id )
+void        Group::destroyEntity( EntityId id )
 {
     for( size_t i = _entities[id]->size(); i > 0; --i )
         _removeComponent( id, (_entities[id]->begin() + i - 1) );
@@ -35,7 +35,7 @@ void                    Scene::destroyEntity( EntityId id )
     _entities.destroyEntity( id );
 }
 
-void        Scene::_swap( EntityList::EntityIterator entityIt )
+void        Group::_swap( EntityList::EntityIterator entityIt )
 {
     // TODO: CHECK THIS WORKS MY MIND IS FUCK
 

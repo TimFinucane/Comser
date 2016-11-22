@@ -13,7 +13,7 @@
 
 namespace Comser
 {
-    namespace Group
+    namespace GroupSpace
     {
         // TODO: More memory efficient form
         /// <summary>

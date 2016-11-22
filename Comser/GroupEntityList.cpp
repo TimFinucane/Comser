@@ -3,7 +3,7 @@
 #include <algorithm>
 
 using namespace Comser;
-using namespace Comser::Group;
+using namespace Comser::GroupSpace;
 
 EntityList::EntityId        EntityList::createEntity()
 {
