@@ -30,7 +30,7 @@ namespace Comser
         
         virtual void        update(){}
     private:
-        sigc::connection                _counterCon;
+        sigc::connection    _counterCon;
     };
 }
 

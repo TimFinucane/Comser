@@ -68,7 +68,7 @@ namespace Comser
     };
 
     template <typename ENTITYREF>
-    class Scene abstract : SceneBase
+    class Scene abstract : public SceneBase
     {
         using CONSTREF = typename std::conditional<std::is_fundamental<ENTITYREF>::value, ENTITYREF, const ENTITYREF&>::type;
     public:

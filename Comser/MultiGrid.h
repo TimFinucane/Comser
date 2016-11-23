@@ -129,7 +129,7 @@ namespace Comser
         {
             delete[] _tiles;
         }
-            
+           
         void                createEntity( const Position& pos ) {}
         void                destroyEntity( const Position& pos );
         
@@ -164,12 +164,19 @@ namespace Comser
         }
             
         void                moveEntity( const Position& a, const Position& b );
+
+        template <typename COMPONENT>
+        COMPONENT*          getComponent( const Position& pos )
+        {
+            return (COMPONENT*)(getComponent( pos, localType( COMPONENT::id() ) ));
+        }
         Component*          getComponent( const Position& pos, LocalComponentType type )
         {
             Entity& entity = getEnt( pos );
 
             return std::find_if( entity.begin(), entity.end(), [type]( const ComponentDef& comp ){ return comp.type == type; } )->component;
         }
+
         sigc::connection    connectPositionChange( SignalPositionChange::slot_type slot )
         {
             return _positionChange.connect( slot );
