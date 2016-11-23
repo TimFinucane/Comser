@@ -192,7 +192,7 @@
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentAssociator.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="MultiGrid.h" />
     <ClInclude Include="Scene.h" />
@@ -208,7 +208,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentAssociator.cpp" />
     <ClCompile Include="GroupComponentManager.cpp" />
-    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="MultiGrid.cpp" />
     <ClCompile Include="UpdateCounter.cpp" />
     <ClCompile Include="Group.cpp" />

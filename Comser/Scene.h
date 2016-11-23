@@ -21,7 +21,7 @@ namespace Comser
 
     class SceneBase abstract
     {
-        friend class Game;
+        friend class Engine;
     public:
         SceneBase( const std::initializer_list<ComponentType>& types )
             : _associator( types )

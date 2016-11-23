@@ -37,7 +37,6 @@
       <Filter>Comser</Filter>
     </ClInclude>
     <ClInclude Include="UpdateCounter.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Group.h">
       <Filter>Comser\Scene\Group</Filter>
     </ClInclude>
@@ -56,13 +55,13 @@
     <ClInclude Include="MultiGrid.h">
       <Filter>Comser\Scene\MultiGrid</Filter>
     </ClInclude>
+    <ClInclude Include="Engine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
       <Filter>Comser</Filter>
     </ClCompile>
     <ClCompile Include="UpdateCounter.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Group.cpp">
       <Filter>Comser\Scene\Group</Filter>
     </ClCompile>
@@ -78,6 +77,7 @@
     <ClCompile Include="MultiGrid.cpp">
       <Filter>Comser\Scene\MultiGrid</Filter>
     </ClCompile>
+    <ClCompile Include="Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt" />

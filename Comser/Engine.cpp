@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "Engine.h"
 #include "System.h"
 
 #include <algorithm>
@@ -7,7 +7,7 @@
 
 using namespace Comser;
 
-Game::Game( double tickRate, unsigned int orders )
+Engine::Engine( double tickRate, unsigned int orders )
     : _tickRate( tickRate )
 {
     _counter.init( orders );
@@ -15,7 +15,7 @@ Game::Game( double tickRate, unsigned int orders )
     _timerFreq = SDL_GetPerformanceFrequency();
     _prevTime = SDL_GetPerformanceCounter();
 }
-Game::Game( double tickRate, std::initializer_list<unsigned int> orderUpdateRates )
+Engine::Engine( double tickRate, std::initializer_list<unsigned int> orderUpdateRates )
     : _tickRate( tickRate )
 {
     _counter.init( orderUpdateRates );
@@ -24,14 +24,14 @@ Game::Game( double tickRate, std::initializer_list<unsigned int> orderUpdateRate
     _prevTime = SDL_GetPerformanceCounter();
 }
 
-void Game::addSystem( System* system, UpdateOrder order )
+void Engine::addSystem( System* system, UpdateOrder order )
 {
     system->counterConnection() = _counter.signal( order, sigc::mem_fun( *system, &System::update ) );
     _systems.push_back( system );
 
     system->added( _scenes.begin(), _scenes.end() );
 }
-void Game::removeSystem( System* system )
+void Engine::removeSystem( System* system )
 {
     auto it = std::find_if( _systems.begin(), _systems.end(), [system]( const Systems::value_type& type ) { return type.first == system; } );
 
@@ -39,7 +39,7 @@ void Game::removeSystem( System* system )
         _systems.erase( it );
 }
 
-double Game::update()
+double Engine::update()
 {
     uint64_t time = SDL_GetPerformanceCounter();
     double ticks = ((time - _prevTime) / (double)_timerFreq) / _tickRate;

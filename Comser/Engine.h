@@ -11,7 +11,7 @@ namespace Comser
 {
     class System;
 
-    class Game
+    class Engine
     {
     public:
         typedef std::list<std::unique_ptr<SceneBase>>               SceneList;
@@ -23,13 +23,13 @@ namespace Comser
         /// </summary>
         /// <param name="tickRate">The number of seconds per each game tick</param>
         /// <param name="orders">The number of categories your systems will fall into</param>
-        Game( double tickRate, unsigned int orders );
+        Engine( double tickRate, unsigned int orders );
         /// <summary>
         /// Initialises the game
         /// </summary>
         /// <param name="tickRate">The number of seconds per each game tick</param>
         /// <param name="orderUpdateRates">A list of each system update category and the number of ticks per update for that category</param>
-        Game( double tickRate, std::initializer_list<unsigned int> orderUpdateRates );
+        Engine( double tickRate, std::initializer_list<unsigned int> orderUpdateRates );
 
         /// <summary>
         /// Will set a certain number of ticks per update for the given update order
