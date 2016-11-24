@@ -6,20 +6,18 @@
 #include <sigc++/sigc++.h>
 #include <tchar.h>
 
-Window::Window( const WindowSettings& settings )
+Window::Window( std::string name, Mode mode, const Rect& rect, unsigned int screen )
 {
     SDLDevice::create();
     // TODO: Option to change device
     int error = SDL_VideoInit( nullptr );
     sdlError( error );
 
-    _curSettings = settings;
-
     int windowFlags = 0;
     windowFlags |= SDL_WINDOW_OPENGL;
     windowFlags |= SDL_WINDOW_SHOWN;
 
-    switch( settings.mode )
+    switch( mode )
     {
     case Mode::WINDOWED:
         windowFlags |= SDL_WINDOW_RESIZABLE;
@@ -32,10 +30,9 @@ Window::Window( const WindowSettings& settings )
         break;
     }
 
-    _window = SDL_CreateWindow( settings.name.c_str(),
-                                settings.rect.x,
-                                settings.rect.y,
-                                settings.rect.width, settings.rect.height, windowFlags );
+    _window = SDL_CreateWindow( name.c_str(),
+                                rect.x, rect.y, rect.width, rect.height, 
+                                windowFlags );
 
     // Do that cool thing where the game doesn't minimize if you open something else.
     SDL_SetHint( SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0" );
@@ -61,7 +58,7 @@ Window::Window( const WindowSettings& settings )
     if( glewError != GLEW_OK )
         throw std::runtime_error( "Error intializing opengl with glew: " + std::string( (char*)glewGetErrorString( glewError ) ) );
 
-    glViewport( 0, 0, settings.rect.width, settings.rect.height );
+    glViewport( 0, 0, rect.width, rect.height );
 }
 Window::~Window()
 {
@@ -69,47 +66,72 @@ Window::~Window()
     SDL_DestroyWindow( _window );
 }
 
-void                            Window::settings( const WindowSettings& settings )
+Window&         Window::name( std::string name )
 {
-    // If the name changed, reset it
-    if( settings.name != _curSettings.name )
-        SDL_SetWindowTitle( _window, settings.name.c_str() );
-    
-    // If the position changed, reset it
-    if( settings.rect.x == _curSettings.rect.x &&
-        settings.rect.y == _curSettings.rect.y )
+    _name = name;
+
+    SDL_SetWindowTitle( _window, name.c_str() );
+
+    _settingsSignal( *this );
+    return *this;
+}
+Window&         Window::mode( Mode mode )
+{
+    _mode = mode;
+
+    switch( mode )
     {
-        SDL_SetWindowPosition( _window, settings.rect.x, settings.rect.y );
+    case Mode::WINDOWED:
+        SDL_SetWindowBordered( _window, SDL_TRUE );
+        break;
+    case Mode::WINDOWED_BORDERLESS:
+        SDL_SetWindowBordered( _window, SDL_FALSE );
+        break;
+    case Mode::FULLSCREEN:
+    {
+        // Use the windows resolution, so we dont get nasty low res stuff going on
+        SDL_Rect rect;
+
+        int error = SDL_GetDisplayBounds( SDL_GetWindowDisplayIndex( _window ), &rect );
+        sdlError( error );
+
+        SDL_SetWindowBordered( _window, SDL_FALSE );
+        SDL_SetWindowSize( _window, rect.w, rect.h );
+        break;
+    }
     }
 
-    // You get the idea
-    if( settings.mode != _curSettings.mode )
+    _settingsSignal( *this );
+
+    return *this;
+}
+Window&         Window::rect( const Rect& rect )
+{
+    _rect = rect;
+
+    SDL_Rect display;
+    int error = SDL_GetDisplayBounds( _screen, &display );
+
+    _rect.x += display.x;
+    _rect.y += display.y;
+
+    SDL_SetWindowPosition( _window, _rect.x, _rect.y );
+    SDL_SetWindowSize( _window, _rect.width, _rect.height );
+
+    _settingsSignal( *this );
+
+    return *this;
+}
+Window&         Window::screen( unsigned int screen )
+{
+    if( screen < SDL_GetNumVideoDisplays() )
     {
-        switch( settings.mode )
-        {
-        case Mode::WINDOWED:
-            SDL_SetWindowBordered( _window, SDL_TRUE );
-            SDL_SetWindowSize( _window, settings.rect.width, settings.rect.height );
-            break;
-        case Mode::WINDOWED_BORDERLESS:
-            SDL_SetWindowBordered( _window, SDL_FALSE );
-            SDL_SetWindowSize( _window, settings.rect.width, settings.rect.height );
-            break;
-        case Mode::FULLSCREEN: // Note that we use fullscreen as windowed borderless because i do not like normal fullscreen
-            {
-                SDL_Rect rect;
-
-                int error = SDL_GetDisplayBounds( SDL_GetWindowDisplayIndex( _window ), &rect );
-                sdlError( error );
-
-                SDL_SetWindowBordered( _window, SDL_FALSE );
-                SDL_SetWindowSize( _window, rect.w, rect.h );
-                break;
-            }
-        }
+        _screen = screen;
+        // Reposition window
+        return rect( _rect );
     }
-
-    _settingsSignal( settings );
+    else
+        return *this;
 }
 
 sigc::connection                Window::connectSettingsChange( SettingsSignal::slot_type slot )

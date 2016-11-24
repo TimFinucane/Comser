@@ -17,7 +17,7 @@ class Window
 public:
     struct Rect
     {
-        short x, y, width, height;
+        int x, y, width, height;
     };
 
     enum class Mode
@@ -25,15 +25,6 @@ public:
         WINDOWED,
         WINDOWED_BORDERLESS,
         FULLSCREEN
-    };
-    struct WindowSettings
-    {
-        std::string     name;
-        Mode            mode;
-        unsigned int    screen;
-
-        // TODO: Options for middle of screen, bottom, etc
-        Rect            rect;
     };
     struct ScreenSettings
     {
@@ -45,15 +36,32 @@ public:
 
     typedef sigc::slot0<void>                           LoopFunction;
     typedef sigc::slot1<bool, SDL_Event>                EventFunction;
-    typedef sigc::signal1<void, const WindowSettings&>  SettingsSignal;
+    typedef sigc::signal1<void, const Window&>          SettingsSignal;
 public:
-    Window( const WindowSettings& settings );
+    Window( std::string name = "Window", Mode mode = Mode::WINDOWED, const Rect& rect = { 0, 0, 800, 600 }, unsigned int screen = defaultScreen() );
     ~Window();
 
-    void                    settings( const WindowSettings& settings );
-    const WindowSettings&   settings() const
+    // Used for named parameter initialisation
+    Window&         name( std::string name );
+    Window&         mode( Mode mode );
+    Window&         rect( const Rect& rect );
+    Window&         screen( unsigned int screen );
+
+    std::string     name() const
     {
-        return _curSettings;
+        return _name;
+    }
+    Mode            mode() const
+    {
+        return _mode;
+    }
+    const Rect&     rect() const
+    {
+        return _rect;
+    }
+    unsigned int    screen() const
+    {
+        return _screen;
     }
 
     /// <summary>
@@ -94,7 +102,13 @@ public:
     }
 private:
     SettingsSignal  _settingsSignal;
-    WindowSettings  _curSettings;
+
+    std::string     _name;
+    Mode            _mode;
+    unsigned int    _screen;
+
+    // TODO: Options for middle of screen, bottom, etc
+    Rect            _rect;
 
     SDL_Window*     _window;
     void*           _context; // The opengl context
