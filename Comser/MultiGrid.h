@@ -129,8 +129,7 @@ namespace Comser
         {
             delete[] _tiles;
         }
-           
-        void                createEntity( const Position& pos ) {}
+        
         void                destroyEntity( const Position& pos );
         
         template<class COMPONENT, typename... ARGS>
