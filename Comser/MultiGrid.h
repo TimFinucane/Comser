@@ -89,22 +89,22 @@ namespace Comser
         struct Strong
         {
         public:
-            Strong( Position pos, MultiGrid* scene )
-                : _pos( pos ), _scene( scene )
+            Strong( Position pos )
+                : _pos( pos )
             {
             }
             ~Strong()
             {
-                _scene->_strongCache.remove( _pos );
             }
 
             Position&   getPosition()
             {
                 return _pos;
             }
-            Entity&     getEntity()
+
+            operator WeakEnt&()
             {
-                return _scene->getEnt( _pos );
+                return _pos;
             }
 
             bool operator ==( const Position& pos )
@@ -114,7 +114,7 @@ namespace Comser
             bool operator <( const Position& pos )
             {
                 return _pos < pos;
-            }  
+            }
         protected:
             // TODO: Better version
             void positionChange( const Position& from, const Position& to )
@@ -123,7 +123,6 @@ namespace Comser
                     _pos = to;
             }
         private:
-            MultiGrid*          _scene;
             WeakEnt             _pos;
         };
 
@@ -157,7 +156,7 @@ namespace Comser
 
         StrongCache::Handle createHandle( const Position& pos )
         {
-            return _strongCache.create( pos, this );
+            return _strongCache.create( pos );
         }
         
         void                moveEntity( const Position& a, const Position& b );
