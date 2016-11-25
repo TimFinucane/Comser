@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <algorithm>
+#include "StrongEntityCache.h"
 #include "Scene.h"
 
 namespace Comser
@@ -94,7 +95,7 @@ namespace Comser
             }
             ~Strong()
             {
-                _scene->strongHandleDeleter( this );
+                _scene->_strongCache.remove( _pos );
             }
 
             Position&   getPosition()
@@ -105,6 +106,15 @@ namespace Comser
             {
                 return _scene->getEnt( _pos );
             }
+
+            bool operator ==( const Position& pos )
+            {
+                return _pos == pos;
+            }
+            bool operator <( const Position& pos )
+            {
+                return _pos < pos;
+            }  
         protected:
             // TODO: Better version
             void positionChange( const Position& from, const Position& to )
@@ -116,9 +126,8 @@ namespace Comser
             MultiGrid*          _scene;
             WeakEnt             _pos;
         };
-        typedef std::shared_ptr<Strong> EntityHandle;
 
-        typedef std::vector<std::weak_ptr<Strong>>   StrongCache;
+        typedef StrongEntityCache<Strong>   StrongCache;
     public:
         MultiGrid( const std::initializer_list<ComponentType>& types, unsigned int width, unsigned int height, unsigned int depth )
             : Scene( types ), _width( width ), _height( height ), _depth( depth )
@@ -146,22 +155,11 @@ namespace Comser
             return !getEnt( pos ).empty();
         }
 
-        EntityHandle        createHandle( const Position& pos )
+        StrongCache::Handle createHandle( const Position& pos )
         {
-            auto it = getCacheIterator( pos );
-
-            auto shared = it->lock();
-            if( shared->getPosition() == pos )
-                return shared;
-            else
-            {
-                std::shared_ptr<Strong> strong = std::make_shared<Strong>( Strong( pos, this ) );
-                _strongCache.insert( it, std::move( strong ) );
-
-                return std::move( strong );
-            }
+            return _strongCache.create( pos, this );
         }
-            
+        
         void                moveEntity( const Position& a, const Position& b );
 
         template <typename COMPONENT>
@@ -204,29 +202,14 @@ namespace Comser
             return _tiles[(pos.y * _width + pos.x) * _depth + pos.z];
         }
 
-        StrongCache::iterator   getCacheIterator( const Position& position )
-        {
-            return std::lower_bound( _strongCache.begin(), _strongCache.end(), position, 
-                []( const std::weak_ptr<Strong>& handle, const Position& position )
-                {
-                    return handle.lock()->getPosition() < position;
-                } );
-        }
-        void                    strongHandleDeleter( Strong* strong )
-        {
-            auto it = getCacheIterator( strong->getPosition() );
-            if( it->lock().get() == strong )
-                _strongCache.erase( it );
-        }
+        StrongCache                 _strongCache;
 
-        StrongCache             _strongCache;
+        unsigned int                _width;
+        unsigned int                _height;
+        unsigned int                _depth;
 
-        unsigned int            _width;
-        unsigned int            _height;
-        unsigned int            _depth;
-
-        SignalPositionChange    _positionChange;
+        SignalPositionChange        _positionChange;
             
-        Entity*                 _tiles;
+        Entity*                     _tiles;
     };
 }
