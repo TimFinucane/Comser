@@ -33,9 +33,6 @@
     <ClInclude Include="EventManager.h">
       <Filter>Event</Filter>
     </ClInclude>
-    <ClInclude Include="Prefab.h">
-      <Filter>Comser</Filter>
-    </ClInclude>
     <ClInclude Include="UpdateCounter.h" />
     <ClInclude Include="Group.h">
       <Filter>Comser\Scene\Group</Filter>
@@ -56,6 +53,9 @@
       <Filter>Comser\Scene\MultiGrid</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="GroupPrefab.h">
+      <Filter>Comser\Scene\Group</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
