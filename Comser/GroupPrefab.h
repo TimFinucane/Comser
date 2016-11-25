@@ -2,6 +2,8 @@
 #ifndef PREFAB_H
 #define PREFAB_H
 
+#include <tuple>
+
 #include "Component.h"
 #include "Group.h"
 
@@ -12,17 +14,21 @@ namespace Comser
     template <class... COMPONENTS>
     class GroupPrefab
     {
+        typedef std::tuple<Group::EntityId, COMPONENTS...> Tuple;
+
         /// <summary>
         /// Creates the Entity with those components
         /// </summary>
         /// <param name="group">The group that you add the entity to</param>
         /// <param name="args">The arguments for each component you add</param>
         /// <returns>The entity</returns>
-        static Group::EntityId operator()( Group* group, COMPONENTS&&... args )
+        static Tuple operator()( Group* group, COMPONENTS&&... args )
         {
-            Group::EntityId entity = group->createEntity();
+            Tuple tuple;
 
-            group->addComponent<COMPONENTS,COMPONENTS&&>( entity, args )...;
+            std::get<0>( tuple ) = group->createEntity();
+
+            (std::get<COMPONENTS>( tuple ) = group->addComponent<COMPONENTS,COMPONENTS&&>( entity, args ))...;
 
             return entity;
         }
