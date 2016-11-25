@@ -12,7 +12,7 @@ namespace Comser
     // TODO: Work on changes
     // A static type class used for easily sharing certain entity formats (made up of a bunch of components)
     template <class... COMPONENTS>
-    class GroupPrefab
+    struct GroupPrefab
     {
         typedef std::tuple<Group::EntityId, COMPONENTS...> Tuple;
 
@@ -22,7 +22,7 @@ namespace Comser
         /// <param name="group">The group that you add the entity to</param>
         /// <param name="args">The arguments for each component you add</param>
         /// <returns>The entity</returns>
-        static Tuple operator()( Group* group, COMPONENTS&&... args )
+        static Tuple create( Group* group, COMPONENTS&&... args )
         {
             Tuple tuple;
 
