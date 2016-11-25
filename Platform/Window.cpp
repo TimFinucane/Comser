@@ -77,8 +77,6 @@ Window&         Window::name( std::string name )
 }
 Window&         Window::mode( Mode mode )
 {
-    _mode = mode;
-
     switch( mode )
     {
     case Mode::WINDOWED:
@@ -93,7 +91,8 @@ Window&         Window::mode( Mode mode )
         SDL_Rect rect;
 
         int error = SDL_GetDisplayBounds( SDL_GetWindowDisplayIndex( _window ), &rect );
-        sdlError( error );
+        if( sdlError( error ) )
+            return;
 
         SDL_SetWindowBordered( _window, SDL_FALSE );
         SDL_SetWindowSize( _window, rect.w, rect.h );
@@ -101,16 +100,20 @@ Window&         Window::mode( Mode mode )
     }
     }
 
+    _mode = mode;
+
     _settingsSignal( *this );
 
     return *this;
 }
 Window&         Window::rect( const Rect& rect )
 {
-    _rect = rect;
-
     SDL_Rect display;
     int error = SDL_GetDisplayBounds( _screen, &display );
+    if( sdlError( error ) )
+        return;
+
+    _rect = rect;
 
     _rect.x += display.x;
     _rect.y += display.y;
@@ -124,7 +127,7 @@ Window&         Window::rect( const Rect& rect )
 }
 Window&         Window::screen( unsigned int screen )
 {
-    if( screen < SDL_GetNumVideoDisplays() )
+    if( screen < (unsigned int)SDL_GetNumVideoDisplays() )
     {
         _screen = screen;
         // Reposition window
