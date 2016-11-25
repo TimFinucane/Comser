@@ -33,7 +33,7 @@ void Engine::addSystem( System* system, UpdateOrder order )
 }
 void Engine::removeSystem( System* system )
 {
-    auto it = std::find_if( _systems.begin(), _systems.end(), [system]( const Systems::value_type& type ) { return type.first == system; } );
+    auto it = std::find_if( _systems.begin(), _systems.end(), [system]( const System* a ) { return a == system; } );
 
     if( it != _systems.end() )
         _systems.erase( it );
