@@ -196,6 +196,7 @@
     <ClInclude Include="Group.h" />
     <ClInclude Include="MultiGrid.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="StrongEntityCache.h" />
     <ClInclude Include="UpdateCounter.h" />
     <ClInclude Include="GroupEntityList.h" />
     <ClInclude Include="EventManager.h" />

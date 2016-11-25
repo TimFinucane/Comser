@@ -56,6 +56,9 @@
     <ClInclude Include="GroupPrefab.h">
       <Filter>Comser\Scene\Group</Filter>
     </ClInclude>
+    <ClInclude Include="StrongEntityCache.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">
