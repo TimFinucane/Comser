@@ -6,6 +6,7 @@
 
 namespace Comser
 {
+
     template<typename STRONG>
     struct StrongEntityCache
     {
@@ -13,8 +14,44 @@ namespace Comser
         typedef std::shared_ptr<STRONG>                 Handle;
         typedef std::vector<std::weak_ptr<STRONG>>      Cache;
         using Iterator = typename Cache::iterator;
+
+        struct Allocator
+        {
+        public:
+            typedef STRONG value_type;
+
+            // Allow conversion to the basic std::allocator when we arent operating on the STRONG type
+            template <typename U>
+            struct rebind
+            {
+                typedef std::allocator<U> other;
+            };
+            template <typename T>
+            operator std::allocator<T>() const
+            {
+                return std::allocator<T>();
+            }
+            
+            Allocator( StrongEntityCache& cache )
+                : _cache( cache )
+            {
+            }
+
+            STRONG* allocate( std::size_t n )
+            {
+                return ::operator new[](n * sizeof( STRONG ));
+            }
+            void    deallocate( STRONG* strong, std::size_t n )
+            {
+                ::operator delete[](strong, n * sizeof( STRONG ));
+                _cache->remove( *strong );
+            }
+        private:
+            StrongEntityCache& _cache;
+        };
     public:
         StrongEntityCache()
+            : _allocator( *this )
         {
         }
 
@@ -28,7 +65,7 @@ namespace Comser
                 return locked;
             else
             {
-                locked = std::make_shared<STRONG>( item, args... );
+                locked = std::allocate_shared<STRONG>( _allocator, item, args... );
                 _cache.insert( it, locked );
 
                 return locked;
@@ -54,6 +91,7 @@ namespace Comser
         }
 
     private:
-        Cache   _cache;
+        Allocator   _allocator;
+        Cache       _cache;
     };
 }
