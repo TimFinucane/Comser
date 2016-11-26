@@ -17,21 +17,8 @@ Window::Window( std::string name, Mode mode, const Rect& rect, unsigned int scre
     windowFlags |= SDL_WINDOW_OPENGL;
     windowFlags |= SDL_WINDOW_SHOWN;
 
-    switch( mode )
-    {
-    case Mode::WINDOWED:
-        windowFlags |= SDL_WINDOW_RESIZABLE;
-        break;
-    case Mode::WINDOWED_BORDERLESS:
-        windowFlags |= SDL_WINDOW_BORDERLESS;
-        break;
-    case Mode::FULLSCREEN:
-        windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-        break;
-    }
-
     _window = SDL_CreateWindow( name.c_str(),
-                                rect.x, rect.y, rect.width, rect.height, 
+                                0, 0, 0, 0, 
                                 windowFlags );
 
     // Do that cool thing where the game doesn't minimize if you open something else.
@@ -58,7 +45,9 @@ Window::Window( std::string name, Mode mode, const Rect& rect, unsigned int scre
     if( glewError != GLEW_OK )
         throw std::runtime_error( "Error intializing opengl with glew: " + std::string( (char*)glewGetErrorString( glewError ) ) );
 
-    glViewport( 0, 0, rect.width, rect.height );
+    _name = name;
+    this->mode( mode ).screen( screen ).rect( rect );
+
 }
 Window::~Window()
 {
@@ -92,7 +81,7 @@ Window&         Window::mode( Mode mode )
 
         int error = SDL_GetDisplayBounds( SDL_GetWindowDisplayIndex( _window ), &rect );
         if( sdlError( error ) )
-            return;
+            return *this;
 
         SDL_SetWindowBordered( _window, SDL_FALSE );
         SDL_SetWindowSize( _window, rect.w, rect.h );
@@ -111,7 +100,7 @@ Window&         Window::rect( const Rect& rect )
     SDL_Rect display;
     int error = SDL_GetDisplayBounds( _screen, &display );
     if( sdlError( error ) )
-        return;
+        return *this;
 
     _rect = rect;
 
@@ -120,6 +109,8 @@ Window&         Window::rect( const Rect& rect )
 
     SDL_SetWindowPosition( _window, _rect.x, _rect.y );
     SDL_SetWindowSize( _window, _rect.width, _rect.height );
+
+    glViewport( 0, 0, rect.width, rect.height );
 
     _settingsSignal( *this );
 
