@@ -54,14 +54,14 @@ namespace Comser
         // <param name="id">The entity Id</param>
         // <param name="localType">The local type of the component</param>
         // <param name="args">The args for the components constructor</param>
-        template< class COMPONENT, typename... COMARGS >
+        template<class COMPONENT, typename... COMARGS>
         void                addComponent( EntityId handle, LocalComponentType localType, COMARGS... args )
         {
             ComponentVector::Index index = _components[localType]->push<COMPONENT, COMARGS...>( args... );
 
             _entities.addComponent( handle, localType, index );
 
-            _addedSignals[localType.get()].emit( _components[localType]->get( index ) );
+            signalAdded( localType, handle, *_components[localType]->get( index ) );
         }
 
         // <summary>
@@ -71,19 +71,13 @@ namespace Comser
         // <typeparam name="COMARGS">The types of the arguments for the COMPONENT's constructor</typeparam>
         // <param name="id">The entity Id</param>
         // <param name="args">The args for the components constructor</param>
-        template< class COMPONENT, typename... COMARGS >
+        template<class COMPONENT, typename... COMARGS>
         void                addComponent( EntityId handle, COMARGS... args )
         {
-            LocalComponentType localType = _associator[COMPONENT::id()];
-
-            ComponentVector::Index index = _components[localType]->push<COMPONENT, COMARGS...>( args... );
-
-            _entities.addComponent( handle, localType, index );
-
-            signalAdded( localType, handle, *_components[localType]->get( index ) );
+            addComponent<COMPONENT>( handle, localType( COMPONENT::id() ), args... );
         }
 
-        template< class COMPONENT >
+        template<class COMPONENT>
         void                removeComponent( EntityId handle )
         {
             EntityList::EntityIterator entityIt = _entities.findComponent( handle, _associator[COMPONENT::id] );
@@ -97,10 +91,10 @@ namespace Comser
             _removeComponent( handle, entityIt );
         }
 
-        template< class COMPONENT >
+        template<class COMPONENT>
         COMPONENT*          getComponent( EntityId handle )
         {
-            LocalComponentType type = _associator[COMPONENT::id];
+            LocalComponentType type = localType( COMPONENT::id() );
             EntityList::EntityIterator it = _entities.findComponent( handle, type );
             return reinterpret_cast<COMPONENT*>( *_components[type]->get( it->index ) );
         }
@@ -155,7 +149,7 @@ namespace Comser
             _components[type]->end();
         }
 
-        SceneType                               type()
+        SceneType                               type() const
         {
             return SceneType::GROUP;
         }
