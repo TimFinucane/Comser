@@ -52,6 +52,9 @@ void SpriteProgram::updateMatrix( glm::mat3 matrix )
 
 void SpriteProgram::draw( const Sprites& sprites, const TextureAtlas& atlas )
 {
+    if( sprites.empty() )
+        return;
+
     use();
 
     _sprites.update( sprites );
