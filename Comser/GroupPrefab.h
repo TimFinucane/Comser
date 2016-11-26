@@ -14,23 +14,32 @@ namespace Comser
     template <class... COMPONENTS>
     struct GroupPrefab
     {
-        typedef std::tuple<Group::EntityId, COMPONENTS...> Tuple;
-
         /// <summary>
         /// Creates the Entity with those components
         /// </summary>
         /// <param name="group">The group that you add the entity to</param>
         /// <param name="args">The arguments for each component you add</param>
         /// <returns>The entity</returns>
-        static Tuple create( Group* group, COMPONENTS&&... args )
+        static Group::EntityId create( Group* group, COMPONENTS&&... args )
         {
-            Tuple tuple;
+           Group::EntityId id = group->createEntity();
 
-            std::get<0>( tuple ) = group->createEntity();
+            addComponents<COMPONENTS...>( id, group, std::forward<COMPONENTS&&>( args )... );
 
-            (std::get<COMPONENTS>( tuple ) = group->addComponent<COMPONENTS,COMPONENTS&&>( entity, args ))...;
+            return id;
+        }
 
-            return entity;
+    private:
+        template<typename COMPONENT, typename ...COMPS>
+        static void addComponents( Group::EntityId id, Group* group, COMPONENT&& component, COMPS&&... args )
+        {
+            group->addComponent<COMPONENT>( id, component );
+            addComponents( id, group, std::forward<COMPS&&>( args )... );
+        }
+        template<typename COMPONENT>
+        static void addComponents( Group::EntityId id, Group* group, COMPONENT&& component )
+        {
+            group->addComponent<COMPONENT>( id, component );
         }
     };
 }
