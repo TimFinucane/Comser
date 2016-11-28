@@ -56,11 +56,11 @@
     <ClInclude Include="GroupPrefab.h">
       <Filter>Comser\Scene\Group</Filter>
     </ClInclude>
-    <ClInclude Include="StrongEntityCache.h">
-      <Filter>Comser\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Message.h">
       <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="StrongEntityCache.h">
+      <Filter>Comser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

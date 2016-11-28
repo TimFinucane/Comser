@@ -39,23 +39,12 @@ namespace Comser
                 _signals.erase( id );
             }
 
-            // <summary>
-            // Connects a slot to the signal. Assumes that the slot type is correct.
-            // </summary>
             template <struct Message>
             sigc::connection    connect( Message::Slot slot )
             {
                 return _signals[Message::id()].connect( slot );
             }
             
-            /*
-             * <summary>
-             * Calls a signal.
-             * </summary>
-             * <typeparam name="ARG">The argument to give to the signal</typeparam>
-             * <param name="message">The message to call</param>
-             * <param name="arg">The argument to give to the signal</param>
-             */
             template <MessageId ID, typename ARG>
             void                operator()( const Message<ID, ARG>& message )
             {

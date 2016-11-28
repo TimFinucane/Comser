@@ -6,7 +6,6 @@
 
 namespace Comser
 {
-
     template<typename STRONG>
     struct StrongEntityCache
     {
