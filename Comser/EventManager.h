@@ -5,6 +5,8 @@
 #include <map>
 #include <sigc++/sigc++.h>
 
+#include "Message.h"
+
 namespace Comser
 {
     /// <summary>
@@ -16,8 +18,7 @@ namespace Comser
         class Manager
         {
         private:
-            typedef unsigned __int32                    MessageId;
-            typedef sigc::signal<void>                  Signal;
+            typedef sigc::signal<void, const void*>     Signal;
             typedef std::map<MessageId, Signal>         SignalMap;
         public:
             /// <summary>
@@ -28,27 +29,23 @@ namespace Comser
                 _signals.clear();
             }
 
-            void                declare( MessageId id )
+            template <struct Message>
+            void                clear()
             {
-                _signals[id];
+                clear( Message::id() );
             }
-            void                remove( MessageId id )
+            void                clear( MessageId id )
             {
                 _signals.erase( id );
             }
 
-            /*
-             * <summary>
-             * Connects a slot to the signal. Assumes that the slot type is correct.
-             * </summary>
-             * <typeparam name="ARG">The argument type that is passed to the signal when calling it.</typeparam>
-             * <param name="message">The message to connect to</param>
-             * <param name="slot">The slot being connected</param>
-             */
-            template <typename ARG>
-            sigc::connection    connect( MessageId message, Signal::slot_type slot )
+            // <summary>
+            // Connects a slot to the signal. Assumes that the slot type is correct.
+            // </summary>
+            template <struct Message>
+            sigc::connection    connect( Message::Slot slot )
             {
-                return _signals[message].connect( slot );
+                return _signals[Message::id()].connect( slot );
             }
             
             /*
@@ -59,13 +56,19 @@ namespace Comser
              * <param name="message">The message to call</param>
              * <param name="arg">The argument to give to the signal</param>
              */
-            template <typename ARG>
-            void                operator()( MessageId message, ARG* arg )
+            template <MessageId ID, typename ARG>
+            void                operator()( const Message<ID, ARG>& message )
             {
-                _signals[message]( arg );
+                _signals[ID]( message.arg );
+            }
+            template <MessageId ID>
+            void                operator()( const Message<ID>& message )
+            {
+                _signals[ID]( nullptr );
             }
         private:
             SignalMap   _signals;
+            // TODO: Message Id Map
         };
     }
 }

@@ -59,6 +59,9 @@
     <ClInclude Include="StrongEntityCache.h">
       <Filter>Comser\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">

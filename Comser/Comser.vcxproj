@@ -194,6 +194,7 @@
     <ClInclude Include="ComponentAssociator.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Group.h" />
+    <ClInclude Include="Message.h" />
     <ClInclude Include="MultiGrid.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="StrongEntityCache.h" />
