@@ -74,6 +74,7 @@ namespace Comser
     public:
         using Signal = typename sigc::signal<void, CONSTREF, Component*>;
         using SignalList = typename std::vector<Signal>;
+        using Slot = typename Signal::slot_type;
     public:
         Scene( const std::initializer_list<ComponentType>& types )
             : SceneBase( types )
@@ -83,16 +84,17 @@ namespace Comser
         }
         virtual ~Scene() = default;
        
-        sigc::connection        connectAdded( LocalComponentType type, typename Signal::slot_type slot )
+        sigc::connection        connectAdded( LocalComponentType type, typename Slot slot )
         {
             return _addedSignals[type.get()].connect( slot );
         }
-        sigc::connection        connectRemoved( LocalComponentType type, typename Signal::slot_type slot )
+        sigc::connection        connectRemoved( LocalComponentType type, typename Slot slot )
         {
             return _removedSignals[type.get()].connect( slot );
         }
 
         virtual Component*      getComponent( CONSTREF id, LocalComponentType localType ) = 0;
+
     protected:
         void            signalAdded( LocalComponentType comType, CONSTREF entPtr, Component* component )
         {
