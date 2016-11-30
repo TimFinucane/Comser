@@ -62,6 +62,9 @@
     <ClInclude Include="StrongEntityCache.h">
       <Filter>Comser</Filter>
     </ClInclude>
+    <ClInclude Include="SingleTracker.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">

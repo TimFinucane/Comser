@@ -197,6 +197,7 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="MultiGrid.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SingleTracker.h" />
     <ClInclude Include="StrongEntityCache.h" />
     <ClInclude Include="UpdateCounter.h" />
     <ClInclude Include="GroupEntityList.h" />
