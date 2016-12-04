@@ -1,1 +1,0 @@
-Template types for vector class
