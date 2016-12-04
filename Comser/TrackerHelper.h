@@ -13,11 +13,6 @@ namespace Comser
         typedef std::tuple<COMPONENTS*...>  Tuple;
 
     protected:
-        TrackerHelper( SceneType* scene )
-            : _scene( scene )
-        {
-        }
-
         template <unsigned int N = 0>
         bool    isItem( Ent ent, Tuple& tuple )
         {
@@ -47,7 +42,7 @@ namespace Comser
         template <>
         void    subscribe<sizeof...(COMPONENTS)>( typename SceneType::Slot, typename SceneType::Slot ) {}
 
-        SceneType* _scene;
+        SceneType* scene;
 
         sigc::connection    _added[sizeof...(COMPONENTS)];
         sigc::connection    _removed[sizeof...(COMPONENTS)];

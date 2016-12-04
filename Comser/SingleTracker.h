@@ -16,21 +16,22 @@ namespace Comser
     {
     public:
         SingleTracker( SceneType* scene )
-            : TrackerHelper<ENTITYREF, COMPONENTS...>( scene ), _exists( false )
+            : scene( scene ), _exists( false )
         {
-            subscribe( sigc::mem_fun( *this, &SingleTracker<ENTITYREF, COMPONENTS...>::componentAdded ),
-                       sigc::mem_fun( *this, &SingleTracker<ENTITYREF, COMPONENTS...>::componentRemoved ) );
+            subscribeAll();
 
             // TODO: search through the scene
         }
         SingleTracker( SceneType* scene, Ent item )
-            : TrackerHelper<ENTITYREF, COMPONENTS...>( scene ), _entity( item ), _exists( true )
+            : scene( scene ), _entity( item ), _exists( true )
         {
-            subscribe( sigc::mem_fun( *this, SingleTracker<ENTITYREF, COMPONENTS...>::componentAdded ),
-                sigc::mem_fun( *this, SingleTracker<ENTITYREF, COMPONENTS...>::componentRemoved ) );
-
-
+            subscribeAll();
         }
+        SingleTracker()
+            : scene( nullptr ), _exists( false )
+        {
+        }
+
         ~SingleTracker()
         {
         }
@@ -71,6 +72,11 @@ namespace Comser
             }
         }
 
+        void    subscribeAll()
+        {
+            subscribe( sigc::mem_fun( *this, SingleTracker<ENTITYREF, COMPONENTS...>::componentAdded ),
+                sigc::mem_fun( *this, SingleTracker<ENTITYREF, COMPONENTS...>::componentRemoved ) );
+        }
     private:
         Ent                 _entity;
         Tuple               _components;
