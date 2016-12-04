@@ -85,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\ProgLibs\libsigc++;C:\ProgLibs\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\GL\Lib</LibraryPath>
+    <LibraryPath>C:\ProgLibs\GL\Lib\x64;C:\ProgLibs\libsigc++\lib</LibraryPath>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -101,6 +101,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4634;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -123,13 +124,15 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4634;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sigc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>sigc-vc110-d-2_0_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sigc-vc120-d-2_0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -144,6 +147,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4634;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -172,6 +176,7 @@
       <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -187,6 +192,7 @@
     </PostBuildEvent>
     <Lib>
       <Verbose>false</Verbose>
+      <AdditionalDependencies>sigc-vc120-2_0.lib;</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -199,6 +205,8 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SingleTracker.h" />
     <ClInclude Include="StrongEntityCache.h" />
+    <ClInclude Include="Tracker.h" />
+    <ClInclude Include="TrackerHelper.h" />
     <ClInclude Include="UpdateCounter.h" />
     <ClInclude Include="GroupEntityList.h" />
     <ClInclude Include="EventManager.h" />

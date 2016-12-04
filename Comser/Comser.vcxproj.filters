@@ -65,6 +65,12 @@
     <ClInclude Include="SingleTracker.h">
       <Filter>Comser\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Tracker.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackerHelper.h">
+      <Filter>Comser\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component.cpp">

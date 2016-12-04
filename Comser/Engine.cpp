@@ -29,7 +29,7 @@ void Engine::addSystem( System* system, UpdateOrder order )
     system->counterConnection() = _counter.signal( order, sigc::mem_fun( *system, &System::update ) );
     _systems.push_back( system );
 
-    system->added( _scenes.begin(), _scenes.end() );
+    system->added( this, _scenes.begin(), _scenes.end() );
 }
 void Engine::removeSystem( System* system )
 {

@@ -6,6 +6,7 @@
 
 #include "Scene.h"
 #include "UpdateCounter.h"
+#include "EventManager.h"
 
 namespace Comser
 {
@@ -86,6 +87,9 @@ namespace Comser
         }
 
         // TODO: Scenes added, removed, enabled, and disabled
+
+        Event::Manager      eventManager;
+
     private:
         SceneList                   _scenes;
 

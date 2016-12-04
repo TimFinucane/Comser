@@ -20,7 +20,7 @@ namespace Comser
         }
 
         // Occurs on adding of the scene to a game
-        virtual void        added( const Engine::SceneIterator, const Engine::SceneIterator ){}
+        virtual void        added( Engine*, const Engine::SceneIterator, const Engine::SceneIterator ){}
 
         virtual void        sceneCreated( Engine::SceneIterator scene ){}
         virtual void        sceneDestroyed( Engine::SceneIterator scene ){}
