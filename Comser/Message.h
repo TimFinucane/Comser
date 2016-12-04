@@ -8,22 +8,22 @@ namespace Comser::Event
 
     // Message capable of holding 0 or 1 arguments.
     template<MessageId ID, typename... ARGS>
-    struct Message
+    struct message
     {
     };
 
     template<MessageId ID, typename ARG>
-    struct Message<ID, ARG>
+    struct message<ID, ARG>
     {
     public:
-        typedef sigc::slot<void, ARG> Slot;
+        typedef sigc::slot<void, const ARG*> Slot;
 
         static constexpr MessageId id()
         {
             return ID;
         }
     public:
-        Message( const ARG& arg )
+        message( const ARG& arg )
             : arg( arg )
         {
         }
@@ -32,7 +32,7 @@ namespace Comser::Event
     };
 
     template<MessageId ID>
-    struct Message<ID>
+    struct message<ID>
     {
     public:
         typedef sigc::slot<void>    Slot;
@@ -42,7 +42,7 @@ namespace Comser::Event
             return ID;
         }
     public:
-        Message()
+        message()
         {
         }
     };
@@ -59,11 +59,11 @@ namespace Comser::Event
     struct _construct
     {
         template<typename ...ARGS>
-        using Message = Message<ID, ARGS...>;
+        using Message = message<ID, ARGS...>;
     };
 
     // This is an easy way of constructing a message
     // You can just go construct( "MessageName" )::Message<ARGS>
-    #define construct( str ) _construct<hash(str)>
+    #define construct( str ) _construct<Comser::Event::hash(str)>
 
 }
