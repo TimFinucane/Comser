@@ -6,6 +6,14 @@ using namespace Comser::GroupSpace;
 
 // Aaah, how i love the Standard Library
 
+ComponentVector::~ComponentVector()
+{
+    for( auto i = _vector.begin(); i != _vector.end(); ++i )
+        delete *i;
+
+    _vector.clear();
+}
+
 void    ComponentVector::pop()
 {
     Component* cmp = _vector[_vector.size() - 1];

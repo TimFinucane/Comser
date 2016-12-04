@@ -18,9 +18,8 @@ namespace Comser
         // TODO: More memory efficient form
         /// <summary>
         /// A vector of components of a certain type,
-        ///  and their respective entity. These are NOT
-        ///  sorted, but are usually nearly in (chronoligical) order
-        ///  due to the way components are added.
+        /// These are NOT sorted, but are usually nearly in
+        ///  (chronoligical) order due to the way components are added.
         /// </summary>
         struct ComponentVector
         {
@@ -31,6 +30,8 @@ namespace Comser
             typedef Vector::iterator            Iterator;
             typedef Vector::const_iterator      ConstIterator;
         public:
+            ~ComponentVector();
+
             // <summary>
             // Add a component onto the stack through new COMPONENT( COMARGS ).
             // </summary>
@@ -49,13 +50,6 @@ namespace Comser
                 return (Index)(_vector.size() - 1);
             }
 
-            // <summary>
-            // Pops item from the back of the vector.
-            // Uses COMPONENT to call the component destructor in constant time
-            // </summary>
-            // <typeparam name="COMPONENT">The class of the component being removed</typeparam>
-            template< class COMPONENT >
-            void                pop();
             /* TODO doc
              * Pops item from back of vector (Uses virtual destructor,
              *  so not as efficient as templated version).
