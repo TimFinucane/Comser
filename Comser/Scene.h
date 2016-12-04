@@ -70,8 +70,9 @@ namespace Comser
     template <typename ENTITYREF>
     class Scene abstract : public SceneBase
     {
-        using CONSTREF = typename std::conditional<std::is_fundamental<ENTITYREF>::value, ENTITYREF, const ENTITYREF&>::type;
     public:
+        using CONSTREF = typename std::conditional<std::is_fundamental<ENTITYREF>::value, ENTITYREF, const ENTITYREF&>::type;
+
         using Signal = typename sigc::signal<void, CONSTREF, Component*>;
         using SignalList = typename std::vector<Signal>;
         using Slot = typename Signal::slot_type;

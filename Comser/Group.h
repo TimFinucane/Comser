@@ -80,7 +80,7 @@ namespace Comser
         template<class COMPONENT>
         void                removeComponent( EntityId handle )
         {
-            EntityList::EntityIterator entityIt = _entities.findComponent( handle, _associator[COMPONENT::id] );
+            EntityList::EntityIterator entityIt = _entities.findComponent( handle, localType( COMPONENT::id() ) );
 
             _removeComponent<COMPONENT>( handle, entityIt );
         }
@@ -166,13 +166,13 @@ namespace Comser
         void                _removeComponent( EntityList::EntityId id, EntityList::EntityIterator entityIt )
         {
             // Call the signal
-            signalRemoved( entityIt->type, &id, *_components[entityIt->type]->get( entityIt->index ) );
+            signalRemoved( entityIt->type, id, *_components[entityIt->type]->get( entityIt->index ) );
 
             // Move this component to last position in its component list
-            _swap( entityIt->type, id, entityIt );
+            _swap( entityIt );
 
             // Pop it off the components list
-            _components[entityIt->type]->pop<COMPONENT>();
+            _components[entityIt->type]->pop();
 
             // And remove the item from the entity list
             _entities.removeComponent( id, entityIt );
