@@ -18,8 +18,8 @@ namespace Comser
         class Manager
         {
         private:
-            typedef sigc::signal<void, const void*>     Signal;
-            typedef std::map<MessageId, Signal>         SignalMap;
+            typedef sigc::signal<void, const void*>         Signal;
+            typedef std::map<MessageId, Signal>             SignalMap;
         public:
             /// <summary>
             /// Removes all signals.
@@ -29,31 +29,37 @@ namespace Comser
                 _signals.clear();
             }
 
-            template <struct Message>
+            template <typename MESSAGE>
             void                clear()
             {
-                clear( Message::id() );
+                clear( MESSAGE::id() );
             }
             void                clear( MessageId id )
             {
                 _signals.erase( id );
             }
 
-            template <struct Message>
-            sigc::connection    connect( Message::Slot slot )
+            template <typename MESSAGE>
+            sigc::connection    connect( typename MESSAGE::Slot slot )
             {
-                return _signals[Message::id()].connect( slot );
+                return _signals[MESSAGE::id()].connect( sigc::retype( slot ) );
             }
             
             template <MessageId ID, typename ARG>
-            void                operator()( const Message<ID, ARG>& message )
+            void                operator()( const message<ID, ARG>& message )
             {
-                _signals[ID]( message.arg );
+                _signals[ID]( (void*)&message.arg );
             }
             template <MessageId ID>
-            void                operator()( const Message<ID>& message )
+            void                operator()( const message<ID>& message )
             {
                 _signals[ID]( nullptr );
+            }
+
+            template <typename T>
+            void                operator()( MessageId id, const T* t )
+            {
+                _signals[id]( (const void*)t );
             }
         private:
             SignalMap   _signals;
