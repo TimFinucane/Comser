@@ -18,7 +18,7 @@ ComponentAssociator::ComponentAssociator( const std::initializer_list<ComponentT
 LocalComponentType  ComponentAssociator::operator[]( ComponentType type ) const
 {
     ComponentType* pos = std::lower_bound( _types, &_types[_count], type );
-    if( *pos != type )
+    if( (pos == _types + _count) || *pos != type )
         return NOT_FOUND();
     return LocalComponentType( (unsigned short)std::distance( _types, pos ) );
 }
