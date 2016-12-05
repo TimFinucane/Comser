@@ -32,7 +32,7 @@ namespace Comser
 
     public:
         Tracker( SceneType* scene )
-            : scene( scene )
+            : Tracker::TrackerHelper( scene )
         {
             subscribe( sigc::mem_fun( *this, &Tracker<ENTITYREF, COMPONENTS...>::componentAdded ),
                 sigc::mem_fun( *this, &Tracker<ENTITYREF, COMPONENTS...>::componentRemoved ) );
@@ -40,9 +40,7 @@ namespace Comser
             // TODO: search through the scene
         }
         Tracker()
-            : scene( nullptr )
         {
-            
         }
 
         ~Tracker()
@@ -77,8 +75,6 @@ namespace Comser
         }
 
     private:
-        SceneType*          _scene;
-
         Vector              _items;
     };
 }
