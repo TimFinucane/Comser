@@ -57,19 +57,19 @@ namespace Comser
         }
 
     protected:
-        void    componentAdded( Ent ent, Component* comp )
+        void    componentAdded( Ent ent, Component* )
         {
             Tuple tuple;
             if( isItem( ent, tuple ) )
                 _items.emplace_back( Item{ ent, tuple } );
         }
-        void    componentRemoved( Ent ent, Component* comp )
+        void    componentRemoved( Ent ent, Component* )
         {
             // TODO: faster?
             Vector::iterator it;
             if( (it = std::find( _items.begin(), _items.end(), ent )) != _items.end() )
             {
-                std::swap( it, _items.end() - 1 );
+                std::iter_swap( it, _items.end() - 1 );
                 _items.pop_back();
             }
         }

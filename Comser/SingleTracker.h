@@ -84,7 +84,7 @@ namespace Comser
         }
 
     protected:
-        void    componentAdded( Ent ent, Component* comp )
+        void    componentAdded( Ent ent, Component* )
         {
             Tuple tuple;
             if( isItem( ent, tuple ) )
@@ -94,7 +94,7 @@ namespace Comser
                 _components = tuple;
             }
         }
-        void    componentRemoved( Ent ent, Component* comp )
+        void    componentRemoved( Ent ent, Component* )
         {
             if( ent == _entity )
             {

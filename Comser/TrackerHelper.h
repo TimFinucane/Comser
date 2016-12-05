@@ -51,7 +51,7 @@ namespace Comser
             return std::get<N>( tuple ) != nullptr && isItem<N + 1>( ent, tuple );
         }
         template<>
-        bool    isItem<sizeof...(COMPONENTS)>( Ent ent, Tuple& tuple )
+        bool    isItem<sizeof...(COMPONENTS)>( Ent, Tuple& )
         {
             return true;
         }
