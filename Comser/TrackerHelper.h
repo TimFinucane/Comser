@@ -13,12 +13,40 @@ namespace Comser
         typedef std::tuple<COMPONENTS*...>  Tuple;
 
     protected:
+        TrackerHelper()
+            : scene( nullptr )
+        {
+        }
+        TrackerHelper( SceneType* scene )
+            : scene( scene )
+        {
+            for( unsigned int i = 0; i < sizeof...(COMPONENTS); ++i )
+            {
+                _added[i].disconnect();
+                _removed[i].disconnect();
+            }
+        }
+
+        TrackerHelper( const TrackerHelper& tracker ) = delete;
+        TrackerHelper& operator =( const TrackerHelper& helper ) = delete;
+        TrackerHelper( TrackerHelper&& tracker ) = delete;
+        TrackerHelper&& operator =( TrackerHelper&& helper ) = delete;
+
+        ~TrackerHelper()
+        {
+            for( unsigned int i = 0; i < sizeof...(COMPONENTS); ++i )
+            {
+                _added[i].disconnect();
+                _removed[i].disconnect();
+            }
+        }
+
         template <unsigned int N = 0>
         bool    isItem( Ent ent, Tuple& tuple )
         {
             typedef std::remove_pointer<std::tuple_element<N, Tuple>::type>::type CompType;
 
-            std::get<N>( tuple ) = (CompType*)_scene->getComponent( ent, _scene->localType( CompType::id() ) );
+            std::get<N>( tuple ) = (CompType*)scene->getComponent( ent, scene->localType( CompType::id() ) );
 
             return std::get<N>( tuple ) != nullptr && isItem<N + 1>( ent, tuple );
         }
@@ -33,9 +61,9 @@ namespace Comser
         {
             typedef std::remove_pointer<std::tuple_element<N, Tuple>::type>::type CompType;
 
-            LocalComponentType localType = _scene->localType( CompType::id() );
-            _added[N] = _scene->connectAdded( localType, added );
-            _removed[N] = _scene->connectRemoved( localType, removed );
+            LocalComponentType localType = scene->localType( CompType::id() );
+            _added[N] = scene->connectAdded( localType, added );
+            _removed[N] = scene->connectRemoved( localType, removed );
 
             subscribe<N + 1>( added, removed );
         }

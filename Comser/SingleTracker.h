@@ -16,24 +16,54 @@ namespace Comser
     {
     public:
         SingleTracker( SceneType* scene )
-            : scene( scene ), _exists( false )
+            : SingleTracker::TrackerHelper( scene ), _exists( false )
         {
             subscribeAll();
 
             // TODO: search through the scene
         }
         SingleTracker( SceneType* scene, Ent item )
-            : scene( scene ), _entity( item ), _exists( true )
+            : SingleTracker::TrackerHelper( scene ), _entity( item ), _exists( true )
         {
             subscribeAll();
+
+            Tuple tuple;
+            if( isItem( item, tuple ) )
+                _components = tuple;
+            else
+                _exists = false;
         }
         SingleTracker()
-            : scene( nullptr ), _exists( false )
+            : _exists( false )
         {
         }
 
         ~SingleTracker()
         {
+        }
+
+        // Copy constructors
+        SingleTracker( const SingleTracker& tracker )
+        {
+            operator =()( tracker );
+        }
+        SingleTracker& operator =( const SingleTracker& tracker )
+        {
+            scene = tracker.scene;
+
+            // Automatically deletes previous subscriptions
+            subscribeAll();
+
+            if( tracker.exists() )
+            {
+                _exists = true;
+                _entity = tracker._entity;
+                _components = tracker._components;
+            }
+            else
+                _exists = false;
+
+            return *this;
         }
 
         bool    exists() const
@@ -74,8 +104,8 @@ namespace Comser
 
         void    subscribeAll()
         {
-            subscribe( sigc::mem_fun( *this, SingleTracker<ENTITYREF, COMPONENTS...>::componentAdded ),
-                sigc::mem_fun( *this, SingleTracker<ENTITYREF, COMPONENTS...>::componentRemoved ) );
+            subscribe( sigc::mem_fun( *this, &SingleTracker<ENTITYREF, COMPONENTS...>::componentAdded ),
+                sigc::mem_fun( *this, &SingleTracker<ENTITYREF, COMPONENTS...>::componentRemoved ) );
         }
     private:
         Ent                 _entity;
