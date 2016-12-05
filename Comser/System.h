@@ -14,11 +14,6 @@ namespace Comser
     class System
     {
     public:
-        sigc::connection&   counterConnection()
-        {
-            return _counterCon;
-        }
-
         // Occurs on adding of the scene to a game
         virtual void        added( Engine*, const Engine::SceneIterator, const Engine::SceneIterator ){}
 
@@ -26,8 +21,6 @@ namespace Comser
         virtual void        sceneDestroyed( Engine::SceneIterator scene ){}
         virtual void        sceneDisabled( Engine::SceneIterator scene ){}
         virtual void        sceneEnabled( Engine::SceneIterator scene ){}
-    private:
-        sigc::connection    _counterCon;
     };
 }
 
