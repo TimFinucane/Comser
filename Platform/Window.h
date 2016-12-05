@@ -87,7 +87,16 @@ public:
     /// Clears the current buffer
     ///  and sets it to the given colour
     /// </summary>
-    void                    clear( float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 0.0f );
+    void                    clear( float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f );
+
+    /// <summary>
+    /// Updates then clears the window
+    /// </summary>
+    void                    flush( float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f )
+    {
+        update();
+        clear( r, g, b, a );
+    }
 
     // Some static functions for getting info about the system.
     static unsigned int     defaultScreen();
