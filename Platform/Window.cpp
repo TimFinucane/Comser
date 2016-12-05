@@ -6,7 +6,7 @@
 #include <sigc++/sigc++.h>
 #include <tchar.h>
 
-Window::Window( std::string name, Mode mode, const Rect& rect, unsigned int screen )
+Window::Window( std::string name, Mode mode, const Rect& rect )
 {
     SDLDevice::create();
     // TODO: Option to change device
@@ -46,7 +46,7 @@ Window::Window( std::string name, Mode mode, const Rect& rect, unsigned int scre
         throw std::runtime_error( "Error intializing opengl with glew: " + std::string( (char*)glewGetErrorString( glewError ) ) );
 
     _name = name;
-    this->mode( mode ).screen( screen ).rect( rect );
+    this->mode( mode ).rect( rect );
 
 }
 Window::~Window()
@@ -97,15 +97,7 @@ Window&         Window::mode( Mode mode )
 }
 Window&         Window::rect( const Rect& rect )
 {
-    SDL_Rect display;
-    int error = SDL_GetDisplayBounds( _screen, &display );
-    if( sdlError( error ) )
-        return *this;
-
     _rect = rect;
-
-    _rect.x += display.x;
-    _rect.y += display.y;
 
     SDL_SetWindowPosition( _window, _rect.x, _rect.y );
     SDL_SetWindowSize( _window, _rect.width, _rect.height );
@@ -115,17 +107,6 @@ Window&         Window::rect( const Rect& rect )
     _settingsSignal( *this );
 
     return *this;
-}
-Window&         Window::screen( unsigned int screen )
-{
-    if( screen < (unsigned int)SDL_GetNumVideoDisplays() )
-    {
-        _screen = screen;
-        // Reposition window
-        return rect( _rect );
-    }
-    else
-        return *this;
 }
 
 sigc::connection                Window::connectSettingsChange( SettingsSignal::slot_type slot )
