@@ -96,12 +96,16 @@ namespace Comser
         {
             LocalComponentType type = localType( COMPONENT::id() );
             EntityList::EntityIterator it = _entities.findComponent( handle, type );
+
+            if( it == (*_entities[handle]).end() || it->type != type )
+                return nullptr;
+
             return reinterpret_cast<COMPONENT*>( *_components[type]->get( it->index ) );
         }
         Component*          getComponent( EntityId handle, LocalComponentType localType )
         {
             EntityList::EntityIterator it = _entities.findComponent( handle, localType );
-            // Tricky maths to avoid an extra if statement (cheeky)
+
             if( it == (*_entities[handle]).end() || it->type != localType )
                 return nullptr;
 
