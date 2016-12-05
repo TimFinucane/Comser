@@ -80,14 +80,13 @@ namespace Comser
 
         Event::Manager      eventManager;
         UpdateCounter       counter;
+        double              tickRate;
     private:
-        SceneList                   _scenes;
+        SceneList           _scenes;
 
-        Systems                     _systems;
+        Systems             _systems;
 
-        uint64_t                    _timerFreq;
-        uint64_t                    _prevTime;
-
-        double                      _tickRate;
+        uint64_t            _timerFreq;
+        uint64_t            _prevTime;
     };
 }

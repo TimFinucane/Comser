@@ -8,13 +8,13 @@
 using namespace Comser;
 
 Engine::Engine( double tickRate, unsigned int orders )
-    : _tickRate( tickRate ), counter( orders )
+    : tickRate( tickRate ), counter( orders )
 {
     _timerFreq = SDL_GetPerformanceFrequency();
     _prevTime = SDL_GetPerformanceCounter();
 }
 Engine::Engine( double tickRate, std::initializer_list<unsigned int> orderUpdateRates )
-    : _tickRate( tickRate ), counter( orderUpdateRates )
+    : tickRate( tickRate ), counter( orderUpdateRates )
 {
     _timerFreq = SDL_GetPerformanceFrequency();
     _prevTime = SDL_GetPerformanceCounter();
@@ -37,7 +37,7 @@ void Engine::removeSystem( System* system )
 double Engine::update()
 {
     uint64_t time = SDL_GetPerformanceCounter();
-    double ticks = ((time - _prevTime) / (double)_timerFreq) / _tickRate;
+    double ticks = ((time - _prevTime) / (double)_timerFreq) / tickRate;
     _prevTime = time;
 
     counter.update( ticks );
