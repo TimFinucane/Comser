@@ -32,16 +32,6 @@ namespace Comser
         /// <param name="orderUpdateRates">A list of each system update category and the number of ticks per update for that category</param>
         Engine( double tickRate, std::initializer_list<unsigned int> orderUpdateRates );
 
-        /// <summary>
-        /// Will set a certain number of ticks per update for the given update order
-        /// </summary>
-        /// <param name="order">The order to set</param>
-        /// <param name="ticksPerUpdate">The number of game ticks to wait before updating</param>
-        void                setCounter( UpdateOrder order, unsigned int ticksPerUpdate )
-        {
-            _counter.ticksPerUpdate( order, ticksPerUpdate );
-        }
-
         // <summary>
         // Creates a new scene, and returns the scene's id.
         // Starts disabled by default.
@@ -89,13 +79,11 @@ namespace Comser
         // TODO: Scenes added, removed, enabled, and disabled
 
         Event::Manager      eventManager;
-
+        UpdateCounter       counter;
     private:
         SceneList                   _scenes;
 
         Systems                     _systems;
-
-        UpdateCounter               _counter;
 
         uint64_t                    _timerFreq;
         uint64_t                    _prevTime;
