@@ -9,24 +9,13 @@ const double MAX_TIME = 20.0f;
 
 using namespace Comser;
 
-void UpdateCounter::init( unsigned int size )
+UpdateCounter::UpdateCounter( unsigned int size )
+    : _updates( size ), _delta( 0.0 )
 {
-    _delta = 0.0;
-
-    _updates.resize( size );
 }
-void UpdateCounter::init( std::initializer_list<unsigned int> orders )
-{
-    _delta = 0.0;
-
-    _updates.reserve( orders.size() );
-    unsigned int i = 0;
-    for( auto it = orders.begin(); it < orders.end(); ++i, ++it )
-        _updates.emplace_back( (unsigned int)*it );
-    
-}
-void UpdateCounter::release()
-{
+UpdateCounter::UpdateCounter( std::initializer_list<unsigned int> orders )
+    : _delta( 0.0 ), _updates( orders.begin(), orders.end() ) // Emplace-construct the vector
+{    
 }
 
 void UpdateCounter::update( double ticks )

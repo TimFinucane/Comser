@@ -54,13 +54,13 @@ namespace Comser
         /// <summary>
         /// Sets up the number of update categories that the counter will have
         /// </summary>
-        void                        init( unsigned int orders );
+        UpdateCounter( unsigned int orders );
         /// <summary>
         /// Sets up the number of update categories that the counter will have, along with the frequencies of each
         /// </summary>
-        void                        init( std::initializer_list<unsigned int> orders );
+        UpdateCounter( std::initializer_list<unsigned int> orders );
 
-        void                        release();
+        ~UpdateCounter() {}
 
         /// <summary>
         /// Sets the number of ticks that the given UpdateOrder will go through before updating
