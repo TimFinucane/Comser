@@ -26,8 +26,6 @@ namespace Comser
         virtual void        sceneDestroyed( Engine::SceneIterator scene ){}
         virtual void        sceneDisabled( Engine::SceneIterator scene ){}
         virtual void        sceneEnabled( Engine::SceneIterator scene ){}
-        
-        virtual void        update(){}
     private:
         sigc::connection    _counterCon;
     };

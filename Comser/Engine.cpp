@@ -8,25 +8,20 @@
 using namespace Comser;
 
 Engine::Engine( double tickRate, unsigned int orders )
-    : _tickRate( tickRate )
+    : _tickRate( tickRate ), counter( orders )
 {
-    _counter.init( orders );
-
     _timerFreq = SDL_GetPerformanceFrequency();
     _prevTime = SDL_GetPerformanceCounter();
 }
 Engine::Engine( double tickRate, std::initializer_list<unsigned int> orderUpdateRates )
-    : _tickRate( tickRate )
+    : _tickRate( tickRate ), counter( orderUpdateRates )
 {
-    _counter.init( orderUpdateRates );
-
     _timerFreq = SDL_GetPerformanceFrequency();
     _prevTime = SDL_GetPerformanceCounter();
 }
 
-void Engine::addSystem( System* system, UpdateOrder order )
+void Engine::addSystem( System* system )
 {
-    system->counterConnection() = _counter.signal( order, sigc::mem_fun( *system, &System::update ) );
     _systems.push_back( system );
 
     system->added( this, _scenes.begin(), _scenes.end() );
@@ -45,7 +40,7 @@ double Engine::update()
     double ticks = ((time - _prevTime) / (double)_timerFreq) / _tickRate;
     _prevTime = time;
 
-    _counter.update( ticks );
+    counter.update( ticks );
 
     return ticks;
 }

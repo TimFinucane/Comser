@@ -58,7 +58,7 @@ namespace Comser
         void                setScene( SceneIterator* scene, bool enable );
         void                setScene( SceneBase* scene, bool enable );
 
-        void                addSystem( System* system, UpdateOrder order );
+        void                addSystem( System* system );
         void                removeSystem( System* system );
 
         /// <summary>
