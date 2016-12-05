@@ -51,7 +51,7 @@ namespace Comser
         {
             scene = tracker.scene;
 
-            // Automatically deletes previous subscriptions
+            disconnectAll();
             subscribeAll();
 
             if( tracker.exists() )

@@ -47,6 +47,28 @@ namespace Comser
         {
         }
 
+        Tracker( const Tracker& tracker )
+        {
+            _scene = tracker.scene;
+
+            _items = tracker._items;
+
+            subscribe( sigc::mem_fun( *this, &Tracker<ENTITYREF, COMPONENTS...>::componentAdded ),
+                sigc::mem_fun( *this, &Tracker<ENTITYREF, COMPONENTS...>::componentRemoved ) );
+        }
+        Tracker& operator =( const Tracker& tracker )
+        {
+            scene = tracker.scene;
+
+            _items = tracker._items;
+
+            disconnectAll();
+            subscribe( sigc::mem_fun( *this, &Tracker<ENTITYREF, COMPONENTS...>::componentAdded ),
+                sigc::mem_fun( *this, &Tracker<ENTITYREF, COMPONENTS...>::componentRemoved ) );
+
+            return *this;
+        }
+
         typename Vector::const_iterator  begin() const
         {
             return _items.begin();

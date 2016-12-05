@@ -27,19 +27,15 @@ namespace Comser
             }
         }
 
+        ~TrackerHelper()
+        {
+            disconnectAll();
+        }
+
         TrackerHelper( const TrackerHelper& tracker ) = delete;
         TrackerHelper& operator =( const TrackerHelper& helper ) = delete;
         TrackerHelper( TrackerHelper&& tracker ) = delete;
         TrackerHelper&& operator =( TrackerHelper&& helper ) = delete;
-
-        ~TrackerHelper()
-        {
-            for( unsigned int i = 0; i < sizeof...(COMPONENTS); ++i )
-            {
-                _added[i].disconnect();
-                _removed[i].disconnect();
-            }
-        }
 
         template <unsigned int N = 0>
         bool    isItem( Ent ent, Tuple& tuple )
@@ -69,6 +65,15 @@ namespace Comser
         }
         template <>
         void    subscribe<sizeof...(COMPONENTS)>( typename SceneType::Slot, typename SceneType::Slot ) {}
+
+        void disconnectAll()
+        {
+            for( unsigned int i = 0; i < sizeof...(COMPONENTS); ++i )
+            {
+                _added[i].disconnect();
+                _removed[i].disconnect();
+            }
+        }
 
         SceneType* scene;
 
