@@ -13,11 +13,11 @@ namespace Graphics
         typedef std::vector<OBJECT> Objects;
     public:
         ObjectArray( UpdateFrequency freq )
-            : Buffer( freq ), _size( 0 )
+            : Buffer( freq ), _size( 0 ), _capacity( 0 )
         {
         }
         ObjectArray( UpdateFrequency freq, const Objects& buffer )
-            : Buffer( freq, buffer.size() * sizeof( OBJECT ), &buffer[0] )
+            : Buffer( freq, buffer.size() * sizeof( OBJECT ), &buffer[0] ), _size( buffer.size() ), _capacity( buffer.size() )
         {
         }
         ~ObjectArray()
@@ -29,11 +29,12 @@ namespace Graphics
         // </summary>
         void        update( const Objects& buffer )
         {
-            if( buffer.size() == _size )
+            _size = buffer.size();
+            if( buffer.size() <= _capacity )
                 replace( 0, _size * sizeof( OBJECT ), &buffer[0] );
             else
             {
-                _size = buffer.size();
+                _capacity = buffer.size();
                 recreate( _size * sizeof( OBJECT ), &buffer[0] );
             }
         }
@@ -51,6 +52,7 @@ namespace Graphics
 
     private:
         size_t  _size;
+        size_t  _capacity;
     };
 
 
