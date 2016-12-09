@@ -64,6 +64,6 @@ namespace Comser::Event
 
     // This is an easy way of constructing a message
     // You can just go construct( "MessageName" )::Message<ARGS>
-    #define construct( str ) _construct<Comser::Event::hash(str)>
+    #define constructMessage( str ) _construct<Comser::Event::hash(str)>
 
 }
