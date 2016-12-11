@@ -92,12 +92,16 @@ namespace Comser
                 _exists = true;
                 _entity = ent;
                 _components = tuple;
+
+                added( _entity, &_components );
             }
         }
         void    componentRemoved( Ent ent, Component* )
         {
             if( ent == _entity )
             {
+                removed( _entity, &_components );
+
                 _exists = false;
             }
         }

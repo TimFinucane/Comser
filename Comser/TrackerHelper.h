@@ -8,9 +8,20 @@ namespace Comser
     struct TrackerHelper
     {
     public:
-        typedef Scene<ENTITYREF>            SceneType;
-        using Ent = typename SceneType::CONSTREF;
-        typedef std::tuple<COMPONENTS*...>  Tuple;
+        typedef Scene<ENTITYREF>                            SceneType;
+        typedef typename SceneType::CONSTREF                Ent;
+
+        typedef std::tuple<COMPONENTS*...>                  Tuple;
+        typedef typename sigc::signal<void, Ent, Tuple*>    Signal;
+
+        sigc::connection    connectAdd( typename Signal::slot_type slot )
+        {
+            return added.connect( slot );
+        }
+        sigc::connection    connectRemove( typename Signal::slot_type slot )
+        {
+            return removed.connect( slot );
+        }
 
     protected:
         TrackerHelper()
@@ -20,11 +31,6 @@ namespace Comser
         TrackerHelper( SceneType* scene )
             : scene( scene )
         {
-            for( unsigned int i = 0; i < sizeof...(COMPONENTS); ++i )
-            {
-                _added[i].disconnect();
-                _removed[i].disconnect();
-            }
         }
 
         ~TrackerHelper()
@@ -58,8 +64,8 @@ namespace Comser
             typedef std::remove_pointer<std::tuple_element<N, Tuple>::type>::type CompType;
 
             LocalComponentType localType = scene->localType( CompType::id() );
-            _added[N] = scene->connectAdded( added, localType );
-            _removed[N] = scene->connectRemoved( removed, localType );
+            _compAdded[N] = scene->connectAdded( added, localType );
+            _compRemoved[N] = scene->connectRemoved( removed, localType );
 
             subscribe<N + 1>( added, removed );
         }
@@ -70,14 +76,19 @@ namespace Comser
         {
             for( unsigned int i = 0; i < sizeof...(COMPONENTS); ++i )
             {
-                _added[i].disconnect();
-                _removed[i].disconnect();
+                _compAdded[i].disconnect();
+                _compRemoved[i].disconnect();
             }
         }
 
         SceneType* scene;
 
-        sigc::connection    _added[sizeof...(COMPONENTS)];
-        sigc::connection    _removed[sizeof...(COMPONENTS)];
+        Signal      added;
+        Signal      removed;
+
+    private:
+
+        sigc::connection    _compAdded[sizeof...(COMPONENTS)];
+        sigc::connection    _compRemoved[sizeof...(COMPONENTS)];
     };
 }

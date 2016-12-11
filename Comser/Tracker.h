@@ -83,7 +83,10 @@ namespace Comser
         {
             Tuple tuple;
             if( isItem( ent, tuple ) )
+            {
                 _items.emplace_back( Item{ ent, tuple } );
+                added( ent, &tuple );
+            }
         }
         void    componentRemoved( Ent ent, Component* )
         {
@@ -91,6 +94,8 @@ namespace Comser
             Vector::iterator it;
             if( (it = std::find( _items.begin(), _items.end(), ent )) != _items.end() )
             {
+                removed( ent, &it->tuple );
+
                 std::iter_swap( it, _items.end() - 1 );
                 _items.pop_back();
             }
