@@ -22,6 +22,7 @@ namespace Comser
     class SceneBase abstract
     {
         friend class Engine;
+
     public:
         SceneBase( const std::initializer_list<ComponentType>& types )
             : _associator( types )
@@ -47,6 +48,7 @@ namespace Comser
         {
             return SceneType::NONE;
         }
+
     protected:
         virtual void    onEnable() {};
         virtual void    onDisable() {};
@@ -61,8 +63,8 @@ namespace Comser
             _active = true;
             onEnable();
         }
-    private:
 
+    private:
         bool                _active;
         ComponentAssociator _associator;
     };
@@ -75,7 +77,7 @@ namespace Comser
 
         using Signal = typename sigc::signal<void, CONSTREF, Component*>;
         using SignalList = typename std::vector<Signal>;
-        using Slot = typename Signal::slot_type;
+
     public:
         Scene( const std::initializer_list<ComponentType>& types )
             : SceneBase( types )
@@ -85,11 +87,25 @@ namespace Comser
         }
         virtual ~Scene() = default;
        
-        sigc::connection        connectAdded( LocalComponentType type, typename Slot slot )
+        template <typename COMPONENT>
+        sigc::connection        connectAdded( sigc::slot<void, CONSTREF, COMPONENT*> slot, LocalComponentType type = localType( COMPONENT::id() ) )
+        {
+            static_assert(std::is_base_of<Component, COMPONENT>::value, "Slot must be accepting a component");
+
+            return _addedSignals[type.get()].connect( sigc::retype( slot ) );
+        }
+        sigc::connection        connectAdded( typename Signal::slot_type slot, LocalComponentType type )
         {
             return _addedSignals[type.get()].connect( slot );
         }
-        sigc::connection        connectRemoved( LocalComponentType type, typename Slot slot )
+        template <typename COMPONENT>
+        sigc::connection        connectRemoved( sigc::slot<void, CONSTREF, COMPONENT*> slot, LocalComponentType type = localType( COMPONENT::id() ) )
+        {
+            static_assert(std::is_base_of<Component, COMPONENT>::value, "Slot must be accepting a component");
+
+            return _removedSignals[type.get()].connect( sigc::retype( slot ) );
+        }
+        sigc::connection        connectRemoved( typename Signal::slot_type slot, LocalComponentType type )
         {
             return _removedSignals[type.get()].connect( slot );
         }

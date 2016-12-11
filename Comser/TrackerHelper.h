@@ -53,18 +53,18 @@ namespace Comser
         }
 
         template <unsigned int N = 0>
-        void    subscribe( typename SceneType::Slot added, typename SceneType::Slot removed )
+        void    subscribe( typename SceneType::Signal::slot_type added, typename SceneType::Signal::slot_type removed )
         {
             typedef std::remove_pointer<std::tuple_element<N, Tuple>::type>::type CompType;
 
             LocalComponentType localType = scene->localType( CompType::id() );
-            _added[N] = scene->connectAdded( localType, added );
-            _removed[N] = scene->connectRemoved( localType, removed );
+            _added[N] = scene->connectAdded( added, localType );
+            _removed[N] = scene->connectRemoved( removed, localType );
 
             subscribe<N + 1>( added, removed );
         }
         template <>
-        void    subscribe<sizeof...(COMPONENTS)>( typename SceneType::Slot, typename SceneType::Slot ) {}
+        void    subscribe<sizeof...(COMPONENTS)>( typename SceneType::Signal::slot_type, typename SceneType::Signal::slot_type ) {}
 
         void disconnectAll()
         {
