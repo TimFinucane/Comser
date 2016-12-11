@@ -48,18 +48,22 @@ namespace Comser
             template <MessageId ID, typename ARG>
             void                operator()( const message<ID, ARG>& message )
             {
-                _signals[ID]( (void*)&message.arg );
+                operator()( ID, &message.arg );
             }
             template <MessageId ID>
             void                operator()( const message<ID>& message )
             {
-                _signals[ID]( nullptr );
+                operator()( ID );
             }
 
             template <typename T>
             void                operator()( MessageId id, const T* t )
             {
                 _signals[id]( (const void*)t );
+            }
+            void                operator()( MessageId id )
+            {
+                _signals[id]( nullptr );
             }
         private:
             SignalMap   _signals;
