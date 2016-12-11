@@ -88,9 +88,10 @@ namespace Comser
         virtual ~Scene() = default;
        
         template <typename COMPONENT>
-        sigc::connection        connectAdded( sigc::slot<void, CONSTREF, COMPONENT*> slot, LocalComponentType type = localType( COMPONENT::id() ) )
+        sigc::connection        connectAdded( sigc::slot<void, CONSTREF, COMPONENT*> slot )
         {
             static_assert(std::is_base_of<Component, COMPONENT>::value, "Slot must be accepting a component");
+            LocalComponentType type = localType( COMPONENT::id() );
 
             return _addedSignals[type.get()].connect( sigc::retype( slot ) );
         }
@@ -99,9 +100,10 @@ namespace Comser
             return _addedSignals[type.get()].connect( slot );
         }
         template <typename COMPONENT>
-        sigc::connection        connectRemoved( sigc::slot<void, CONSTREF, COMPONENT*> slot, LocalComponentType type = localType( COMPONENT::id() ) )
+        sigc::connection        connectRemoved( sigc::slot<void, CONSTREF, COMPONENT*> slot )
         {
             static_assert(std::is_base_of<Component, COMPONENT>::value, "Slot must be accepting a component");
+            LocalComponentType type = localType( COMPONENT::id() );
 
             return _removedSignals[type.get()].connect( sigc::retype( slot ) );
         }
