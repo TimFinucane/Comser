@@ -8,18 +8,18 @@ Memory class												X						LOW
 
 Use vectors instead of maps with EventSystem?				X						HIGH
 
-Functionality for multiple scenes							X						HIGH
+Functionality for multiple scenes							DONE!					HIGH
 
 Get component tuples to work on multiple scenes				DONE!
 
-Do we have functionality for prefabs working properly?		X						MED
+Do we have functionality for prefabs working properly?		DONE!					MED
 
-Find better name than TupleHook?							X						MED
+Find better name than TupleHook?							DONE!					MED
 
 Finish the docs and get a proper external doc out			X						MED
 
 Find a better solution for communication between 
- game and system?											X						HIGH
+ game and system?											DONE!					HIGH
 
 Documentation for different scene types
 
@@ -33,3 +33,5 @@ Improved entity handles? Imagine we could even
   replace TupleHook if we did enough work
 
 Two types of entity handle: weak and strong
+
+Allow for variable updating with the UpdateCounter
