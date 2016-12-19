@@ -37,6 +37,9 @@
     <ClInclude Include="lodepng.h">
       <Filter>Storage\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="BasicProgram.h">
+      <Filter>Shader\Some Programs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -72,9 +75,15 @@
     <ClCompile Include="lodepng.cpp">
       <Filter>Storage\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="BasicProgram.cpp">
+      <Filter>Shader\Some Programs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />
+    <Text Include="BasicFragment.sh">
+      <Filter>Shader\Some Programs</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -98,6 +107,9 @@
       <Filter>Shader\Some Programs</Filter>
     </None>
     <None Include="SpriteVertex.sh">
+      <Filter>Shader\Some Programs</Filter>
+    </None>
+    <None Include="BasicVertex.sh">
       <Filter>Shader\Some Programs</Filter>
     </None>
   </ItemGroup>

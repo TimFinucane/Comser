@@ -200,6 +200,7 @@
     <ClInclude Include="lodepng.h" />
     <ClInclude Include="ObjectArray.h" />
     <ClInclude Include="BufferInfo.h" />
+    <ClInclude Include="BasicProgram.h" />
     <ClInclude Include="SpriteProgram.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Library.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="BufferInfo.cpp" />
     <ClCompile Include="lodepng.cpp" />
+    <ClCompile Include="BasicProgram.cpp" />
     <ClCompile Include="SpriteProgram.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Library.cpp" />
@@ -223,9 +225,11 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="BasicFragment.sh" />
     <Text Include="Todo.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BasicVertex.sh" />
     <None Include="SpriteFragment.sh" />
     <None Include="SpriteVertex.sh" />
   </ItemGroup>
