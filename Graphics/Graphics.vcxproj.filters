@@ -40,6 +40,30 @@
     <ClInclude Include="BasicProgram.h">
       <Filter>Shader\Some Programs</Filter>
     </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIGroup.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIRenderInfo.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIView.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>UI\Simple Items</Filter>
+    </ClInclude>
+    <ClInclude Include="UITextBox.h">
+      <Filter>UI\Simple Items</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBorder.h">
+      <Filter>UI\Simple Items</Filter>
+    </ClInclude>
+    <ClInclude Include="UITransform.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -78,6 +102,15 @@
     <ClCompile Include="BasicProgram.cpp">
       <Filter>Shader\Some Programs</Filter>
     </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>UI\Simple Items</Filter>
+    </ClCompile>
+    <ClCompile Include="UITextBox.cpp">
+      <Filter>UI\Simple Items</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBorder.cpp">
+      <Filter>UI\Simple Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo.txt" />
@@ -100,6 +133,12 @@
     </Filter>
     <Filter Include="Storage\Texture">
       <UniqueIdentifier>{b07e5ed8-01cb-4adb-a326-9a7459df7876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{48c17073-e548-4766-ad8c-f6c820a75555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Simple Items">
+      <UniqueIdentifier>{a70a379e-8176-470e-a7d8-b0a377ccec56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

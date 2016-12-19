@@ -209,6 +209,14 @@
     <ClInclude Include="TextureAtlas.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="UITransform.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="UIBorder.h" />
+    <ClInclude Include="UIGroup.h" />
+    <ClInclude Include="UIImage.h" />
+    <ClInclude Include="UIRenderInfo.h" />
+    <ClInclude Include="UITextBox.h" />
+    <ClInclude Include="UIView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
@@ -223,6 +231,9 @@
     <ClCompile Include="TextureAtlas.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="UIBorder.cpp" />
+    <ClCompile Include="UIImage.cpp" />
+    <ClCompile Include="UITextBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="BasicFragment.sh" />
