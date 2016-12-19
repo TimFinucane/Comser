@@ -24,6 +24,7 @@ Texture::Texture( const Image& file )
         break;
     case 4:
         format = GL_RGBA;
+        break;
     default:
         format = 0;
         throw std::runtime_error( "Error with file format: Need 1, 3, or 4 channels to create OpenGL Image" );
@@ -33,8 +34,7 @@ Texture::Texture( const Image& file )
     if( file.bitDepth() != 8 )
         throw; //TODO: Support more formats
 
-    glTexStorage2D( GL_TEXTURE_2D, 0, format, file.width(), file.height() );
-    glTexSubImage2D( GL_TEXTURE_2D, 0, 0, 0, file.width(), file.height(), format, GL_UNSIGNED_BYTE, file.file() );
+    glTexImage2D( GL_TEXTURE_2D, 0, format, file.width(), file.height(), 0, format, GL_UNSIGNED_BYTE, file.file() );
 
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
@@ -46,7 +46,7 @@ Texture::~Texture()
     glDeleteTextures( 1, &_texture );
 }
 
-void Texture::bind()
+void Texture::bind() const
 {
     glBindTexture( GL_TEXTURE_2D, _texture );
 }

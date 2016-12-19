@@ -10,16 +10,29 @@ namespace Graphics
     struct Texture
     {
     public:
+        Texture()
+            : _texture( 0 )
+        {
+        }
         Texture( const Image& file );
         ~Texture();
 
         Texture( Texture& tex ) = delete;
         void operator =( Texture& tex ) = delete;
 
-        Texture( Texture&& tex ) = default;
-        Texture& operator =( Texture&& tex ) = default;
+        Texture( Texture&& tex )
+        {
+            _texture = tex._texture;
+            tex._texture = 0;
+        }
+        Texture& operator =( Texture&& tex )
+        {
+            std::swap( _texture, tex._texture );
 
-        void    bind();
+            return *this;
+        }
+
+        void    bind() const;
     private:
         unsigned int _texture;
     };
