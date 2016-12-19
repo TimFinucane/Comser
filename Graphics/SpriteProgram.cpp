@@ -90,9 +90,7 @@ void SpriteProgram::bindVaoState()
     _spriteInfo.bind( _sprites, 2 );
 
     // And we're done. Unbind so no one else messes with this accidentally
-    glBindVertexArray( 0 );
+    unbind();
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
-
-    unbind();
 }

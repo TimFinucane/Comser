@@ -49,8 +49,8 @@ void    Program::bindVao()
 }
 void    Program::unbind()
 {
-    glUseProgram( 0 );
     glBindVertexArray( 0 );
+    glUseProgram( 0 );
 }
 unsigned int Program::uniformLoc( char* name )
 {
