@@ -62,13 +62,14 @@ namespace Graphics
 
         unsigned int                size() const
         {
-            return _width * _height * pixelDepth();
+            return _width * _height * (pixelDepth() / 8);
         }
 
+        // Returns in bits
         unsigned int                pixelDepth() const
         {
             // Produces a ceiling value for the bits per pixel
-            return (unsigned int)((_bitDepth * _channels) / 8);
+            return (_bitDepth * _channels);
         }
 
         unsigned int                channels() const
@@ -102,11 +103,11 @@ namespace Graphics
         // The start position of the given pixel
         unsigned char*              file( unsigned int x, unsigned int y )
         {
-            return &_file[y * _width + x];
+            return &_file[(y * _width + x) * pixelDepth() / 8];
         }
         const unsigned char*        file( unsigned int x, unsigned int y ) const
         {
-            return &_file[y * _width + x];
+            return &_file[(y * _width + x) * pixelDepth() / 8];
         }
     private:
 

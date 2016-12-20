@@ -9,7 +9,7 @@ namespace Graphics
     class TextureAtlas
     {
     public:
-        TextureAtlas( const Image& file, unsigned int width, unsigned int height, unsigned int layers );
+        TextureAtlas( const Image& file, unsigned int layerWidth, unsigned int layerHeight, unsigned int xLayers, unsigned int yLayers );
         ~TextureAtlas()
         {
             clear();
