@@ -22,6 +22,8 @@ void    BufferInfo::bind( Buffer& array, unsigned int location )
 
     for( unsigned int i = 0; i < _components; ++i )
     {
+        glEnableVertexAttribArray( location + i );
+
         if( _items[i].type == GL_UNSIGNED_INT || _items[i].type == GL_INT )
             glVertexAttribIPointer( location + i, _items[i].numItems, _items[i].type, _step, (void*)_items[i].offset );
         else

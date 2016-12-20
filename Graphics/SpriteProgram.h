@@ -31,12 +31,19 @@ namespace Graphics
         /// </summary>
         struct Sprite
         {
+            Sprite() {}
+            Sprite( float x, float y, float xScale, float yScale, float angle, uint32_t layer )
+                : x( x ), y( y ), xScale( xScale ), yScale( yScale ), angle( angle ), layer( layer )
+            {
+            }
+
             float           x;
             float           y;
 
             float           xScale;
             float           yScale;
 
+            float           angle;
             uint32_t        layer;
         };
         typedef std::vector<Sprite> Sprites;

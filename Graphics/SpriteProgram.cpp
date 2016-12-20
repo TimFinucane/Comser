@@ -13,7 +13,7 @@ using namespace Graphics;
 
 SpriteProgram::SpriteProgram( const FileSystem::File& vertexFile, const FileSystem::File& fragmentFile, glm::mat3 matrix )
     : Program{ Shaders::Shader( GL_VERTEX_SHADER, vertexFile ), Shaders::Shader( GL_FRAGMENT_SHADER, fragmentFile ) },
-        _squareInfo( 2, sizeof( Vertex ) ), _spriteInfo( 3, sizeof( Sprite ), 1 )
+        _squareInfo( 2, sizeof( Vertex ) ), _spriteInfo( 4, sizeof( Sprite ), 1 )
 {
     defineBufferInfo();
     bindVaoState();
@@ -74,17 +74,12 @@ void SpriteProgram::defineBufferInfo()
     // Sprite info is for the individual sprites being drawn to screen.
     _spriteInfo.define( 0, offsetof( Sprite, Sprite::x ), GL_FLOAT, 2 ); // Position
     _spriteInfo.define( 1, offsetof( Sprite, Sprite::xScale ), GL_FLOAT, 2 ); // Scale
-    _spriteInfo.define( 2, offsetof( Sprite, Sprite::layer ), GL_UNSIGNED_INT, 1 ); // layer
+    _spriteInfo.define( 2, offsetof( Sprite, Sprite::angle ), GL_FLOAT, 1 ); // Angle
+    _spriteInfo.define( 3, offsetof( Sprite, Sprite::layer ), GL_UNSIGNED_INT, 1 ); // Layer
 }
 void SpriteProgram::bindVaoState()
 {
     bindVao();
-
-    glEnableVertexAttribArray( 0 );
-    glEnableVertexAttribArray( 1 );
-    glEnableVertexAttribArray( 2 );
-    glEnableVertexAttribArray( 3 );
-    glEnableVertexAttribArray( 4 );
 
     _squareInfo.bind( _indices, _vertices, 0 );
     _spriteInfo.bind( _sprites, 2 );
