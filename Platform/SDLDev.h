@@ -14,7 +14,11 @@ inline bool sdlError( int error )
 inline bool sdlError( int error, const char* message )
 {
     if( error < 0 )
-        throw std::runtime_error( message );
+    {
+        std::string m( message );
+        m += std::string( " " ) + SDL_GetError();
+        throw std::runtime_error( m );
+    }
 
     return (error < 0);
 }

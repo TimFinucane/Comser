@@ -40,6 +40,10 @@ Window::Window( std::string name, Mode mode, const Rect& rect )
 
     _context = SDL_GL_CreateContext( _window );
 
+    // Set no vsync
+    error = SDL_GL_SetSwapInterval( 0 );
+    sdlError( error, "Cannot disable VSYNC" );
+
     glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
     if( glewError != GLEW_OK )
