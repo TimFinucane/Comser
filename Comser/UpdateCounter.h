@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ENGINE_H
-#define ENGINE_H
 
 #include <vector>
 #include <sigc++/sigc++.h>
@@ -67,7 +65,13 @@ namespace Comser
         /// </summary>
         void                        ticksPerUpdate( UpdateOrder order, unsigned int ticks )
         {
-            _updates[order].frequency = ticks;
+            SignalInfo& update = _updates[order];
+
+            if( ticks == 0 )
+                _zeroUpdates.push_back( &update );
+            else if( update.frequency == 0 )
+                _zeroUpdates.erase( std::find( _zeroUpdates.begin(), _zeroUpdates.end(), &update ) );
+            update.frequency = ticks;
         }
 
         void                        update( double ticksPassed );
@@ -76,8 +80,7 @@ namespace Comser
     private:
         double                      _delta;
 
+        std::vector<SignalInfo*>    _zeroUpdates;
         std::vector<SignalInfo>     _updates;
     };
 }
-
-#endif

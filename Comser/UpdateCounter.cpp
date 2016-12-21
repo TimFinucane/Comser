@@ -16,6 +16,11 @@ UpdateCounter::UpdateCounter( unsigned int size )
 UpdateCounter::UpdateCounter( std::initializer_list<unsigned int> orders )
     : _delta( 0.0 ), _updates( orders.begin(), orders.end() ) // Emplace-construct the vector
 {    
+    for( auto i = _updates.begin(); i != _updates.end(); ++i )
+    {
+        if( i->frequency == 0 )
+            _zeroUpdates.push_back( &(*i) );
+    }
 }
 
 void UpdateCounter::update( double ticks )
@@ -29,9 +34,16 @@ void UpdateCounter::update( double ticks )
         _delta = 0.0f;
         return;
     }
+
+    // Update all 0-frequencies
+    for( auto i = _zeroUpdates.begin(); i != _zeroUpdates.end(); ++i )
+    {
+        (*i)->signal.emit();
+    }
+
     // Otherwise, go through each tick until delta is gone
     // TODO: Think of better way?
-    while( _delta > 1 )
+    while( _delta > 1.0 )
     {
         // Update each individual signal
         for( auto i = _updates.begin(); i != _updates.end(); ++i )

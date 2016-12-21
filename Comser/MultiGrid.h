@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #include <memory>
 #include <algorithm>
@@ -48,21 +47,32 @@ namespace Comser
         /// </summary>
         struct ComponentDef
         {
+            template <typename COMPONENT, typename... ARGS>
+            ComponentDef( LocalComponentType type, ARGS... args )
+                : type( type ), component( (Component*)new COMPONENT( std::forward<ARGS>( args )... ) )
+            {
+            }
+            ComponentDef( LocalComponentType t, Component* comp )
+                : type( t ), component( comp )
+            {
+            }
+
             ~ComponentDef()
             {
                 delete component;
             }
 
-            template<typename COMPONENT, typename... ARGS>
-            static ComponentDef create( LocalComponentType type, ARGS... args )
-            {
-                return ComponentDef( type, (Component*)new COMPONENT( std::forward<ARGS>( args)... ) );
-            }
-
-            ComponentDef( ComponentDef&& def )
+            ComponentDef( ComponentDef&& def ) noexcept
                 : type( def.type ), component( def.component )
             {
                 def.component = nullptr;
+            }
+            ComponentDef& operator =( ComponentDef&& def ) noexcept
+            {
+                std::swap( type, def.type );
+                std::swap( component, def.component );
+
+                return *this;
             }
             ComponentDef( const ComponentDef& def ) = delete;
             ComponentDef& operator =( const ComponentDef& ) = delete;
@@ -71,10 +81,6 @@ namespace Comser
             Component*              component;
 
         private:
-            ComponentDef( LocalComponentType t, Component* comp )
-                : type( t ), component( comp )
-            {
-            }
         };
 
     private:
@@ -129,7 +135,7 @@ namespace Comser
         typedef StrongEntityCache<Strong>   StrongCache;
     public:
         MultiGrid( const std::initializer_list<ComponentType>& types, unsigned int width, unsigned int height, unsigned int depth )
-            : Scene( types ), _width( width ), _height( height ), _depth( depth )
+            : Comser::Scene<MultiGridPosition>( types ), _width( width ), _height( height ), _depth( depth )
         {
             _tiles = new Entity[width * height * depth];
         }
@@ -141,13 +147,31 @@ namespace Comser
         void                destroyEntity( const Position& pos );
         
         template<class COMPONENT, typename... ARGS>
-        void                addComponent( const Position& pos, ARGS... args )
+        void                addComponent( const Position& pos, ARGS&&... args )
         {
             LocalComponentType type = localType( COMPONENT::id() );
+            Entity& ent = getEnt( pos );
 
-            getEnt( pos ).emplace_back( ComponentDef::create<COMPONENT, ARGS...>( type, std::forward<ARGS>( args )... ) );
+            COMPONENT* com = new COMPONENT( std::forward<ARGS>( args )... );
+            ent.emplace_back( type, (Component*)com );
+
+            signalAdded( type, pos, com );
         }
-        void                removeComponent( const Position& pos, LocalComponentType type );
+
+        template<class COMPONENT>
+        void                removeComponent( const Position& pos )
+        {
+            removeComponent( pos, localType( COMPONENT::id() ) );
+        }
+        void                removeComponent( const Position& pos, LocalComponentType type )
+        {
+            Entity& ent = getEnt( pos );
+            auto compIt = std::find_if( ent.begin(), ent.end(), [type]( const ComponentDef& def ) { return def.type == type; } );
+
+            signalRemoved( type, pos, compIt->component );
+
+            ent.erase( compIt );
+        }
 
         bool                entityExists( const Position& pos )
         {

@@ -43,7 +43,6 @@ namespace Comser
             _scenes.emplace_front( std::make_unique<SceneClass>( types, args... ) );
             
             // TODO: Inform systems
-
             return _scenes.begin();
         }
         void                destroyScene( SceneIterator it )
