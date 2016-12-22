@@ -197,6 +197,11 @@ namespace Comser
             return std::find_if( entity.begin(), entity.end(), [type]( const ComponentDef& comp ){ return comp.type == type; } )->component;
         }
 
+        const Entity&       getEntity( const Position& pos ) const
+        {
+            return _tiles[(pos.y * _width + pos.x) * _depth + pos.z];
+        }
+
         sigc::connection    connectPositionChange( SignalPositionChange::slot_type slot )
         {
             return _positionChange.connect( slot );
