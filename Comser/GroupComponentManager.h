@@ -50,6 +50,19 @@ namespace Comser
                 return (Index)(_vector.size() - 1);
             }
 
+            // Placement construction
+            template <typename CONSTRUCTOR>
+            Index               push( size_t size, const CONSTRUCTOR& constructor )
+            {
+                // TODO: Better memory
+                void* memory = operator new( size );
+                constructor( memory );
+
+                _vector.push_back( (Component*)comp );
+
+                return (Index)(_vector.size() - 1);
+            }
+
             /* TODO doc
              * Pops item from back of vector (Uses virtual destructor,
              *  so not as efficient as templated version).

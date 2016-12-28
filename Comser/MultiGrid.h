@@ -158,6 +158,20 @@ namespace Comser
             signalAdded( type, pos, com );
         }
 
+        // An in-place, placement new construction of the object
+        template<typename CONSTRUCTOR>
+        void                addComponent( const Position& pos, LocalComponentType type, size_t size, const CONSTRUCTOR& constructor )
+        {
+            void* memory = operator new( size );
+            // TODO: Try-catch?
+            constructor( memory );
+
+            Entity& ent = getEnt( pos );
+            ent.emplace_back( type, (Component*)memory );
+
+            signalAdded( type, pos, com );
+        }
+
         template<class COMPONENT>
         void                removeComponent( const Position& pos )
         {
