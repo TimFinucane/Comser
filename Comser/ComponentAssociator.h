@@ -86,7 +86,11 @@ namespace Comser
         /* TODO
         * Put in the global ComponentType, it gets the LocalComponentType
         */
-        LocalComponentType operator[]( ComponentType type ) const;
+        LocalComponentType  operator[]( ComponentType type ) const;
+        ComponentType       operator[]( LocalComponentType ltype ) const
+        {
+            return _types[ltype.get()];
+        }
     private:
         size_t          _count;
         ComponentType*  _types;

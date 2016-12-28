@@ -29,7 +29,11 @@ namespace Comser
         {
         }
         virtual ~SceneBase() = default;
-
+        
+        ComponentType           operator[]( LocalComponentType ltype )
+        {
+            return _associator[ltype];
+        }
         LocalComponentType      operator[]( ComponentType type )
         {
             return _associator[type];
