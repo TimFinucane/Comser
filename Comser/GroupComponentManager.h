@@ -41,7 +41,7 @@ namespace Comser
             // <param name="args">The arguments used to initialize the COMPONENT</param>
             // <returns>The index of the created component</returns>
             template< class COMPONENT, typename... COMARGS >
-            Index               push( COMARGS&... args )
+            Index               push( COMARGS... args )
             {
                 // TODO: Better memory
                 COMPONENT* comp = new COMPONENT( std::forward<COMARGS>( args )... );

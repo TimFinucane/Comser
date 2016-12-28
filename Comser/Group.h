@@ -57,7 +57,7 @@ namespace Comser
         template<class COMPONENT, typename... COMARGS>
         void                addComponent( EntityId handle, LocalComponentType localType, COMARGS... args )
         {
-            ComponentVector::Index index = _components[localType]->push<COMPONENT, COMARGS...>( args... );
+            ComponentVector::Index index = _components[localType]->push<COMPONENT, COMARGS...>( std::forward<COMARGS>( args )... );
 
             _entities.addComponent( handle, localType, index );
 
@@ -74,7 +74,7 @@ namespace Comser
         template<class COMPONENT, typename... COMARGS>
         void                addComponent( EntityId handle, COMARGS... args )
         {
-            addComponent<COMPONENT>( handle, localType( COMPONENT::id() ), args... );
+            addComponent<COMPONENT>( handle, localType( COMPONENT::id() ), std::forward<COMARGS>( args )... );
         }
 
         template<class COMPONENT>
@@ -132,7 +132,7 @@ namespace Comser
 
         EntityId                                getId( const EntityList::Iterator it )
         {
-            return (unsigned int)std::distance( it, begin() );
+            return (unsigned int)std::distance( begin(), it );
         }
 
         // Component vector Iterators

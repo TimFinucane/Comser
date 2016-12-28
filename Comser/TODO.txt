@@ -27,11 +27,11 @@ Make those static ids multi thread safe
 
 Replace Group Component Vectors' vector with a memory pool
 
-Incorporate event system and resource handler into game
-
 Improved entity handles? Imagine we could even
   replace TupleHook if we did enough work
 
 Two types of entity handle: weak and strong
 
-Allow for variable updating with the UpdateCounter
+Allow for variable updating with the UpdateCounter			DONE!
+
+Write serialization for components							
