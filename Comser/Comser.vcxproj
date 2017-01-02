@@ -198,8 +198,11 @@
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentAssociator.h" />
+    <ClInclude Include="ComponentPersistence.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="GridPersistence.h" />
     <ClInclude Include="Group.h" />
+    <ClInclude Include="GroupPersistence.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MultiGrid.h" />
     <ClInclude Include="Scene.h" />
@@ -218,8 +221,11 @@
   <ItemGroup>
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentAssociator.cpp" />
+    <ClCompile Include="ComponentPersistence.cpp" />
+    <ClCompile Include="GridPersistence.cpp" />
     <ClCompile Include="GroupComponentManager.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="GroupPersistence.cpp" />
     <ClCompile Include="MultiGrid.cpp" />
     <ClCompile Include="UpdateCounter.cpp" />
     <ClCompile Include="Group.cpp" />
