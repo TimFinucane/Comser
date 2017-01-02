@@ -66,7 +66,7 @@ namespace Comser
 
         // In-place placement constructor
         template <typename CONSTRUCTOR>
-        void                addComponent( EntityId handle, LocalComponentType type, size_t size, const CONSTRUCTOR& constructor )
+        void                addComponent( EntityId handle, LocalComponentType localType, size_t size, const CONSTRUCTOR& constructor )
         {
             ComponentVector::Index index = _components[localType]->push<CONSTRUCTOR>( size, constructor );
 
@@ -153,7 +153,7 @@ namespace Comser
         }
         const ComponentVector::Iterator         begin( LocalComponentType type )
         {
-            _components[type]->begin();
+            return _components[type]->begin();
         }
         const ComponentVector::ConstIterator    end( LocalComponentType type ) const
         {

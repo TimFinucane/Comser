@@ -56,9 +56,8 @@ namespace Comser
             {
                 // TODO: Better memory
                 void* memory = operator new( size );
-                constructor( memory );
 
-                _vector.push_back( (Component*)comp );
+                _vector.push_back( constructor( memory ) );
 
                 return (Index)(_vector.size() - 1);
             }
@@ -97,7 +96,7 @@ namespace Comser
             }
             const Iterator      begin()
             {
-                _vector.begin();
+                return _vector.begin();
             }
             const ConstIterator end() const
             {

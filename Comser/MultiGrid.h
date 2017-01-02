@@ -47,14 +47,16 @@ namespace Comser
         /// </summary>
         struct ComponentDef
         {
-            template <typename COMPONENT, typename... ARGS>
-            ComponentDef( LocalComponentType type, ARGS... args )
-                : type( type ), component( (Component*)new COMPONENT( std::forward<ARGS>( args )... ) )
+            template <typename CONSTRUCTOR>
+            ComponentDef( LocalComponentType t, size_t size, const CONSTRUCTOR& constructor )
+                : type( t ), component( constructor( operator new(size) ) )
             {
             }
-            ComponentDef( LocalComponentType t, Component* comp )
-                : type( t ), component( comp )
+
+            template <typename COMPONENT, typename... ARGS>
+            static ComponentDef     create( LocalComponentType type, ARGS... args )
             {
+                return ComponentDef( type, new COMPONENT( std::forward<ARGS>( args )... ) );
             }
 
             ~ComponentDef()
@@ -81,6 +83,10 @@ namespace Comser
             Component*              component;
 
         private:
+            ComponentDef( LocalComponentType type, Component* component )
+                : type( type ), component( component )
+            {
+            }
         };
 
     private:
@@ -149,27 +155,22 @@ namespace Comser
         template<class COMPONENT, typename... ARGS>
         void                addComponent( const Position& pos, ARGS&&... args )
         {
-            LocalComponentType type = localType( COMPONENT::id() );
+            LocalComponentType ltype = localType( COMPONENT::id() );
             Entity& ent = getEnt( pos );
 
-            COMPONENT* com = new COMPONENT( std::forward<ARGS>( args )... );
-            ent.emplace_back( type, (Component*)com );
+            ent.emplace_back( std::move( ComponentDef::create<COMPONENT, ARGS...>( ltype, std::forward<ARGS>( args )... ) ) );
 
-            signalAdded( type, pos, com );
+            signalAdded( ltype, pos, ent.back().component );
         }
 
         // An in-place, placement new construction of the object
         template<typename CONSTRUCTOR>
         void                addComponent( const Position& pos, LocalComponentType type, size_t size, const CONSTRUCTOR& constructor )
         {
-            void* memory = operator new( size );
-            // TODO: Try-catch?
-            constructor( memory );
-
             Entity& ent = getEnt( pos );
-            ent.emplace_back( type, (Component*)memory );
+            ent.emplace_back( type, size, constructor );
 
-            signalAdded( type, pos, com );
+            signalAdded( type, pos, ent.back().component );
         }
 
         template<class COMPONENT>
